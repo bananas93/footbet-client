@@ -1,8 +1,8 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-useless-escape */
-export function getCookie(name) {
-  const matches = document?.cookie?.match(new RegExp(
+function getCookie(name) {
+  const matches = document.cookie.match(new RegExp(
     `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`,
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
