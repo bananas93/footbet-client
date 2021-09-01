@@ -1,0 +1,80 @@
+.site-form {
+    max-width: 650px;
+    width: 100%;
+    margin: 0 auto;
+    &__title {
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 22px;
+    }
+    &__field {
+        margin-bottom: 15px;
+    }
+    &__label {
+        font-size: 14px;
+        line-height: 20px;
+    }
+    &__input {
+        display: block;
+        width: 100%;
+        padding: 10px 10px;
+        font-family: inherit;
+        font-size: 16px;
+        line-height: 24px;
+        border-radius: 5px;
+        border: 1px solid #dedede;
+    }
+    &__btn {
+        display: block;
+        border: 1px solid #041038;
+        border-radius: 5px;
+        background-color: #041038;
+        color: #fff;
+        font-size: 16px;
+        padding: 13px 40px;
+        cursor: pointer;
+        transition: all .3s ease 0s;
+        &:hover {
+            background-color: #082892;
+            border-color: #082892;
+        }
+    }
+    &__toggle {
+        text-align: center;
+        margin-top: 15px;
+        a {
+            color: #000;
+            text-decoration: underline;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+.sign-in-form {
+  .login-form-forgot {
+    float: right;
+    color: #000;
+  }
+  .login-form-button {
+    width: 100%;
+  }
+}
+
+.login-form {
+    background-color: #fff;
+    padding: 20px;
+}
+
+.sign-google {
+    display: inline-block;
+    border: 1px solid #f0f0f0;
+    padding: 15px;
+    border-radius: 10px;
+    transition: all .3s ease 0s;
+    margin-top: 10px;
+    &:hover {
+        background-color: #f0f0f0;
+    }
+}

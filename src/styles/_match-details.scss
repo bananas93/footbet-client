@@ -1,0 +1,78 @@
+.match-details {
+    background: linear-gradient(90deg, #26a5b7, #046676);
+    color: #fff;
+    padding: 60px 0;
+    color: #fff;
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    &__datetime {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex: 0 0 30%;
+        max-width: 30%;
+        padding: 0 30px;
+    }
+    &__score {
+        flex: 0 0 30%;
+        max-width: 30%;
+        padding: 0 30px;
+        font-weight: 600;
+        font-size: 30px;
+        text-align: center;
+    }
+    &__date, 
+    &__time {
+        text-align: center;
+        flex: 0 0 100%;
+        color: #fff;
+    }
+    &__date {
+        font-weight: 600;
+        font-size: 20px;
+        border-bottom: 1px solid #f7a604;
+        margin-bottom: 5px;
+        padding: 5px 30px;
+    }
+    &__time {
+        font-size: 18px;
+    }
+    &__team {
+        font-size: 40px;
+        line-height: 50px;
+        font-weight: 700;
+        flex: 0 0 35%;
+        max-width: 35%;
+        &--home {
+            text-align: right;
+        }
+        &--away {
+            text-align: left;
+        }
+    }
+    &__stage {
+        text-align: center;
+        margin-bottom: 15px;
+        color: rgba(255, 255, 255, .6);
+        font-size: 13px;
+        font-weight: 600;
+        &--load {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    }
+}
+.match-state {
+    margin-top: 40px;
+    .container {
+        background-color: #53aefd;
+        border: 1px solid #4eadff;
+        padding: 20px 15px;
+        border-radius: 5px;
+    } 
+} 
