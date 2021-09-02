@@ -2,8 +2,8 @@ import {
   BrowserRouter, Switch, Route,
 } from 'react-router-dom';
 import { Layout } from 'antd';
-import { useState } from 'react';
-import { getCookie } from './helpers/authHelper';
+import { useEffect, useState } from 'react';
+import { getCookie, setCookie } from './helpers/authHelper';
 import { AuthContext } from './utils/contexts';
 import ProtectedRoute from './helpers/ProtectedRoute';
 import SiteMenu from './components/SiteMenu';
@@ -15,17 +15,29 @@ import Chat from './views/Chat';
 import Profile from './views/Profile';
 import Login from './views/Login';
 
-function checkAuthorization() {
+const setToken = () => {
+  const href = new URL(window.location.href);
+  const token = href.searchParams.get('token');
+  if (token) {
+    setCookie('JWToken', token);
+  }
+};
+
+const checkAuthorization = () => {
   const token = getCookie('JWToken');
   if (token) {
     return true;
   }
   return false;
-}
+};
 
 function App() {
   const { Header, Footer, Content } = Layout;
   const [authorized, setAuthorized] = useState(checkAuthorization());
+
+  useEffect(() => {
+    setToken();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ authorized, setAuthorized }}>
