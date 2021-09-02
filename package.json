@@ -18,7 +18,9 @@
     "react-scripts": "4.0.3",
     "reset-css": "^5.0.1",
     "socket.io-client": "^4.2.0",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "express": "^4.17.1",
+    "express-favicon": "^2.0.1"
   },
   "devDependencies": {
     "eslint": "7.18.0",
@@ -26,10 +28,11 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-react": "7.22.0",
-    "eslint-plugin-react-hooks": "4.2.0"
+    "eslint-plugin-react-hooks": "4.2.0",
+    "path": "^0.12.7"
   },
   "scripts": {
-    "start": "set PORT=8080 & react-scripts start",
+    "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
