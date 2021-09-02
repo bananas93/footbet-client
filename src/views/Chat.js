@@ -13,7 +13,7 @@ export default function Chat() {
   const [onlineUsers, setOnlineUsers] = useState({});
 
   useEffect(async () => {
-    const newSocket = io('http://footbet.herokuapp.com');
+    const newSocket = io('https://footbet.herokuapp.com');
     setSocket(newSocket);
     const res = await getUserDetails();
     const { name } = res;
