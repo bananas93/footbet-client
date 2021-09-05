@@ -7,7 +7,7 @@ export function login({ email, password }) {
     headers: {
       'Content-Type': 'application/json',
     },
-    url: 'http://localhost:3000/api/users/login',
+    url: 'https://footbet.herokuapp.com/api/users/login',
     data: { email, password },
   })
     .then((res) => {
@@ -28,7 +28,6 @@ export function register({ email, name, password }) {
     data: { email, name, password },
   })
     .then((res) => {
-      console.log(res);
       if (res.status && res.status === 201) {
         setCookie('JWToken', res.data.token);
       }

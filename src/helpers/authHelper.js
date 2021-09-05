@@ -1,14 +1,14 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-useless-escape */
-function getCookie(name) {
+export const getCookie = (name) => {
   const matches = document.cookie.match(new RegExp(
     `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`,
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
-}
+};
 
-export function setCookie(name, value, options = {}) {
+export const setCookie = (name, value, options = {}) => {
   options = {
     path: '/',
     ...options,
@@ -29,17 +29,25 @@ export function setCookie(name, value, options = {}) {
   }
 
   document.cookie = updatedCookie;
-}
+};
 
-function deleteCookie(name) {
+export const deleteCookie = (name) => {
   setCookie(name, '', {
     'max-age': -1,
   });
-}
+};
+
+export const checkAuthorization = () => {
+  const token = getCookie('JWToken');
+  if (token) {
+    return true;
+  }
+  return false;
+};
 
 export const getJWToken = () => `Bearer ${getCookie('JWToken')}`;
 
-export function logout() {
+export const logout = () => {
   deleteCookie('JWToken');
   window.location.reload();
-}
+};

@@ -22,9 +22,9 @@ export default function SiteMenu() {
       </Menu.Item>
       {authorized ? (
         <>
-          <Menu.Item key="chat">
+          {/* <Menu.Item key="chat">
             <Link to="/chat">Чат</Link>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item key="my-bets">
             <Link to="/my-bets">Мої прогнози</Link>
           </Menu.Item>

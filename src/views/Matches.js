@@ -51,7 +51,7 @@ export default function Matches({ tournament }) {
   const loadMatches = async () => {
     setLoadingMatches(true);
     const token = getJWToken();
-    const response = await fetch(`http://footbet.herokuapp.com/api/matches/${tournament}`, {
+    const response = await fetch(`https://footbet.herokuapp.com/api/matches/${tournament}`, {
       headers: new Headers({
         Authorization: token,
       }),
@@ -71,7 +71,7 @@ export default function Matches({ tournament }) {
   const loadResults = async () => {
     setLoadingResults(true);
     const token = getJWToken();
-    const response = await fetch(`http://footbet.herokuapp.com/api/results/${tournament}`, {
+    const response = await fetch(`https://footbet.herokuapp.com/api/results/${tournament}`, {
       headers: new Headers({
         Authorization: token,
       }),

@@ -3,9 +3,9 @@ import {
 } from 'react-router-dom';
 import { Layout } from 'antd';
 import { useState } from 'react';
-import { getCookie } from './helpers/authHelper';
 import { AuthContext } from './utils/contexts';
 import ProtectedRoute from './helpers/ProtectedRoute';
+import { checkAuthorization } from './helpers/authHelper';
 import SiteMenu from './components/SiteMenu';
 import Home from './views/Home';
 import Rules from './views/Rules';
@@ -14,14 +14,6 @@ import UserBets from './views/UserBets';
 import Chat from './views/Chat';
 import Profile from './views/Profile';
 import Login from './views/Login';
-
-function checkAuthorization() {
-  const token = getCookie('JWToken');
-  if (token) {
-    return true;
-  }
-  return false;
-}
 
 function App() {
   const { Header, Footer, Content } = Layout;
@@ -53,7 +45,7 @@ function App() {
                   <Matches {...props} tournament="1" />
                 )}
               />
-              <ProtectedRoute exact path="/chat" component={Chat} />
+              {/* <ProtectedRoute exact path="/chat" component={Chat} /> */}
               <ProtectedRoute exact path="/my-bets" component={UserBets} />
               <ProtectedRoute exact path="/profile" component={Profile} />
               <Route exact path="/login" component={Login} />
