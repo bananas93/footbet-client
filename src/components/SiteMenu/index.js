@@ -1,22 +1,22 @@
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { Menu, Button } from 'antd';
+import PropTypes from 'prop-types';
 import { logout } from '../../helpers/authHelper';
 import { AuthContext } from '../../utils/contexts';
 
-export default function SiteMenu() {
+export default function SiteMenu({ tournaments }) {
   const { authorized } = useContext(AuthContext);
   return (
     <Menu mode="horizontal">
       <Menu.Item key="home">
         <Link to="/">Головна</Link>
       </Menu.Item>
-      <Menu.Item key="test-matches">
-        <Link to="/test-matches">Тестові матчі</Link>
-      </Menu.Item>
-      <Menu.Item key="champions-league-2022">
-        <Link to="/champions-league-2022/">Ліга Чемпіонів</Link>
-      </Menu.Item>
+      {tournaments.length && tournaments.map((tournament) => (
+        <Menu.Item key={tournament.slug}>
+          <Link to={`/${tournament.slug}`}>{tournament.name}</Link>
+        </Menu.Item>
+      ))}
       <Menu.Item key="rules">
         <Link to="/rules/">Правила</Link>
       </Menu.Item>
@@ -43,3 +43,7 @@ export default function SiteMenu() {
     </Menu>
   );
 }
+
+SiteMenu.propTypes = {
+  tournaments: PropTypes.array,
+};

@@ -199,5 +199,5 @@ export default function Matches({ tournament }) {
 }
 
 Matches.propTypes = {
-  tournament: PropTypes.string,
+  tournament: PropTypes.number,
 };
