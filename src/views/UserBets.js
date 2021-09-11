@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Divider, Tabs } from 'antd';
 import { getJWToken } from '../helpers/authHelper';
@@ -8,7 +8,7 @@ export default function UserBets({ tournaments }) {
   const [myBets, setMyBets] = useState([]);
   const loadMyBets = async (tournament) => {
     const token = getJWToken();
-    const response = await fetch(`http://footbet.herokuapp.com/api/bets/${tournament}`, {
+    const response = await fetch(`https://footbet.herokuapp.com/api/bets/${tournament}`, {
       headers: {
         Authorization: token,
       },
