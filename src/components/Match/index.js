@@ -54,6 +54,8 @@ export default function Match({ match, loadMatches, myBets }) {
         } else if (res.status === 401) {
           notificationError('Помилка авторизації');
           logout();
+        } else {
+          notificationError(res.data.error);
         }
       } else {
         notificationError('Помилка серверу...');

@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 export default function Home({ tournaments }) {
   return (
     <Row style={{ marginTop: '30px' }} gutter={16}>
-      <Col className="gutter-row" xs={{ span: 24 }} lg={{ span: 12 }} style={{ marginBottom: '30px' }}>
-        <Card>
-          {tournaments.length && (
-            tournaments.map((tournament) => (
+      {tournaments.length && (
+        tournaments.map((tournament) => (
+          <Col key={tournament.id} className="gutter-row" xs={{ span: 24 }} lg={{ span: 12 }} style={{ marginBottom: '30px' }}>
+            <Card>
               <Link to={`/${tournament.slug}`}>
-                <img style={{ objectFit: 'contain', width: '100%', height: '200px' }} alt={tournament.name} src={tournament.logo} />
+                <img style={{ objectFit: 'contain', width: '100%', height: '150px' }} alt={tournament.name} src={tournament.logo} />
               </Link>
-            )))}
-        </Card>
-      </Col>
+            </Card>
+          </Col>
+        )))}
     </Row>
   );
 }

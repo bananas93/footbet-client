@@ -30,7 +30,6 @@ function App() {
         console.error(e.message);
       });
   }, []);
-
   return (
     <AuthContext.Provider value={{ authorized, setAuthorized }}>
       <BrowserRouter>
@@ -58,12 +57,18 @@ function App() {
                     exact
                     key={tournament.id}
                     render={(props) => (
-                      <Matches {...props} tournament={tournament.id} />
+                      <Matches {...props} tournament={tournament} />
                     )}
                   />
                 )))}
               {/* <ProtectedRoute exact path="/chat" component={Chat} /> */}
-              <ProtectedRoute exact path="/my-bets" component={UserBets} />
+              <Route
+                exact
+                path="/my-bets"
+                render={(props) => (
+                  <UserBets {...props} tournaments={tournaments} />
+                )}
+              />
               <ProtectedRoute exact path="/profile" component={Profile} />
               <Route exact path="/login" component={Login} />
               <Route path="*">
