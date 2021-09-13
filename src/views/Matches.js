@@ -58,9 +58,6 @@ export default function Matches({ tournament }) {
         if (res.status === 200) {
           setMatches(res.data);
         }
-        if (res.status === 403) {
-          logout();
-        }
       })
       .catch((e) => {
         console.error(e.message);
@@ -74,9 +71,6 @@ export default function Matches({ tournament }) {
       .then((res) => {
         if (res.status === 200) {
           setResults(res.data);
-        }
-        if (res.status === 403) {
-          logout();
         }
       })
       .catch((e) => {

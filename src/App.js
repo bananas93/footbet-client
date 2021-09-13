@@ -27,9 +27,6 @@ function App() {
         if (res.status === 200) {
           setTournaments(res.data);
         }
-        if (res.status === 403) {
-          logout();
-        }
       })
       .catch((e) => {
         console.error(e.message);
