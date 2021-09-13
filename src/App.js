@@ -5,7 +5,7 @@ import { Layout } from 'antd';
 import { useState, useEffect } from 'react';
 import { AuthContext } from './utils/contexts';
 import ProtectedRoute from './helpers/ProtectedRoute';
-import { checkAuthorization } from './helpers/authHelper';
+import { logout, checkAuthorization } from './helpers/authHelper';
 import SiteMenu from './components/SiteMenu';
 import { getTournaments } from './api/tournaments';
 import Home from './views/Home';
@@ -21,14 +21,23 @@ function App() {
   const [authorized, setAuthorized] = useState(checkAuthorization());
   const [tournaments, setTournaments] = useState([]);
 
-  useEffect(async () => {
+  const loadTournaments = async () => {
     await getTournaments()
       .then((res) => {
-        setTournaments(res);
+        if (res.status === 200) {
+          setTournaments(res.data);
+        }
+        if (res.status === 403) {
+          logout();
+        }
       })
       .catch((e) => {
         console.error(e.message);
       });
+  };
+
+  useEffect(() => {
+    loadTournaments();
   }, []);
   return (
     <AuthContext.Provider value={{ authorized, setAuthorized }}>

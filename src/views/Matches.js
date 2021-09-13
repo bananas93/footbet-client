@@ -31,10 +31,6 @@ export default function Matches({ tournament }) {
   const toggleFullTableModal = () => {
     setShowFullTableModal(!showFullTableModal);
   };
-  const update = (child, indices, value) => {
-    console.log(indices);
-    indices.reduce((o, i) => o.child[i], { child }).text = value;
-  };
 
   const handleMenuClick = (e) => {
     const { key } = e;
@@ -181,6 +177,7 @@ export default function Matches({ tournament }) {
               columns={columns}
               dataSource={results}
               rowKey="id"
+              scroll={{ x: 400 }}
             />
           </Card>
         </Col>

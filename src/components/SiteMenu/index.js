@@ -12,7 +12,7 @@ export default function SiteMenu({ tournaments }) {
       <Menu.Item key="home">
         <Link to="/">Головна</Link>
       </Menu.Item>
-      {tournaments.length && tournaments.map((tournament) => (
+      {tournaments.length > 0 && tournaments.map((tournament) => (
         <Menu.Item key={tournament.slug}>
           <Link to={`/${tournament.slug}`}>{tournament.name}</Link>
         </Menu.Item>

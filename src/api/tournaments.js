@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCookie, logout } from '../helpers/authHelper';
+import { getCookie } from '../helpers/authHelper';
 
 export const getTournaments = () => {
   const token = getCookie('JWToken');
@@ -7,13 +7,5 @@ export const getTournaments = () => {
     headers: {
       Authorization: token,
     },
-  })
-    .then((res) => {
-      if (res.status && res.status === 403) {
-        logout();
-      } else if (res.status && res.status === 404) {
-        return [];
-      }
-      return res.data;
-    }).catch((e) => e.response);
+  }).then((res) => res).catch((e) => e.response);
 };

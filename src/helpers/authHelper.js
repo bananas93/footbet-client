@@ -49,5 +49,5 @@ export const getJWToken = () => `Bearer ${getCookie('JWToken')}`;
 
 export const logout = () => {
   deleteCookie('JWToken');
-  window.location.reload();
+  window.location.href = '/';
 };

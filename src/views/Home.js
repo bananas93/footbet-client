@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export default function Home({ tournaments }) {
   return (
     <Row style={{ marginTop: '30px' }} gutter={16}>
-      {tournaments.length && (
+      {tournaments.length > 0 && (
         tournaments.map((tournament) => (
           <Col key={tournament.id} className="gutter-row" xs={{ span: 24 }} lg={{ span: 12 }} style={{ marginBottom: '30px' }}>
             <Card>
