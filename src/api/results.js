@@ -3,7 +3,7 @@ import { getCookie } from '../helpers/authHelper';
 
 export const getResults = (tournament) => {
   const token = getCookie('JWToken');
-  return axios.get(`https://footbet.herokuapp.com/api/results/${tournament}`, {
+  return axios.get(`https://footbet.site/api/results/${tournament}`, {
     headers: {
       Authorization: token,
     },

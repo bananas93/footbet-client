@@ -4,7 +4,7 @@ import { getJWToken } from '../helpers/authHelper';
 export const addBet = (data) => {
   const token = getJWToken();
   if (!token) return false;
-  return axios.post('https://footbet.herokuapp.com/api/bets', data,
+  return axios.post('https://footbet.site/api/bets', data,
     {
       headers: { Authorization: token },
     })

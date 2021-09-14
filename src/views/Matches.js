@@ -83,7 +83,7 @@ export default function Matches({ tournament }) {
     audio.play();
   };
   useEffect(() => {
-    const socket = io('https://footbet.herokuapp.com');
+    const socket = io('https://footbet.site');
     socket.on('matchUpdate', () => {
       loadMatches();
       loadResults();

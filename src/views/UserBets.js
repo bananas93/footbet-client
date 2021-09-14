@@ -8,7 +8,7 @@ export default function UserBets({ tournaments }) {
   const [myBets, setMyBets] = useState([]);
   const loadMyBets = async (tournament) => {
     const token = getJWToken();
-    const response = await fetch(`https://footbet.herokuapp.com/api/bets/${tournament}`, {
+    const response = await fetch(`https://footbet.site/api/bets/${tournament}`, {
       headers: {
         Authorization: token,
       },
