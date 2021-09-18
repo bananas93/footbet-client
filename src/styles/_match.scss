@@ -134,6 +134,19 @@
     }
 }
 
+.single-match--details {
+    .single-match__team {
+        width: 35%;
+    }
+
+    .single-match__score {
+        width: 15%;
+    }
+
+    .single-match__mypredict {
+        width: 15%;
+    }
+}
 
 .matches {
     &__row {

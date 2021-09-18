@@ -1,3 +1,5 @@
+import { Button } from 'antd';
+
 export const pagination = {
   pageSize: 20,
 };

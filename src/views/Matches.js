@@ -9,7 +9,7 @@ import { DownOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { io } from 'socket.io-client';
 import FullTable from '../components/FullTable';
-import { logout } from '../helpers/authHelper';
+import UserInfo from '../components/UserInfo';
 import { getMatches } from '../api/matches';
 import { getResults } from '../api/results';
 import Match from '../components/Match';
@@ -27,9 +27,16 @@ export default function Matches({ tournament }) {
   const [matches, setMatches] = useState([]);
   const [results, setResults] = useState([]);
   const [showFullTableModal, setShowFullTableModal] = useState(false);
+  const [showUserInfo, setShowUserInfo] = useState(false);
+  const [userId, setUserId] = useState();
 
   const toggleFullTableModal = () => {
     setShowFullTableModal(!showFullTableModal);
+  };
+
+  const toggleShowUserInfo = (id) => {
+    setUserId(id);
+    setShowUserInfo(!showUserInfo);
   };
 
   const handleMenuClick = (e) => {
@@ -172,15 +179,28 @@ export default function Matches({ tournament }) {
               dataSource={results}
               rowKey="id"
               scroll={{ x: 400 }}
+              onRow={(record) => ({
+                onClick: () => toggleShowUserInfo(record.userId),
+              })}
             />
           </Card>
         </Col>
       </Row>
-      <FullTable
-        showFullTableModal={showFullTableModal}
-        toggleFullTableModal={toggleFullTableModal}
-        results={results}
-      />
+      {showFullTableModal && (
+        <FullTable
+          showFullTableModal={showFullTableModal}
+          toggleFullTableModal={toggleFullTableModal}
+          results={results}
+        />
+      )}
+      {showUserInfo && (
+        <UserInfo
+          showUserInfo={showUserInfo}
+          toggleShowUserInfo={toggleShowUserInfo}
+          tournament={tournament.id}
+          id={userId}
+        />
+      )}
     </>
   );
 }
