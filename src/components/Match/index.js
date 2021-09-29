@@ -85,6 +85,7 @@ export default function Match({ match, loadMatches }) {
     return minute;
   };
   const myBet = match.bets.find((bet) => bet.myBet);
+  console.log(myBet);
   return (
     <>
       <div className="single-match">
@@ -133,7 +134,7 @@ export default function Match({ match, loadMatches }) {
         )}
         { match.status === 'Заплановано' ? (
           <span className="single-match__predict">
-            {myBet.length ? (
+            {myBet ? (
               <Button type="text" title="Змінити прогноз" onClick={toggleShowAddPredictModal}><EditOutlined /></Button>
             ) : (
               <Button type="text" title="Додати прогноз" onClick={toggleShowAddPredictModal}><PlusOutlined /></Button>
