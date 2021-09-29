@@ -16,8 +16,6 @@ import Chat from './views/Chat';
 import Profile from './views/Profile';
 import Login from './views/Login';
 
-console.log(process.env);
-
 function App() {
   const { Header, Footer, Content } = Layout;
   const [authorized, setAuthorized] = useState(checkAuthorization());

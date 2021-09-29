@@ -11,7 +11,7 @@ import { io } from 'socket.io-client';
 import FullTable from '../components/FullTable';
 import UserInfo from '../components/UserInfo';
 import { getMatches } from '../api/matches';
-import { getResults } from '../api/results';
+import { getResults, getResultsByTour } from '../api/results';
 import Match from '../components/Match';
 import 'moment/locale/uk';
 import { normalizeTabName } from '../helpers/normalizeTabName';
@@ -21,6 +21,7 @@ moment.locale('uk');
 
 export default function Matches({ tournament }) {
   const { TabPane } = Tabs;
+  const [selectedTour, setSelectedTour] = useState(0);
   const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournament.id}`) ? localStorage.getItem(`tab-${tournament.id}`) : 1);
   const [loadingMatches, setLoadingMatches] = useState(false);
   const [loadingResults, setLoadingResults] = useState(false);
@@ -39,23 +40,36 @@ export default function Matches({ tournament }) {
     setShowUserInfo(!showUserInfo);
   };
 
-  const handleMenuClick = (e) => {
-    const { key } = e;
-    console.log(key);
+  const handleMenuClick = async (event) => {
+    setLoadingResults(true);
+    const { key } = event;
+    setSelectedTour(key);
+    await getResultsByTour(tournament.id, key)
+      .then((res) => {
+        if (res.status === 200) {
+          setResults(res.data);
+        }
+      })
+      .catch((e) => {
+        console.error(e.message);
+      });
+    setLoadingResults(false);
   };
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="0">1 Тур</Menu.Item>
-      <Menu.Item key="1">2 Тур</Menu.Item>
-      <Menu.Item key="2">3 Тур</Menu.Item>
-      <Menu.Item key="3">4 Тур</Menu.Item>
-      <Menu.Item key="4">5 Тур</Menu.Item>
-      <Menu.Item key="5">6 Тур</Menu.Item>
+      <Menu.Item key="0">Загальний результат</Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="6">1/8 фіналу</Menu.Item>
-      <Menu.Item key="7">1/4 фіналу</Menu.Item>
-      <Menu.Item key="8">1/2 фіналу</Menu.Item>
-      <Menu.Item key="9">Фінал</Menu.Item>
+      <Menu.Item key="1">1 Тур</Menu.Item>
+      <Menu.Item key="2">2 Тур</Menu.Item>
+      <Menu.Item key="3">3 Тур</Menu.Item>
+      <Menu.Item key="4">4 Тур</Menu.Item>
+      <Menu.Item key="5">5 Тур</Menu.Item>
+      <Menu.Item key="6">6 Тур</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="7">1/8 фіналу</Menu.Item>
+      <Menu.Item key="8">1/4 фіналу</Menu.Item>
+      <Menu.Item key="9">1/2 фіналу</Menu.Item>
+      <Menu.Item key="10">Фінал</Menu.Item>
     </Menu>
   );
   const loadMatches = async () => {
@@ -162,7 +176,7 @@ export default function Matches({ tournament }) {
               <Space>
                 <Dropdown overlay={menu} trigger={['click']}>
                   <a style={{ color: '#001628' }} className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-                    Обрати тур
+                    {`${Number(selectedTour) === 0 ? 'Обрати' : selectedTour} тур`}
                     {' '}
                     <DownOutlined />
                   </a>
@@ -198,6 +212,7 @@ export default function Matches({ tournament }) {
           showUserInfo={showUserInfo}
           toggleShowUserInfo={toggleShowUserInfo}
           tournament={tournament.id}
+          tour={selectedTour}
           id={userId}
         />
       )}

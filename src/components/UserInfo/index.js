@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { getInfo } from '../../api/users';
 
 export default function UserInfo({
-  id, tournament, showUserInfo, toggleShowUserInfo,
+  id, tournament, tour, showUserInfo, toggleShowUserInfo,
 }) {
   const { TabPane } = Tabs;
   const [userInfo, setUserInfo] = useState([]);
@@ -14,7 +14,7 @@ export default function UserInfo({
   const [loading, setLoading] = useState(true);
 
   const getUserInfo = async () => {
-    await getInfo(id, tournament)
+    await getInfo(id, tournament, tour)
       .then((res) => {
         if (res.status === 200) {
           setUserInfo(res.data);
@@ -150,6 +150,7 @@ export default function UserInfo({
 UserInfo.propTypes = {
   id: PropTypes.number,
   tournament: PropTypes.number,
+  tour: PropTypes.number,
   showUserInfo: PropTypes.bool,
   toggleShowUserInfo: PropTypes.func,
 };
