@@ -64,7 +64,7 @@ export default function Match({ match, loadMatches }) {
     });
   };
 
-  const [minute, setMinute] = useState(matchMinute(match.date));
+  const [minute, setMinute] = useState(matchMinute(match.datetime));
   useInterval(() => {
     setMinute(minute + 1);
   }, 60 * 1000);
@@ -84,7 +84,7 @@ export default function Match({ match, loadMatches }) {
     }
     return minute;
   };
-  const myBet = match.bets.filter((bet) => bet.myBet);
+  const myBet = match.bets.find((bet) => bet.myBet);
   return (
     <>
       <div className="single-match">
@@ -114,13 +114,17 @@ export default function Match({ match, loadMatches }) {
           </span>
         </span>
         <span className="single-match__team single-match__right">{match.awayTeam.name}</span>
-        {myBet.length > 0 ? (
+        {myBet ? (
           <span className="single-match__mypredict">
-            {myBet[0].homeBet}
+            {myBet.homeBet}
             {' '}
             -
             {' '}
-            {myBet[0].awayBet}
+            {myBet.awayBet}
+            {' '}
+            (
+            {myBet.points}
+            )
           </span>
         ) : (
           <span className="single-match__mypredict">
