@@ -3,7 +3,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import {
-  Row, Col, Divider, Table, Button, Tabs, Card, Space, Menu, Dropdown, notification,
+  Row, Col, Divider, Table, Button, Tabs, Card, Space, Menu, Dropdown,
 } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -30,14 +30,6 @@ export default function Matches({ tournament }) {
   const [showFullTableModal, setShowFullTableModal] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [userId, setUserId] = useState();
-
-  const openNotification = (match) => {
-    notification.open({
-      message: `Гол у матчі ${match.homeTeam.name} - ${match.awayTeam.name}`,
-      description: `Рахунок у матчі став ${match.homeGoals} - ${match.awayGoals}`,
-      duration: 5,
-    });
-  };
 
   const toggleFullTableModal = () => {
     setShowFullTableModal(!showFullTableModal);
@@ -114,10 +106,11 @@ export default function Matches({ tournament }) {
   useEffect(() => {
     const socket = io('https://footbet.site');
     socket.on('matchUpdate', (data) => {
-      loadMatches();
-      loadResults();
-      playNotification();
-      openNotification(data);
+      if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
+        loadMatches();
+        loadResults();
+        playNotification();
+      }
     });
     return () => socket.close();
   }, []);
