@@ -3,9 +3,10 @@ import {
 } from 'react-router-dom';
 import { Layout } from 'antd';
 import { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
 import { AuthContext } from './utils/contexts';
 import ProtectedRoute from './helpers/ProtectedRoute';
-import { logout, checkAuthorization } from './helpers/authHelper';
+import { logout, checkAuthorization, getCookie } from './helpers/authHelper';
 import SiteMenu from './components/SiteMenu';
 import { getTournaments } from './api/tournaments';
 import Home from './views/Home';
@@ -20,6 +21,19 @@ function App() {
   const { Header, Footer, Content } = Layout;
   const [authorized, setAuthorized] = useState(checkAuthorization());
   const [tournaments, setTournaments] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  useEffect(() => {
+    const token = getCookie('JWToken');
+    const socket = io(process.env.REACT_APP_BASE_URL, {
+      query: { token },
+    });
+    socket.on('online', (online) => {
+      online = JSON.parse(online);
+      setOnlineUsers(online);
+    });
+    return () => socket.close();
+  }, []);
 
   const loadTournaments = async () => {
     await getTournaments()
@@ -36,6 +50,7 @@ function App() {
   useEffect(() => {
     loadTournaments();
   }, []);
+
   return (
     <AuthContext.Provider value={{ authorized, setAuthorized }}>
       <BrowserRouter>
@@ -63,7 +78,7 @@ function App() {
                     exact
                     key={tournament.id}
                     render={(props) => (
-                      <Matches {...props} tournament={tournament} />
+                      <Matches {...props} onlineUsers={onlineUsers} tournament={tournament} />
                     )}
                   />
                 )))}

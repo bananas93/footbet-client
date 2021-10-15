@@ -4,7 +4,7 @@ import { getJWToken } from '../helpers/authHelper';
 export const addBet = (data) => {
   const token = getJWToken();
   if (!token) return false;
-  return axios.post('https://footbet.site/api/bets', data,
+  return axios.post(`${process.env.REACT_APP_LOCAL_API}/bets`, data,
     {
       headers: { Authorization: token },
     })

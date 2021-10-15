@@ -3,7 +3,7 @@ import { getCookie } from '../helpers/authHelper';
 
 export const getResults = (tournament) => {
   const token = getCookie('JWToken');
-  return axios.get(`https://footbet.site/api/results/${tournament}`, {
+  return axios.get(`${process.env.REACT_APP_LOCAL_API}/results/${tournament}`, {
     headers: {
       Authorization: token,
     },
@@ -12,7 +12,7 @@ export const getResults = (tournament) => {
 
 export const getResultsByTour = (tournament, tour) => {
   const token = getCookie('JWToken');
-  return axios.get(`https://footbet.site/api/results/${tournament}/${tour}`, {
+  return axios.get(`${process.env.REACT_APP_LOCAL_API}/results/${tournament}/${tour}`, {
     headers: {
       Authorization: token,
     },

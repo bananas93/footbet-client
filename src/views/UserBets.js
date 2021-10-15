@@ -8,7 +8,7 @@ export default function UserBets({ tournaments }) {
   const [myBets, setMyBets] = useState([]);
   const loadMyBets = async (tournament) => {
     const token = getJWToken();
-    const response = await fetch(`https://footbet.site/api/bets/${tournament}`, {
+    const response = await fetch(`${process.env.REACT_APP_LOCAL_API}/bets/${tournament}`, {
       headers: {
         Authorization: token,
       },

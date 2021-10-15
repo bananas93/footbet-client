@@ -85,7 +85,7 @@ export default function Match({ match, loadMatches }) {
     return minute;
   };
   const myBet = match.bets.find((bet) => bet.myBet);
-  console.log(myBet);
+
   return (
     <>
       <div className="single-match">

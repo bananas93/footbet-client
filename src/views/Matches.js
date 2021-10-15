@@ -19,7 +19,7 @@ import { pagination, columns } from '../helpers/tableSettings';
 
 moment.locale('uk');
 
-export default function Matches({ tournament }) {
+export default function Matches({ tournament, onlineUsers }) {
   const { TabPane } = Tabs;
   const [selectedTour, setSelectedTour] = useState(0);
   const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournament.id}`) ? localStorage.getItem(`tab-${tournament.id}`) : 1);
@@ -104,7 +104,7 @@ export default function Matches({ tournament }) {
     audio.play();
   };
   useEffect(() => {
-    const socket = io('https://footbet.site');
+    const socket = io(process.env.REACT_APP_BASE_URL);
     socket.on('matchUpdate', (data) => {
       if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
         loadMatches();
@@ -191,7 +191,7 @@ export default function Matches({ tournament }) {
               size="small"
               pagination={pagination}
               bordered
-              columns={columns}
+              columns={columns(onlineUsers)}
               dataSource={results}
               rowKey="id"
               scroll={{ x: 400 }}
@@ -216,6 +216,7 @@ export default function Matches({ tournament }) {
           tournament={tournament.id}
           tour={selectedTour}
           id={userId}
+          onlineUsers={onlineUsers}
         />
       )}
     </>
@@ -223,5 +224,6 @@ export default function Matches({ tournament }) {
 }
 
 Matches.propTypes = {
+  onlineUsers: PropTypes.array,
   tournament: PropTypes.object,
 };

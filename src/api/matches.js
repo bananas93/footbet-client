@@ -3,7 +3,7 @@ import { getCookie } from '../helpers/authHelper';
 
 export const getMatches = (tournament) => {
   const token = getCookie('JWToken');
-  return axios.get(`https://footbet.site/api/matches/${tournament}`, {
+  return axios.get(`${process.env.REACT_APP_LOCAL_API}/matches/${tournament}`, {
     headers: {
       Authorization: token,
     },
