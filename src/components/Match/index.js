@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import PropTypes from 'prop-types';
 import { Button, notification } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { useState } from 'react';
 import { useInterval } from '../../utils/useInterval';
@@ -11,7 +11,7 @@ import ViewPredicts from '../ViewPredicts';
 import { addBet } from '../../api/bets';
 import { logout } from '../../helpers/authHelper';
 
-export default function Match({ match, loadMatches, myBets }) {
+export default function Match({ match, loadMatches }) {
   const [showAddPredictModal, setShowAddPredictModal] = useState(false);
   const [showPredictsModal, setShowPredictsModal] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -54,6 +54,8 @@ export default function Match({ match, loadMatches, myBets }) {
         } else if (res.status === 401) {
           notificationError('Помилка авторизації');
           logout();
+        } else {
+          notificationError(res.data.error);
         }
       } else {
         notificationError('Помилка серверу...');
@@ -62,7 +64,7 @@ export default function Match({ match, loadMatches, myBets }) {
     });
   };
 
-  const [minute, setMinute] = useState(matchMinute(match.date));
+  const [minute, setMinute] = useState(matchMinute(match.datetime));
   useInterval(() => {
     setMinute(minute + 1);
   }, 60 * 1000);
@@ -82,6 +84,7 @@ export default function Match({ match, loadMatches, myBets }) {
     }
     return minute;
   };
+  const myBet = match.bets.find((bet) => bet.myBet);
 
   return (
     <>
@@ -112,16 +115,35 @@ export default function Match({ match, loadMatches, myBets }) {
           </span>
         </span>
         <span className="single-match__team single-match__right">{match.awayTeam.name}</span>
-        {!myBets && (
-          match.status === 'Заплановано' ? (
-            <span className="single-match__predict">
+        {myBet ? (
+          <span className="single-match__mypredict">
+            {myBet.homeBet}
+            {' '}
+            -
+            {' '}
+            {myBet.awayBet}
+            {' '}
+            (
+            {myBet.points}
+            )
+          </span>
+        ) : (
+          <span className="single-match__mypredict">
+            -:-
+          </span>
+        )}
+        { match.status === 'Заплановано' ? (
+          <span className="single-match__predict">
+            {myBet ? (
+              <Button type="text" title="Змінити прогноз" onClick={toggleShowAddPredictModal}><EditOutlined /></Button>
+            ) : (
               <Button type="text" title="Додати прогноз" onClick={toggleShowAddPredictModal}><PlusOutlined /></Button>
-            </span>
-          ) : (
-            <span className="single-match__predict">
-              <Button type="text" title="Подивитися прогнози" onClick={toggleShowPredictsModal}><PlusOutlined /></Button>
-            </span>
-          )
+            )}
+          </span>
+        ) : (
+          <span className="single-match__predict">
+            <Button type="text" title="Подивитися прогнози" onClick={toggleShowPredictsModal}><PlusOutlined /></Button>
+          </span>
         )}
       </div>
       {showAddPredictModal && (
@@ -147,5 +169,4 @@ export default function Match({ match, loadMatches, myBets }) {
 Match.propTypes = {
   match: PropTypes.object,
   loadMatches: PropTypes.func,
-  myBets: PropTypes.object,
 };

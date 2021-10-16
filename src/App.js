@@ -2,22 +2,54 @@ import {
   BrowserRouter, Switch, Route,
 } from 'react-router-dom';
 import { Layout } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
 import { AuthContext } from './utils/contexts';
 import ProtectedRoute from './helpers/ProtectedRoute';
-import { checkAuthorization } from './helpers/authHelper';
+import { checkAuthorization, getCookie } from './helpers/authHelper';
 import SiteMenu from './components/SiteMenu';
+import { getTournaments } from './api/tournaments';
 import Home from './views/Home';
 import Rules from './views/Rules';
 import Matches from './views/Matches';
 import UserBets from './views/UserBets';
-import Chat from './views/Chat';
 import Profile from './views/Profile';
 import Login from './views/Login';
+import Chat from './components/Chat';
 
 function App() {
   const { Header, Footer, Content } = Layout;
   const [authorized, setAuthorized] = useState(checkAuthorization());
+  const [tournaments, setTournaments] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  useEffect(() => {
+    const token = getCookie('JWToken');
+    const socket = io(process.env.REACT_APP_BASE_URL, {
+      query: { token },
+    });
+    socket.on('online', (online) => {
+      online = JSON.parse(online);
+      setOnlineUsers(online);
+    });
+    return () => socket.close();
+  }, []);
+
+  const loadTournaments = async () => {
+    await getTournaments()
+      .then((res) => {
+        if (res.status === 200) {
+          setTournaments(res.data);
+        }
+      })
+      .catch((e) => {
+        console.error(e.message);
+      });
+  };
+
+  useEffect(() => {
+    loadTournaments();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ authorized, setAuthorized }}>
@@ -27,26 +59,36 @@ function App() {
             background: '#fff', position: 'fixed', zIndex: 1, width: '100%',
           }}
           >
-            <SiteMenu />
+            <SiteMenu tournaments={tournaments} />
           </Header>
           <Content className="site-layout">
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <Home {...props} tournaments={tournaments} />
+                )}
+              />
               <Route exact path="/rules" component={Rules} />
+              {tournaments.length && (
+                tournaments.map((tournament) => (
+                  <Route
+                    path={`/${tournament.slug}`}
+                    exact
+                    key={tournament.id}
+                    render={(props) => (
+                      <Matches {...props} onlineUsers={onlineUsers} tournament={tournament} />
+                    )}
+                  />
+                )))}
               <Route
-                path="/test-matches"
+                exact
+                path="/my-bets"
                 render={(props) => (
-                  <Matches {...props} tournament="2" />
+                  <UserBets {...props} tournaments={tournaments} />
                 )}
               />
-              <Route
-                path="/champions-league-2022"
-                render={(props) => (
-                  <Matches {...props} tournament="1" />
-                )}
-              />
-              {/* <ProtectedRoute exact path="/chat" component={Chat} /> */}
-              <ProtectedRoute exact path="/my-bets" component={UserBets} />
               <ProtectedRoute exact path="/profile" component={Profile} />
               <Route exact path="/login" component={Login} />
               <Route path="*">
@@ -55,6 +97,7 @@ function App() {
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
+          <Chat />
         </Layout>
       </BrowserRouter>
     </AuthContext.Provider>

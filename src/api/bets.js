@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { getJWToken } from '../helpers/authHelper';
 
-export function addBet(data) {
+export const addBet = (data) => {
   const token = getJWToken();
-  return axios.post('https://footbet.herokuapp.com/api/bets', data,
+  if (!token) return false;
+  return axios.post(`${process.env.REACT_APP_LOCAL_API}/bets`, data,
     {
       headers: { Authorization: token },
     })
@@ -12,4 +13,4 @@ export function addBet(data) {
       data: res.data,
     }))
     .catch((err) => err.response);
-}
+};

@@ -1,0 +1,41 @@
+.chatMessage {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+
+    &Row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 5px;
+    }
+
+    &Input {
+        background-color: #f0f0f0;
+        width: calc(100% - 40px);
+        border: none;
+        padding: 8px 15px;
+        border-radius: 50px;
+        font-size: 14px;
+        transition: all .3s ease 0s;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &Button {
+        background-color: transparent;
+        border: none;
+        padding: 8px 10px;
+        cursor: pointer;
+        font-size: 20px;
+
+        &[disabled] {
+            color: #ccc;
+        }
+    }
+}

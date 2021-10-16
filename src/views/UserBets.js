@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Card, Divider } from 'antd';
-import moment from 'moment';
-import Match from '../components/Match';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Card, Divider, Tabs } from 'antd';
 import { getJWToken } from '../helpers/authHelper';
 
-export default function UserBets() {
+export default function UserBets({ tournaments }) {
+  const { TabPane } = Tabs;
   const [myBets, setMyBets] = useState([]);
-  const tournament = 1;
-  const loadMyBets = async () => {
+  const loadMyBets = async (tournament) => {
     const token = getJWToken();
-    const response = await fetch(`http://footbet.herokuapp.com/api/bets/${tournament}`, {
+    const response = await fetch(`${process.env.REACT_APP_LOCAL_API}/bets/${tournament}`, {
       headers: {
         Authorization: token,
       },
@@ -19,32 +18,44 @@ export default function UserBets() {
       setMyBets(data);
     }
   };
-
-  useEffect(() => {
-    loadMyBets();
-  }, []);
+  const handleTabClick = (key) => {
+    loadMyBets(key);
+  };
   return (
     <>
       <h1 className="site-title">Мої прогнози</h1>
       <Card>
-        {
-          myBets.map((bet) => (
-            <div key={bet.id}>
-              <Divider style={{ fontWeight: 'bold' }}>
-                {bet.match.homeTeam.name}
-                {' '}
-                {bet.homeBet}
-                {' '}
-                -
-                {' '}
-                {bet.awayBet}
-                {' '}
-                {bet.match.awayTeam.name}
-              </Divider>
-            </div>
-          ))
-        }
+        {tournaments.length && (
+        <Tabs defaultActiveKey={tournaments[0].id} onChange={handleTabClick}>
+
+            { tournaments.map((tournament) => (
+              <TabPane tab={tournament.name} key={tournament.id}>
+                {
+                myBets.map((bet) => (
+                  <div key={bet.id}>
+                    <Divider style={{ fontWeight: 'bold' }}>
+                      {bet.match.homeTeam.name}
+                      {' '}
+                      {bet.homeBet}
+                      {' '}
+                      -
+                      {' '}
+                      {bet.awayBet}
+                      {' '}
+                      {bet.match.awayTeam.name}
+                    </Divider>
+                  </div>
+                ))
+              }
+              </TabPane>
+            ))}
+        </Tabs>
+        )}
       </Card>
     </>
   );
 }
+
+UserBets.propTypes = {
+  tournaments: PropTypes.array,
+};

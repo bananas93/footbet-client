@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
-*, ::after, ::before {
+
+*,
+::after,
+::before {
   box-sizing: border-box;
 }
+
 body {
   font-size: 16px;
   line-height: 24px;
@@ -10,17 +14,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 a {
   text-decoration: none;
 }
+
 img {
   max-width: 100%;
   height: auto;
   vertical-align: middle;
 }
+
 .site-page {
   padding: 40px 0;
 }
+
 .site-title {
   text-align: center;
   margin-bottom: 20px;
@@ -29,16 +37,20 @@ img {
   line-height: 50px;
   margin-top: 30px;
 }
+
 strong {
   font-weight: 800;
 }
+
 .site-layout {
   padding: 0 50px;
   margin-top: 64px;
+
   .site-layout-background {
     background: #fff;
   }
 }
+
 .ant-menu-item {
   &:hover {
     .ant-btn {
@@ -47,47 +59,67 @@ strong {
       }
     }
   }
+
   .ant-btn {
     &.ant-btn-text {
       padding: 0;
+
       &:hover {
         background: transparent;
       }
     }
   }
 }
+
 .ant-menu-submenu {
   .ant-btn-text {
     padding: 0;
   }
 }
+
 .ant-card-extra {
   .ant-btn-link {
     padding: 0;
     color: #001628;
   }
 }
+
 .ant-card-head-wrapper {
   .ant-card-head-title {
     font-weight: 900;
   }
 }
 
+.ant-table-row {
+  cursor: pointer;
+
+  &:hover {
+    .ant-table-cell {
+      transition: all .3s ease 0s;
+      color: #828282;
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
+
   .site-layout,
   .ant-layout-header {
     padding: 0 16px;
   }
+
   .site-title {
     font-size: 22px;
     line-height: 40px;
     margin-bottom: 5px;
   }
-  .ant-menu.ant-menu-light > .ant-menu-item, 
-  .ant-menu.ant-menu-light > .ant-menu-submenu {
+
+  .ant-menu.ant-menu-light>.ant-menu-item,
+  .ant-menu.ant-menu-light>.ant-menu-submenu {
     padding: 0;
     margin: 0 10px;
   }
+
   .ant-col {
     width: 100%;
   }

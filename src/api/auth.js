@@ -7,7 +7,7 @@ export function login({ email, password }) {
     headers: {
       'Content-Type': 'application/json',
     },
-    url: 'https://footbet.herokuapp.com/api/users/login',
+    url: `${process.env.REACT_APP_LOCAL_API}/users/login`,
     data: { email, password },
   })
     .then((res) => {
@@ -24,7 +24,7 @@ export function register({ email, name, password }) {
     headers: {
       'Content-Type': 'application/json',
     },
-    url: 'https://footbet.herokuapp.com/api/users/register',
+    url: `${process.env.REACT_APP_LOCAL_API}/users/register`,
     data: { email, name, password },
   })
     .then((res) => {
@@ -37,7 +37,7 @@ export function register({ email, name, password }) {
 
 export function getUserDetails() {
   const token = getCookie('JWToken');
-  return axios.get('https://footbet.herokuapp.com/api/users/me', {
+  return axios.get(`${process.env.REACT_APP_LOCAL_API}/users/me`, {
     headers: {
       Authorization: token,
     },
@@ -58,7 +58,7 @@ export function updateUserDetails({ email, name, password }) {
       'Content-Type': 'application/json',
       Authorization: token,
     },
-    url: 'https://footbet.herokuapp.com/api/users/me',
+    url: `${process.env.REACT_APP_LOCAL_API}/users/me`,
     data: { email, name, password },
   }).then((res) => {
     if (res.status && res.status !== 201) {
