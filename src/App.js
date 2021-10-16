@@ -6,16 +6,16 @@ import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { AuthContext } from './utils/contexts';
 import ProtectedRoute from './helpers/ProtectedRoute';
-import { logout, checkAuthorization, getCookie } from './helpers/authHelper';
+import { checkAuthorization, getCookie } from './helpers/authHelper';
 import SiteMenu from './components/SiteMenu';
 import { getTournaments } from './api/tournaments';
 import Home from './views/Home';
 import Rules from './views/Rules';
 import Matches from './views/Matches';
 import UserBets from './views/UserBets';
-import Chat from './views/Chat';
 import Profile from './views/Profile';
 import Login from './views/Login';
+import Chat from './components/Chat';
 
 function App() {
   const { Header, Footer, Content } = Layout;
@@ -82,7 +82,6 @@ function App() {
                     )}
                   />
                 )))}
-              {/* <ProtectedRoute exact path="/chat" component={Chat} /> */}
               <Route
                 exact
                 path="/my-bets"
@@ -98,6 +97,7 @@ function App() {
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
+          <Chat />
         </Layout>
       </BrowserRouter>
     </AuthContext.Provider>
