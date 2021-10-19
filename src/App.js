@@ -9,6 +9,7 @@ import ProtectedRoute from './helpers/ProtectedRoute';
 import { checkAuthorization, getCookie } from './helpers/authHelper';
 import SiteMenu from './components/SiteMenu';
 import { getTournaments } from './api/tournaments';
+import { getMyInfo } from './api/users';
 import Home from './views/Home';
 import Rules from './views/Rules';
 import Matches from './views/Matches';
@@ -19,20 +20,35 @@ import Chat from './components/Chat';
 
 function App() {
   const { Header, Footer, Content } = Layout;
-  const [authorized, setAuthorized] = useState(checkAuthorization());
+  const [authorized, setAuthorized] = useState(false);
   const [tournaments, setTournaments] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(async () => {
+    await getMyInfo()
+      .then((res) => {
+        if (res.status === 200) {
+          setAuthorized(res.data);
+        }
+        return false;
+      })
+      .catch((e) => {
+        console.error(e.message);
+      });
+  }, []);
 
   useEffect(() => {
     const token = getCookie('JWToken');
-    const socket = io(process.env.REACT_APP_BASE_URL, {
+    const newSocket = io(process.env.REACT_APP_BASE_URL, {
       query: { token },
     });
-    socket.on('online', (online) => {
+    setSocket(newSocket);
+    newSocket.on('online', (online) => {
       online = JSON.parse(online);
       setOnlineUsers(online);
     });
-    return () => socket.close();
+    return () => newSocket.close();
   }, []);
 
   const loadTournaments = async () => {
@@ -97,7 +113,7 @@ function App() {
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
-          <Chat />
+          <Chat socket={socket} />
         </Layout>
       </BrowserRouter>
     </AuthContext.Provider>

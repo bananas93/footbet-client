@@ -17,14 +17,23 @@
         background-color: #f0f0f0;
         width: calc(100% - 40px);
         border: none;
-        padding: 8px 15px;
+        padding: 8px 30px;
         border-radius: 50px;
         font-size: 14px;
         transition: all .3s ease 0s;
+        resize: none;
 
         &:focus {
             outline: none;
         }
+    }
+
+    &Emoji {
+        position: absolute;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        right: 60px;
     }
 
     &Button {
