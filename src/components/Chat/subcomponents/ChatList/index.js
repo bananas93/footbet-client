@@ -46,15 +46,15 @@ export default function ChatList({ toggleShowChat, socket }) {
     }, 100);
   };
 
-  socket.on('message', (msg) => {
-    const oldMsg = [...messages];
-    oldMsg[messages.length - 1].days.push(msg);
-    setMessages(oldMsg);
-    setTimeout(() => {
-      const chat = document.getElementById('chat-list');
-      chat.scrollTo(0, chat.scrollHeight);
-    }, 100);
-  });
+  useEffect(() => {
+    socket.on('message', (msg) => {
+      setMessages((prevState) => {
+        const oldMsg = [...prevState];
+        oldMsg[prevState.length - 1].days.push(msg);
+        return oldMsg;
+      });
+    });
+  }, []);
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
