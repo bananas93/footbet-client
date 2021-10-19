@@ -19,7 +19,7 @@ import { pagination, columns } from '../helpers/tableSettings';
 
 moment.locale('uk');
 
-export default function Matches({ tournament, onlineUsers }) {
+export default function Matches({ socket, tournament, onlineUsers }) {
   const { TabPane } = Tabs;
   const [selectedTour, setSelectedTour] = useState(0);
   const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournament.id}`) ? localStorage.getItem(`tab-${tournament.id}`) : 1);
@@ -104,7 +104,6 @@ export default function Matches({ tournament, onlineUsers }) {
     audio.play();
   };
   useEffect(() => {
-    const socket = io(process.env.REACT_APP_BASE_URL);
     socket.on('matchUpdate', (data) => {
       if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
         loadMatches();
@@ -226,4 +225,5 @@ export default function Matches({ tournament, onlineUsers }) {
 Matches.propTypes = {
   onlineUsers: PropTypes.array,
   tournament: PropTypes.object,
+  socket: PropTypes.object,
 };

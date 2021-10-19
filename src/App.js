@@ -94,7 +94,12 @@ function App() {
                     exact
                     key={tournament.id}
                     render={(props) => (
-                      <Matches {...props} onlineUsers={onlineUsers} tournament={tournament} />
+                      <Matches
+                        {...props}
+                        socket={socket}
+                        onlineUsers={onlineUsers}
+                        tournament={tournament}
+                      />
                     )}
                   />
                 )))}
