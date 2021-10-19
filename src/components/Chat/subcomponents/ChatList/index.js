@@ -53,6 +53,10 @@ export default function ChatList({ toggleShowChat, socket }) {
         oldMsg[prevState.length - 1].days.push(msg);
         return oldMsg;
       });
+      setTimeout(() => {
+        const chat = document.getElementById('chat-list');
+        chat.scrollTo(0, chat.scrollHeight);
+      }, 100);
     });
   }, []);
 
