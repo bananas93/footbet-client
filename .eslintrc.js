@@ -59,7 +59,7 @@ module.exports = {
     'no-unused-expressions': 0,
     'no-param-reassign': 0,
     camelcase: 0,
-    "no-unused-vars": "warn",
+    'no-unused-vars': 'warn',
     'prefer-promise-reject-errors': 0,
   },
 };

@@ -9,6 +9,7 @@ export const columns = (onlineUsers) => [
     title: '#',
     dataIndex: 'rank',
     key: 'rank',
+    width: '5%',
   },
   {
     title: 'Ім\'я',

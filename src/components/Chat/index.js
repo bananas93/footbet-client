@@ -7,6 +7,7 @@ import style from './index.module.scss';
 
 export default function Chat({ socket }) {
   const [showChat, setShowChat] = useState(false);
+  const [unreadedMessages, setUnreadedMessages] = useState(false);
 
   const toggleShowChat = () => {
     setShowChat(!showChat);
@@ -17,13 +18,17 @@ export default function Chat({ socket }) {
       {!showChat ? (
         <div className={style.button}>
           <button onClick={toggleShowChat} type="button">
-            <Badge size="default" dot>
+            <Badge size="default" dot={unreadedMessages}>
               <MessageOutlined style={{ color: '#fff', fontSize: '25px' }} />
             </Badge>
           </button>
         </div>
       ) : (
-        <ChatList socket={socket} toggleShowChat={toggleShowChat} />
+        <ChatList
+          setUnreadedMessages={setUnreadedMessages}
+          socket={socket}
+          toggleShowChat={toggleShowChat}
+        />
       )}
     </>
   );

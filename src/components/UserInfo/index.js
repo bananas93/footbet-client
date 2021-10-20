@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { getInfo } from '../../api/users';
 
 export default function UserInfo({
-  id, tournament, tour, showUserInfo, toggleShowUserInfo, onlineUsers,
+  id, tournament, tour, showUserInfo, toggleShowUserInfo,
 }) {
   const { TabPane } = Tabs;
   const [userInfo, setUserInfo] = useState([]);
@@ -31,12 +31,10 @@ export default function UserInfo({
     getUserInfo();
   }, []);
 
-  const online = onlineUsers.includes(id) ? 'online' : '';
-
   return (
     <Modal
       width={650}
-      title={`Інформація про ${userName} (${online})`}
+      title={`Інформація про ${userName}`}
       visible={showUserInfo}
       onCancel={toggleShowUserInfo}
       footer={null}
@@ -155,5 +153,4 @@ UserInfo.propTypes = {
   tour: PropTypes.number,
   showUserInfo: PropTypes.bool,
   toggleShowUserInfo: PropTypes.func,
-  onlineUsers: PropTypes.array,
 };

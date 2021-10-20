@@ -22,9 +22,6 @@ export default function SiteMenu({ tournaments }) {
       </Menu.Item>
       {authorized ? (
         <>
-          {/* <Menu.Item key="chat">
-            <Link to="/chat">Чат</Link>
-          </Menu.Item> */}
           <Menu.Item key="my-bets">
             <Link to="/my-bets">Мої прогнози</Link>
           </Menu.Item>
@@ -38,6 +35,11 @@ export default function SiteMenu({ tournaments }) {
       ) : (
         <Menu.Item key="sign-in">
           <Link to="/login">Вхід/Реєстрація</Link>
+        </Menu.Item>
+      )}
+      {(authorized && authorized.id === 5) && (
+        <Menu.Item key="admin">
+          <a href="https://footbet.site/admin/" rel="noreferrer" target="_blank">Admin</a>
         </Menu.Item>
       )}
     </Menu>

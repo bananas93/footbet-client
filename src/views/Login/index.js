@@ -1,9 +1,9 @@
 import { Tabs } from 'antd';
 import { Redirect } from 'react-router-dom';
 import { useContext } from 'react';
-import { AuthContext } from '../utils/contexts';
-import SignIn from '../components/SignIn';
-import SignUp from '../components/SignUp';
+import { AuthContext } from '../../utils/contexts';
+import SignIn from '../../components/SignIn';
+import SignUp from '../../components/SignUp';
 
 const { TabPane } = Tabs;
 

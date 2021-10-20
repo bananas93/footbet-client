@@ -52,6 +52,7 @@ export default function ViewPredicts({ showPredictsModal, toggleShowPredictsModa
         pagination={pagination}
         columns={columns}
         dataSource={match.bets}
+        rowKey="id"
       />
     </Modal>
   );

@@ -4,24 +4,32 @@ import {
 import { Layout } from 'antd';
 import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
-import { AuthContext } from './utils/contexts';
-import ProtectedRoute from './helpers/ProtectedRoute';
-import { checkAuthorization, getCookie } from './helpers/authHelper';
-import SiteMenu from './components/SiteMenu';
 import { getTournaments } from './api/tournaments';
 import { getMyInfo } from './api/users';
+import Chat from './components/Chat';
+import SiteMenu from './components/SiteMenu';
+import { AuthContext } from './utils/contexts';
+import ProtectedRoute from './helpers/ProtectedRoute';
+import { getCookie } from './helpers/authHelper';
+
 import Home from './views/Home';
 import Rules from './views/Rules';
 import Matches from './views/Matches';
 import UserBets from './views/UserBets';
 import Profile from './views/Profile';
 import Login from './views/Login';
-import Chat from './components/Chat';
+import Error from './views/Error';
+
+const { Header, Footer, Content } = Layout;
 
 function App() {
-  const { Header, Footer, Content } = Layout;
   const [authorized, setAuthorized] = useState(false);
-  const [tournaments, setTournaments] = useState([]);
+  const [tournaments, setTournaments] = useState(() => {
+    // getting stored value
+    const saved = localStorage.getItem('tournaments');
+    const initialValue = JSON.parse(saved);
+    return initialValue || [];
+  });
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socket, setSocket] = useState(null);
 
@@ -48,7 +56,10 @@ function App() {
       online = JSON.parse(online);
       setOnlineUsers(online);
     });
-    return () => newSocket.close();
+    return () => {
+      newSocket.off('online');
+      newSocket.close();
+    };
   }, []);
 
   const loadTournaments = async () => {
@@ -56,6 +67,7 @@ function App() {
       .then((res) => {
         if (res.status === 200) {
           setTournaments(res.data);
+          window.localStorage.setItem('tournaments', JSON.stringify(res.data));
         }
       })
       .catch((e) => {
@@ -113,12 +125,14 @@ function App() {
               <ProtectedRoute exact path="/profile" component={Profile} />
               <Route exact path="/login" component={Login} />
               <Route path="*">
-                <div>Error 404</div>
+                <Error />
               </Route>
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
-          <Chat socket={socket} />
+          {authorized && (
+            <Chat socket={socket} />
+          )}
         </Layout>
       </BrowserRouter>
     </AuthContext.Provider>

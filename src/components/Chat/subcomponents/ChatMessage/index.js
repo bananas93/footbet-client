@@ -1,21 +1,50 @@
 import PropTypes from 'prop-types';
 import { SendOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import InputEmoji from 'react-input-emoji';
 import style from './index.module.scss';
+import { AuthContext } from '../../../../utils/contexts';
 
-export default function ChatMessage({ handleSendMessage }) {
+export default function ChatMessage({ socket, handleSendMessage }) {
   const [message, setMessage] = useState('');
+  const { authorized } = useContext(AuthContext);
+  const [typingUsers, setTypingUsers] = useState([]);
   const handleMessageInput = (e) => {
     setMessage(e);
+    const { name } = authorized;
+    if (e) {
+      socket.emit('messageTyping', { name, typing: true });
+    } else {
+      socket.emit('messageTyping', { name, typing: false });
+    }
   };
   const sendMessage = () => {
     setMessage('');
     handleSendMessage(message);
   };
 
+  useEffect(() => {
+    const cleanup = () => {
+      const { name } = authorized;
+      socket.emit('messageTyping', { name, typing: false });
+    };
+    window.addEventListener('beforeunload', cleanup);
+
+    socket.on('typingUsers', (data) => {
+      setTypingUsers(data);
+    });
+    return () => {
+      window.removeEventListener('beforeunload', cleanup);
+    };
+  }, []);
+
   return (
     <div className={style.chatMessage}>
+      <span className={style.chatMessageTyping}>
+        {typingUsers.map((user, index) => `${index ? ', ' : ''} ${user}`)}
+        {' '}
+        {typingUsers.length ? ' набирає повідомлення...' : ''}
+      </span>
       <div className={style.chatMessageRow} id="message">
         <InputEmoji
           onEnter={sendMessage}
@@ -35,4 +64,5 @@ export default function ChatMessage({ handleSendMessage }) {
 
 ChatMessage.propTypes = {
   handleSendMessage: PropTypes.func,
+  socket: PropTypes.object,
 };

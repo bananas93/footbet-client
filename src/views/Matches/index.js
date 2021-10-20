@@ -7,15 +7,14 @@ import {
 } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { io } from 'socket.io-client';
-import FullTable from '../components/FullTable';
-import UserInfo from '../components/UserInfo';
-import { getMatches } from '../api/matches';
-import { getResults, getResultsByTour } from '../api/results';
-import Match from '../components/Match';
+import FullTable from '../../components/FullTable';
+import UserInfo from '../../components/UserInfo';
+import { getMatches } from '../../api/matches';
+import { getResults, getResultsByTour } from '../../api/results';
+import Match from '../../components/Match';
 import 'moment/locale/uk';
-import { normalizeTabName } from '../helpers/normalizeTabName';
-import { pagination, columns } from '../helpers/tableSettings';
+import { normalizeTabName } from '../../helpers/normalizeTabName';
+import { pagination, columns } from '../../helpers/tableSettings';
 
 moment.locale('uk');
 
@@ -23,10 +22,16 @@ export default function Matches({ socket, tournament, onlineUsers }) {
   const { TabPane } = Tabs;
   const [selectedTour, setSelectedTour] = useState(0);
   const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournament.id}`) ? localStorage.getItem(`tab-${tournament.id}`) : 1);
-  const [loadingMatches, setLoadingMatches] = useState(false);
-  const [loadingResults, setLoadingResults] = useState(false);
-  const [matches, setMatches] = useState([]);
-  const [results, setResults] = useState([]);
+  const [matches, setMatches] = useState(() => {
+    const saved = localStorage.getItem('matches');
+    const initialValue = JSON.parse(saved);
+    return initialValue || [];
+  });
+  const [results, setResults] = useState(() => {
+    const saved = localStorage.getItem('results');
+    const initialValue = JSON.parse(saved);
+    return initialValue || [];
+  });
   const [showFullTableModal, setShowFullTableModal] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [userId, setUserId] = useState();
@@ -41,7 +46,6 @@ export default function Matches({ socket, tournament, onlineUsers }) {
   };
 
   const handleMenuClick = async (event) => {
-    setLoadingResults(true);
     const { key } = event;
     setSelectedTour(key);
     await getResultsByTour(tournament.id, key)
@@ -53,7 +57,6 @@ export default function Matches({ socket, tournament, onlineUsers }) {
       .catch((e) => {
         console.error(e.message);
       });
-    setLoadingResults(false);
   };
   const menu = (
     <Menu onClick={handleMenuClick}>
@@ -73,52 +76,50 @@ export default function Matches({ socket, tournament, onlineUsers }) {
     </Menu>
   );
   const loadMatches = async () => {
-    setLoadingMatches(true);
     await getMatches(tournament.id)
       .then((res) => {
         if (res.status === 200) {
           setMatches(res.data);
+          window.localStorage.setItem('matches', JSON.stringify(res.data));
         }
       })
       .catch((e) => {
         console.error(e.message);
       });
-    setLoadingMatches(false);
   };
 
   const loadResults = async () => {
-    setLoadingResults(true);
     await getResults(tournament.id)
       .then((res) => {
         if (res.status === 200) {
           setResults(res.data);
+          window.localStorage.setItem('results', JSON.stringify(res.data));
         }
       })
       .catch((e) => {
         console.error(e.message);
       });
-    setLoadingResults(false);
   };
   const playNotification = () => {
     const audio = new Audio('notification.mp3');
     audio.play();
   };
-  useEffect(() => {
-    socket.on('matchUpdate', (data) => {
-      if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
-        loadMatches();
-        loadResults();
-        playNotification();
-      }
-    });
-    return () => socket.close();
+  useEffect(async () => {
+    if (socket) {
+      socket.on('matchUpdate', (data) => {
+        if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
+          loadMatches();
+          loadResults();
+          playNotification();
+        }
+      });
+      return () => socket.off('matchUpdate');
+    }
+    return false;
   }, []);
 
   useEffect(() => {
     loadMatches();
-  }, [tournament]);
-
-  useEffect(() => {
     loadResults();
   }, [tournament]);
 
@@ -132,7 +133,7 @@ export default function Matches({ socket, tournament, onlineUsers }) {
       <h1 className="site-title">{tournament.name}</h1>
       <Row gutter={16}>
         <Col className="gutter-row" sm={{ span: 24 }} lg={{ span: 12 }} style={{ marginBottom: '30px' }}>
-          <Card title="Матчі" loading={loadingMatches}>
+          <Card title="Матчі">
             <Tabs defaultActiveKey={activeTab} onChange={changeTabs}>
               {Array.from(Array(tournament.groupTours).keys()).map((key) => (
                 <TabPane tab={`${key + 1} тур`} key={key}>
@@ -172,7 +173,6 @@ export default function Matches({ socket, tournament, onlineUsers }) {
         <Col className="gutter-row" sm={{ span: 24 }} lg={{ span: 12 }}>
           <Card
             title="Таблиця"
-            loading={loadingResults}
             extra={(
               <Space>
                 <Dropdown overlay={menu} trigger={['click']}>
@@ -215,7 +215,6 @@ export default function Matches({ socket, tournament, onlineUsers }) {
           tournament={tournament.id}
           tour={selectedTour}
           id={userId}
-          onlineUsers={onlineUsers}
         />
       )}
     </>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Divider, Tabs } from 'antd';
-import { getJWToken } from '../helpers/authHelper';
+import { getJWToken } from '../../helpers/authHelper';
 
 export default function UserBets({ tournaments }) {
   const { TabPane } = Tabs;

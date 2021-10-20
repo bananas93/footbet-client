@@ -2,7 +2,7 @@ import {
   Input, Form, Button, Card, Divider, notification,
 } from 'antd';
 import { useEffect } from 'react';
-import { getUserDetails, updateUserDetails } from '../api/auth';
+import { getUserDetails, updateUserDetails } from '../../api/auth';
 
 export default function Profile() {
   const notificationError = (error) => {
