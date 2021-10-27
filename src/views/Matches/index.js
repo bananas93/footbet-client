@@ -108,8 +108,8 @@ export default function Matches({ socket, tournament, onlineUsers }) {
     // eslint-disable-next-line max-len
     const matchIndex = newMatches[matchesTour].games.findIndex((item) => Number(item.id) === Number(match.id));
     const updatedMatch = newMatches[matchesTour].games[matchIndex];
-    updatedMatch.homeGoals = match.homeGoals + 1;
-    updatedMatch.awayGoals = match.awayGoals + 2;
+    updatedMatch.homeGoals = match.homeGoals;
+    updatedMatch.awayGoals = match.awayGoals;
     updatedMatch.status = match.status;
     setMatches(newMatches);
     document.getElementById(`match-${match.id}`).classList.add('updated');
