@@ -88,7 +88,7 @@ export default function Match({ match, loadMatches }) {
 
   return (
     <>
-      <div className="single-match">
+      <div className="single-match" id={`match-${match.id}`}>
         <span className="single-match__time">
           {match.group ? `Група ${match.group}` : match.tour}
           <br />

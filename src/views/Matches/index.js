@@ -100,15 +100,34 @@ export default function Matches({ socket, tournament, onlineUsers }) {
         console.error(e.message);
       });
   };
+
+  const updateMatch = (match) => {
+    const date = match.datetime.split('T')[0];
+    const newMatches = [...matches];
+    const matchesTour = newMatches.findIndex((item) => item.date === date);
+    // eslint-disable-next-line max-len
+    const matchIndex = newMatches[matchesTour].games.findIndex((item) => Number(item.id) === Number(match.id));
+    const updatedMatch = newMatches[matchesTour].games[matchIndex];
+    updatedMatch.homeGoals = match.homeGoals + 1;
+    updatedMatch.awayGoals = match.awayGoals + 2;
+    updatedMatch.status = match.status;
+    setMatches(newMatches);
+    document.getElementById(`match-${match.id}`).classList.add('updated');
+    setTimeout(() => {
+      document.getElementById(`match-${match.id}`).classList.remove('updated');
+    }, 5000);
+  };
+
   const playNotification = () => {
     const audio = new Audio('notification.mp3');
     audio.play();
   };
+
   useEffect(async () => {
     if (socket) {
       socket.on('matchUpdate', (data) => {
         if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
-          loadMatches();
+          updateMatch(data);
           loadResults();
           playNotification();
         }
@@ -121,13 +140,16 @@ export default function Matches({ socket, tournament, onlineUsers }) {
   useEffect(() => {
     loadMatches();
     loadResults();
+    return () => {
+      window.localStorage.setItem('matches', JSON.stringify(matches));
+      window.localStorage.setItem('results', JSON.stringify(results));
+    };
   }, [tournament]);
 
   const changeTabs = (key) => {
     localStorage.setItem(`tab-${tournament.id}`, key);
     setActiveTab(key);
   };
-
   return (
     <>
       <h1 className="site-title">{tournament.name}</h1>
