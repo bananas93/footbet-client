@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Badge } from 'antd';
 import { MessageOutlined } from '@ant-design/icons';
 import ChatList from './subcomponents/ChatList';
 import style from './index.module.scss';
 
-export default function Chat({ socket }) {
+export default function Chat() {
   const [showChat, setShowChat] = useState(false);
   const [unreadedMessages, setUnreadedMessages] = useState(false);
 
@@ -26,13 +25,9 @@ export default function Chat({ socket }) {
       ) : (
         <ChatList
           setUnreadedMessages={setUnreadedMessages}
-          socket={socket}
           toggleShowChat={toggleShowChat}
         />
       )}
     </>
   );
 }
-Chat.propTypes = {
-  socket: PropTypes.object,
-};

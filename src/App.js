@@ -8,7 +8,7 @@ import { getTournaments } from './api/tournaments';
 import { getMyInfo } from './api/users';
 import Chat from './components/Chat';
 import SiteMenu from './components/SiteMenu';
-import { AuthContext } from './utils/contexts';
+import { AuthContext, SocketContext } from './utils/contexts';
 import ProtectedRoute from './helpers/ProtectedRoute';
 import { getCookie } from './helpers/authHelper';
 
@@ -25,7 +25,7 @@ const { Header, Footer, Content } = Layout;
 function App() {
   const [authorized, setAuthorized] = useState(false);
   const [tournaments, setTournaments] = useState(() => {
-    // getting stored value
+    if (!authorized) return [];
     const saved = localStorage.getItem('tournaments');
     const initialValue = JSON.parse(saved);
     return initialValue || [];
@@ -81,60 +81,61 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ authorized, setAuthorized }}>
-      <BrowserRouter>
-        <Layout>
-          <Header style={{
-            background: '#fff', position: 'fixed', zIndex: 1, width: '100%',
-          }}
-          >
-            <SiteMenu tournaments={tournaments} />
-          </Header>
-          <Content className="site-layout">
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={(props) => (
-                  <Home {...props} tournaments={tournaments} />
-                )}
-              />
-              <Route exact path="/rules" component={Rules} />
-              {tournaments.length && (
-                tournaments.map((tournament) => (
-                  <Route
-                    path={`/${tournament.slug}`}
-                    exact
-                    key={tournament.id}
-                    render={(props) => (
-                      <Matches
-                        {...props}
-                        socket={socket}
-                        onlineUsers={onlineUsers}
-                        tournament={tournament}
-                      />
-                    )}
-                  />
-                )))}
-              <Route
-                exact
-                path="/my-bets"
-                render={(props) => (
-                  <UserBets {...props} tournaments={tournaments} />
-                )}
-              />
-              <ProtectedRoute exact path="/profile" component={Profile} />
-              <Route exact path="/login" component={Login} />
-              <Route path="*">
-                <Error />
-              </Route>
-            </Switch>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
-          {authorized && (
-            <Chat socket={socket} />
-          )}
-        </Layout>
-      </BrowserRouter>
+      <SocketContext.Provider value={socket}>
+        <BrowserRouter>
+          <Layout>
+            <Header style={{
+              background: '#fff', position: 'fixed', zIndex: 1, width: '100%',
+            }}
+            >
+              <SiteMenu tournaments={tournaments} />
+            </Header>
+            <Content className="site-layout">
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={(props) => (
+                    <Home {...props} tournaments={tournaments} />
+                  )}
+                />
+                <Route exact path="/rules" component={Rules} />
+                {tournaments.length && (
+                  tournaments.map((tournament) => (
+                    <Route
+                      path={`/${tournament.slug}`}
+                      exact
+                      key={tournament.id}
+                      render={(props) => (
+                        <Matches
+                          {...props}
+                          onlineUsers={onlineUsers}
+                          tournament={tournament}
+                        />
+                      )}
+                    />
+                  )))}
+                <Route
+                  exact
+                  path="/my-bets"
+                  render={(props) => (
+                    <UserBets {...props} tournaments={tournaments} />
+                  )}
+                />
+                <ProtectedRoute exact path="/profile" component={Profile} />
+                <Route exact path="/login" component={Login} />
+                <Route path="*">
+                  <Error />
+                </Route>
+              </Switch>
+            </Content>
+            <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
+            {authorized && (
+              <Chat />
+            )}
+          </Layout>
+        </BrowserRouter>
+      </SocketContext.Provider>
     </AuthContext.Provider>
   );
 }

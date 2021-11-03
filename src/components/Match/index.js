@@ -1,8 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import PropTypes from 'prop-types';
-import { Button, notification } from 'antd';
-import { PlusOutlined, EditOutlined } from '@ant-design/icons';
-import moment from 'moment';
+import { notification } from 'antd';
 import { useState } from 'react';
 import { useInterval } from '../../utils/useInterval';
 import { matchMinute } from '../../helpers/matchMinute';
@@ -10,11 +8,15 @@ import PredictModal from '../PredictModal';
 import ViewPredicts from '../ViewPredicts';
 import { addBet } from '../../api/bets';
 import { logout } from '../../helpers/authHelper';
+import useMobile from '../../helpers/useMobile';
+import MatchMobile from './subcomponents/MatchMobile/MatchMobile';
+import MatchDesktop from './subcomponents/MatchDesktop';
 
 export default function Match({ match, loadMatches }) {
   const [showAddPredictModal, setShowAddPredictModal] = useState(false);
   const [showPredictsModal, setShowPredictsModal] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const isMobile = useMobile();
 
   const toggleShowAddPredictModal = () => {
     setShowAddPredictModal(!showAddPredictModal);
@@ -89,61 +91,22 @@ export default function Match({ match, loadMatches }) {
   return (
     <>
       <div className="single-match" id={`match-${match.id}`}>
-        <span className="single-match__time">
-          {match.group ? `Група ${match.group}` : match.tour}
-          <br />
-          {match.status !== 'Live' ? (
-            <span>
-              { match.status === 'Заплановано' ? (
-                moment(match.datetime).format('HH:mm')
-              ) : (
-                'FT'
-              )}
-            </span>
-          ) : (
-            <span className="match-minute">{checkMinute()}</span>
-          )}
-        </span>
-        <span className="single-match__team single-match__team--left">{match.homeTeam.name}</span>
-        <span className="single-match__score">
-          <span className={`single-match__score--data ${match.status === 'Live' ? 'single-match__score--live' : ''} ${match.status === 'Заплановано' ? 'single-match__score--scheduled' : ''}`}>
-            {match.status === 'Заплановано' ? (
-              '-:-'
-            ) : (
-              `${match.homeGoals} - ${match.awayGoals}`
-            )}
-          </span>
-        </span>
-        <span className="single-match__team single-match__right">{match.awayTeam.name}</span>
-        {myBet ? (
-          <span className="single-match__mypredict">
-            {myBet.homeBet}
-            {' '}
-            -
-            {' '}
-            {myBet.awayBet}
-            {' '}
-            (
-            {myBet.points}
-            )
-          </span>
+        {!isMobile ? (
+          <MatchDesktop
+            match={match}
+            checkMinute={checkMinute}
+            myBet={myBet}
+            toggleShowAddPredictModal={toggleShowAddPredictModal}
+            toggleShowPredictsModal={toggleShowPredictsModal}
+          />
         ) : (
-          <span className="single-match__mypredict">
-            -:-
-          </span>
-        )}
-        { match.status === 'Заплановано' ? (
-          <span className="single-match__predict">
-            {myBet ? (
-              <Button type="text" title="Змінити прогноз" onClick={toggleShowAddPredictModal}><EditOutlined /></Button>
-            ) : (
-              <Button type="text" title="Додати прогноз" onClick={toggleShowAddPredictModal}><PlusOutlined /></Button>
-            )}
-          </span>
-        ) : (
-          <span className="single-match__predict">
-            <Button type="text" title="Подивитися прогнози" onClick={toggleShowPredictsModal}><PlusOutlined /></Button>
-          </span>
+          <MatchMobile
+            match={match}
+            checkMinute={checkMinute}
+            myBet={myBet}
+            toggleShowAddPredictModal={toggleShowAddPredictModal}
+            toggleShowPredictsModal={toggleShowPredictsModal}
+          />
         )}
       </div>
       {showAddPredictModal && (

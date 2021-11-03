@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
   Row, Col, Divider, Table, Button, Tabs, Card, Space, Menu, Dropdown,
 } from 'antd';
@@ -15,11 +15,13 @@ import Match from '../../components/Match';
 import 'moment/locale/uk';
 import { normalizeTabName } from '../../helpers/normalizeTabName';
 import { pagination, columns } from '../../helpers/tableSettings';
+import { SocketContext } from '../../utils/contexts';
 
 moment.locale('uk');
 
-export default function Matches({ socket, tournament, onlineUsers }) {
+export default function Matches({ tournament, onlineUsers }) {
   const { TabPane } = Tabs;
+  const socket = useContext(SocketContext);
   const [selectedTour, setSelectedTour] = useState(0);
   const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournament.id}`) ? localStorage.getItem(`tab-${tournament.id}`) : 1);
   const [matches, setMatches] = useState(() => {
@@ -123,19 +125,16 @@ export default function Matches({ socket, tournament, onlineUsers }) {
     audio.play();
   };
 
-  useEffect(async () => {
-    if (socket) {
-      socket.on('matchUpdate', (data) => {
-        if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
-          updateMatch(data);
-          loadResults();
-          playNotification();
-        }
-      });
-      return () => socket.off('matchUpdate');
-    }
-    return false;
-  }, []);
+  useEffect(() => {
+    if (!socket) return;
+    socket.on('matchUpdate', (data) => {
+      if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
+        updateMatch(data);
+        loadResults();
+        playNotification();
+      }
+    });
+  }, [socket]);
 
   useEffect(() => {
     loadMatches();
@@ -165,8 +164,8 @@ export default function Matches({ socket, tournament, onlineUsers }) {
                         <div key={group.id}>
                           <Divider style={{ fontWeight: 'bold' }}>{moment(group.date).format('LL')}</Divider>
                           {
-                          group.games.map((match) => (
-                            <Match loadMatches={loadMatches} key={match.id} match={match} />))
+                            group.games.map((match) => (
+                              <Match loadMatches={loadMatches} key={match.id} match={match} />))
                           }
                         </div>
                       ))
@@ -181,8 +180,8 @@ export default function Matches({ socket, tournament, onlineUsers }) {
                         <div key={group.id}>
                           <Divider style={{ fontWeight: 'bold' }}>{moment(group.date).format('LL')}</Divider>
                           {
-                          group.games.map((match) => (
-                            <Match loadMatches={loadMatches} key={match.id} match={match} />))
+                            group.games.map((match) => (
+                              <Match loadMatches={loadMatches} key={match.id} match={match} />))
                           }
                         </div>
                       ))
@@ -206,7 +205,7 @@ export default function Matches({ socket, tournament, onlineUsers }) {
                 </Dropdown>
                 <Button type="link" onClick={toggleFullTableModal}>Повна таблиця</Button>
               </Space>
-              )}
+            )}
           >
             <Table
               size="small"
@@ -246,5 +245,4 @@ export default function Matches({ socket, tournament, onlineUsers }) {
 Matches.propTypes = {
   onlineUsers: PropTypes.array,
   tournament: PropTypes.object,
-  socket: PropTypes.object,
 };

@@ -4,16 +4,13 @@ import moment from 'moment';
 import { Divider } from 'antd';
 import ChatHeader from '../ChatHeader';
 import ChatMessage from '../ChatMessage';
-import { AuthContext } from '../../../../utils/contexts';
+import { AuthContext, SocketContext } from '../../../../utils/contexts';
 import { getMessages } from '../../../../api/chat';
 import style from './index.module.scss';
 
-export default function ChatList({ setUnreadedMessages, toggleShowChat, socket }) {
-  const [messages, setMessages] = useState(() => {
-    const saved = localStorage.getItem('messages');
-    const initialValue = JSON.parse(saved);
-    return initialValue || [];
-  });
+export default function ChatList({ setUnreadedMessages, toggleShowChat }) {
+  const socket = useContext(SocketContext);
+  const [messages, setMessages] = useState([]);
   const { authorized } = useContext(AuthContext);
   useEffect(async () => {
     await getMessages()
@@ -50,6 +47,7 @@ export default function ChatList({ setUnreadedMessages, toggleShowChat, socket }
   };
 
   useEffect(() => {
+    if (!socket) return;
     socket.on('message', (msg) => {
       setUnreadedMessages(true);
       setMessages((prevState) => {
@@ -62,7 +60,6 @@ export default function ChatList({ setUnreadedMessages, toggleShowChat, socket }
         chat.scrollTo(0, chat.scrollHeight);
       }, 100);
     });
-    return () => socket.off('message');
   }, []);
 
   useEffect(() => {
@@ -86,7 +83,7 @@ export default function ChatList({ setUnreadedMessages, toggleShowChat, socket }
                   <div className={style.chatListWrapper}>
                     <div className={style.chatListWrap}>
                       {item.user.id !== authorized.id && (
-                      <div className={style.chatListName}>{item.user.name}</div>
+                        <div className={style.chatListName}>{item.user.name}</div>
                       )}
                       <div className={style.chatListText}>
                         {item.message}
@@ -100,12 +97,11 @@ export default function ChatList({ setUnreadedMessages, toggleShowChat, socket }
           </div>
         ))}
       </ul>
-      <ChatMessage socket={socket} handleSendMessage={handleSendMessage} />
+      <ChatMessage handleSendMessage={handleSendMessage} />
     </div>
   );
 }
 ChatList.propTypes = {
   toggleShowChat: PropTypes.func,
-  socket: PropTypes.object,
   setUnreadedMessages: PropTypes.func,
 };

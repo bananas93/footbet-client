@@ -3,12 +3,13 @@ import { SendOutlined } from '@ant-design/icons';
 import { useContext, useEffect, useState } from 'react';
 import InputEmoji from 'react-input-emoji';
 import style from './index.module.scss';
-import { AuthContext } from '../../../../utils/contexts';
+import { AuthContext, SocketContext } from '../../../../utils/contexts';
 
-export default function ChatMessage({ socket, handleSendMessage }) {
+export default function ChatMessage({ handleSendMessage }) {
   const [message, setMessage] = useState('');
   const { authorized } = useContext(AuthContext);
   const [typingUsers, setTypingUsers] = useState([]);
+  const socket = useContext(SocketContext);
   const handleMessageInput = (e) => {
     setMessage(e);
     const { name } = authorized;
@@ -64,5 +65,4 @@ export default function ChatMessage({ socket, handleSendMessage }) {
 
 ChatMessage.propTypes = {
   handleSendMessage: PropTypes.func,
-  socket: PropTypes.object,
 };
