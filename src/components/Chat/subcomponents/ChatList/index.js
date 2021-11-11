@@ -8,7 +8,7 @@ import { AuthContext, SocketContext } from '../../../../utils/contexts';
 import { getMessages } from '../../../../api/chat';
 import style from './index.module.scss';
 
-export default function ChatList({ setUnreadedMessages, toggleShowChat }) {
+export default function ChatList({ isPage, setUnreadedMessages, toggleShowChat }) {
   const socket = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
   const { authorized } = useContext(AuthContext);
@@ -72,8 +72,10 @@ export default function ChatList({ setUnreadedMessages, toggleShowChat }) {
 
   return (
     <div className={style.chat}>
-      <ChatHeader name={authorized.name} toggleShowChat={toggleShowChat} />
-      <ul id="chat-list" className={style.chatList}>
+      {!isPage && (
+        <ChatHeader name={authorized.name} toggleShowChat={toggleShowChat} />
+      )}
+      <ul id="chat-list" className={`${style.chatList} ${isPage ? style.chatListPage : ''}`}>
         {messages.map((day) => (
           <div key={day.id}>
             <Divider style={{ fontWeight: 'bold' }}>{moment(day.date).format('LL')}</Divider>
@@ -97,11 +99,12 @@ export default function ChatList({ setUnreadedMessages, toggleShowChat }) {
           </div>
         ))}
       </ul>
-      <ChatMessage handleSendMessage={handleSendMessage} />
+      <ChatMessage isPage handleSendMessage={handleSendMessage} />
     </div>
   );
 }
 ChatList.propTypes = {
   toggleShowChat: PropTypes.func,
   setUnreadedMessages: PropTypes.func,
+  isPage: PropTypes.bool,
 };

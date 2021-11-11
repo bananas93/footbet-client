@@ -5,7 +5,7 @@ import InputEmoji from 'react-input-emoji';
 import style from './index.module.scss';
 import { AuthContext, SocketContext } from '../../../../utils/contexts';
 
-export default function ChatMessage({ handleSendMessage }) {
+export default function ChatMessage({ isPage, handleSendMessage }) {
   const [message, setMessage] = useState('');
   const { authorized } = useContext(AuthContext);
   const [typingUsers, setTypingUsers] = useState([]);
@@ -40,7 +40,7 @@ export default function ChatMessage({ handleSendMessage }) {
   }, []);
 
   return (
-    <div className={style.chatMessage}>
+    <div className={`${style.chatMessage} ${isPage ? style.chatMessagePage : ''}`}>
       <span className={style.chatMessageTyping}>
         {typingUsers.map((user, index) => `${index ? ', ' : ''} ${user}`)}
         {' '}
@@ -65,4 +65,5 @@ export default function ChatMessage({ handleSendMessage }) {
 
 ChatMessage.propTypes = {
   handleSendMessage: PropTypes.func,
+  isPage: PropTypes.bool,
 };

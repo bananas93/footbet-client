@@ -1,0 +1,18 @@
+.drawerList {
+    &Item {
+    }
+    &Link {
+        display: block;
+        color: #000;
+        padding: 10px 0;
+        height: auto;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    &Button {
+        width: 100%;
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 'Nunito', sans-serif;
+    }
+}

@@ -14,3 +14,12 @@ export const addBet = (data) => {
     }))
     .catch((err) => err.response);
 };
+
+export const getMyBets = (tournament) => {
+  const token = getJWToken();
+  return axios.get(`${process.env.REACT_APP_LOCAL_API}/bets/${tournament}`, {
+    headers: {
+      Authorization: token,
+    },
+  }).then((res) => res).catch((e) => e.response);
+};

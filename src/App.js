@@ -1,12 +1,9 @@
-import {
-  BrowserRouter, Switch, Route,
-} from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { getTournaments } from './api/tournaments';
 import { getMyInfo } from './api/users';
-import Chat from './components/Chat';
 import SiteMenu from './components/SiteMenu';
 import { AuthContext, SocketContext } from './utils/contexts';
 import ProtectedRoute from './helpers/ProtectedRoute';
@@ -18,7 +15,13 @@ import Matches from './views/Matches';
 import UserBets from './views/UserBets';
 import Profile from './views/Profile';
 import Login from './views/Login';
+import Chat from './components/Chat';
 import Error from './views/Error';
+import BottomTabs from './components/BottomTabs/Index';
+import Tournaments from './views/Tournaments';
+import useMobile from './helpers/useMobile';
+import MobileHeader from './components/MobileHeader';
+import ChatPage from './views/ChatPage';
 
 const { Header, Footer, Content } = Layout;
 
@@ -33,17 +36,21 @@ function App() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socket, setSocket] = useState(null);
 
+  const isMobile = useMobile();
   useEffect(async () => {
-    await getMyInfo()
-      .then((res) => {
-        if (res.status === 200) {
-          setAuthorized(res.data);
-        }
-        return false;
-      })
-      .catch((e) => {
-        console.error(e.message);
-      });
+    const getUserInfo = async () => {
+      await getMyInfo()
+        .then((res) => {
+          if (res.status === 200) {
+            setAuthorized(res.data);
+          }
+          return false;
+        })
+        .catch((e) => {
+          console.error(e.message);
+        });
+    };
+    getUserInfo();
   }, []);
 
   useEffect(() => {
@@ -57,25 +64,23 @@ function App() {
       setOnlineUsers(online);
     });
     return () => {
-      newSocket.off('online');
       newSocket.close();
     };
   }, []);
 
-  const loadTournaments = async () => {
-    await getTournaments()
-      .then((res) => {
-        if (res.status === 200) {
-          setTournaments(res.data);
-          window.localStorage.setItem('tournaments', JSON.stringify(res.data));
-        }
-      })
-      .catch((e) => {
-        console.error(e.message);
-      });
-  };
-
   useEffect(() => {
+    const loadTournaments = async () => {
+      await getTournaments()
+        .then((res) => {
+          if (res.status === 200) {
+            setTournaments(res.data);
+            window.localStorage.setItem('tournaments', JSON.stringify(res.data));
+          }
+        })
+        .catch((e) => {
+          console.error(e.message);
+        });
+    };
     loadTournaments();
   }, []);
 
@@ -84,12 +89,17 @@ function App() {
       <SocketContext.Provider value={socket}>
         <BrowserRouter>
           <Layout>
-            <Header style={{
-              background: '#fff', position: 'fixed', zIndex: 1, width: '100%',
-            }}
-            >
-              <SiteMenu tournaments={tournaments} />
-            </Header>
+            {isMobile ? (
+              <MobileHeader />
+            ) : (
+              <Header
+                style={{
+                  background: '#fff', position: 'fixed', zIndex: 1, width: '100%',
+                }}
+              >
+                <SiteMenu tournaments={tournaments} />
+              </Header>
+            )}
             <Content className="site-layout">
               <Switch>
                 <Route
@@ -97,6 +107,13 @@ function App() {
                   path="/"
                   render={(props) => (
                     <Home {...props} tournaments={tournaments} />
+                  )}
+                />
+                <Route
+                  exact
+                  path="/tournaments"
+                  render={(props) => (
+                    <Tournaments {...props} tournaments={tournaments} />
                   )}
                 />
                 <Route exact path="/rules" component={Rules} />
@@ -123,14 +140,20 @@ function App() {
                   )}
                 />
                 <ProtectedRoute exact path="/profile" component={Profile} />
+                <ProtectedRoute exact path="/chat" component={ChatPage} />
                 <Route exact path="/login" component={Login} />
                 <Route path="*">
                   <Error />
                 </Route>
               </Switch>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
-            {authorized && (
+            {!isMobile && (
+              <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
+            )}
+            {(authorized && isMobile) && (
+              <BottomTabs />
+            )}
+            {(authorized && !isMobile) && (
               <Chat />
             )}
           </Layout>

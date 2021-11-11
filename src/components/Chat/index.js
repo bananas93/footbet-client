@@ -1,17 +1,17 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Badge } from 'antd';
 import { MessageOutlined } from '@ant-design/icons';
 import ChatList from './subcomponents/ChatList';
 import style from './index.module.scss';
 
-export default function Chat() {
-  const [showChat, setShowChat] = useState(false);
+export default function Chat({ isPage }) {
+  const [showChat, setShowChat] = useState(!!isPage);
   const [unreadedMessages, setUnreadedMessages] = useState(false);
 
   const toggleShowChat = () => {
     setShowChat(!showChat);
   };
-
   return (
     <>
       {!showChat ? (
@@ -24,6 +24,7 @@ export default function Chat() {
         </div>
       ) : (
         <ChatList
+          isPage={isPage}
           setUnreadedMessages={setUnreadedMessages}
           toggleShowChat={toggleShowChat}
         />
@@ -31,3 +32,7 @@ export default function Chat() {
     </>
   );
 }
+
+Chat.propTypes = {
+  isPage: PropTypes.bool,
+};

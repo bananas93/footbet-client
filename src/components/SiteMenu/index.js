@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { logout } from '../../helpers/authHelper';
 import { AuthContext } from '../../utils/contexts';
 
+const { SubMenu } = Menu;
+
 export default function SiteMenu({ tournaments }) {
   const { authorized } = useContext(AuthContext);
   return (
@@ -12,11 +14,13 @@ export default function SiteMenu({ tournaments }) {
       <Menu.Item key="home">
         <Link to="/">Головна</Link>
       </Menu.Item>
-      {tournaments.length > 0 && tournaments.map((tournament) => (
-        <Menu.Item key={tournament.slug}>
-          <Link to={`/${tournament.slug}`}>{tournament.name}</Link>
-        </Menu.Item>
-      ))}
+      <SubMenu key="tournaments" title="Турніри">
+        {tournaments.length > 0 && tournaments.map((tournament) => (
+          <Menu.Item key={tournament.slug}>
+            <Link to={`/${tournament.slug}`}>{tournament.name}</Link>
+          </Menu.Item>
+        ))}
+      </SubMenu>
       <Menu.Item key="rules">
         <Link to="/rules/">Правила</Link>
       </Menu.Item>

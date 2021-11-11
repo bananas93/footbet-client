@@ -1,10 +1,14 @@
 import { Card } from 'antd';
+import useMobile from '../../helpers/useMobile';
 
 export default function Rules() {
+  const isMobile = useMobile();
   return (
     <>
-      <h1 className="site-title">Правила</h1>
-      <Card>
+      {!isMobile && (
+        <h1 className="site-title">Правила</h1>
+      )}
+      <Card style={{ marginBottom: '30px' }}>
         <ul>
           <li>
             Вгаданий переможець матчу –

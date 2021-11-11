@@ -2,35 +2,34 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from 'react';
-import {
-  Row, Col, Divider, Table, Button, Tabs, Card, Space, Menu, Dropdown,
-} from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Row, Col, Tabs } from 'antd';
 import moment from 'moment';
 import FullTable from '../../components/FullTable';
 import UserInfo from '../../components/UserInfo';
 import { getMatches } from '../../api/matches';
 import { getResults, getResultsByTour } from '../../api/results';
-import Match from '../../components/Match';
 import 'moment/locale/uk';
-import { normalizeTabName } from '../../helpers/normalizeTabName';
-import { pagination, columns } from '../../helpers/tableSettings';
 import { SocketContext } from '../../utils/contexts';
+import useMobile from '../../helpers/useMobile';
+import MatchesCard from '../../components/Match/subcomponents/MatchesCard';
+import ResultsCard from '../../components/Match/subcomponents/ResultsCard';
 
 moment.locale('uk');
-
+const { TabPane } = Tabs;
 export default function Matches({ tournament, onlineUsers }) {
-  const { TabPane } = Tabs;
+  const isMobile = useMobile();
+
   const socket = useContext(SocketContext);
+
   const [selectedTour, setSelectedTour] = useState(0);
-  const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournament.id}`) ? localStorage.getItem(`tab-${tournament.id}`) : 1);
+  const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournament.id}`) || 1);
   const [matches, setMatches] = useState(() => {
-    const saved = localStorage.getItem('matches');
+    const saved = localStorage.getItem(`matches${tournament.id}`);
     const initialValue = JSON.parse(saved);
     return initialValue || [];
   });
   const [results, setResults] = useState(() => {
-    const saved = localStorage.getItem('results');
+    const saved = localStorage.getItem(`results${tournament.id}`);
     const initialValue = JSON.parse(saved);
     return initialValue || [];
   });
@@ -60,29 +59,15 @@ export default function Matches({ tournament, onlineUsers }) {
         console.error(e.message);
       });
   };
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="0">Загальний результат</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="1">1 Тур</Menu.Item>
-      <Menu.Item key="2">2 Тур</Menu.Item>
-      <Menu.Item key="3">3 Тур</Menu.Item>
-      <Menu.Item key="4">4 Тур</Menu.Item>
-      <Menu.Item key="5">5 Тур</Menu.Item>
-      <Menu.Item key="6">6 Тур</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="7">1/8 фіналу</Menu.Item>
-      <Menu.Item key="8">1/4 фіналу</Menu.Item>
-      <Menu.Item key="9">1/2 фіналу</Menu.Item>
-      <Menu.Item key="10">Фінал</Menu.Item>
-    </Menu>
-  );
   const loadMatches = async () => {
     await getMatches(tournament.id)
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data);
           setMatches(res.data);
-          window.localStorage.setItem('matches', JSON.stringify(res.data));
+          window.localStorage.setItem(`matches${tournament.id}`, JSON.stringify(res.data));
+        } else {
+          window.localStorage.setItem(`matches${tournament.id}`, JSON.stringify(res.data));
         }
       })
       .catch((e) => {
@@ -95,7 +80,7 @@ export default function Matches({ tournament, onlineUsers }) {
       .then((res) => {
         if (res.status === 200) {
           setResults(res.data);
-          window.localStorage.setItem('results', JSON.stringify(res.data));
+          window.localStorage.setItem(`results${tournament.id}`, JSON.stringify(res.data));
         }
       })
       .catch((e) => {
@@ -114,9 +99,9 @@ export default function Matches({ tournament, onlineUsers }) {
     updatedMatch.awayGoals = match.awayGoals;
     updatedMatch.status = match.status;
     setMatches(newMatches);
-    document.getElementById(`match-${match.id}`).classList.add('updated');
+    document.getElementById(`match - ${match.id}`).classList.add('updated');
     setTimeout(() => {
-      document.getElementById(`match-${match.id}`).classList.remove('updated');
+      document.getElementById(`match - ${match.id}`).classList.remove('updated');
     }, 5000);
   };
 
@@ -140,88 +125,66 @@ export default function Matches({ tournament, onlineUsers }) {
     loadMatches();
     loadResults();
     return () => {
-      window.localStorage.setItem('matches', JSON.stringify(matches));
-      window.localStorage.setItem('results', JSON.stringify(results));
+      window.localStorage.setItem(`matches${tournament.id}`, JSON.stringify(matches));
+      window.localStorage.setItem(`results${tournament.id}`, JSON.stringify(results));
     };
   }, [tournament]);
 
   const changeTabs = (key) => {
-    localStorage.setItem(`tab-${tournament.id}`, key);
+    localStorage.setItem(`tab - ${tournament.id}`, key);
     setActiveTab(key);
   };
   return (
     <>
-      <h1 className="site-title">{tournament.name}</h1>
-      <Row gutter={16}>
-        <Col className="gutter-row" sm={{ span: 24 }} lg={{ span: 12 }} style={{ marginBottom: '30px' }}>
-          <Card title="Матчі">
-            <Tabs defaultActiveKey={activeTab} onChange={changeTabs}>
-              {Array.from(Array(tournament.groupTours).keys()).map((key) => (
-                <TabPane tab={`${key + 1} тур`} key={key}>
-                  {
-                    matches.filter((group) => group.tour === `${key + 1} тур`)
-                      .map((group) => (
-                        <div key={group.id}>
-                          <Divider style={{ fontWeight: 'bold' }}>{moment(group.date).format('LL')}</Divider>
-                          {
-                            group.games.map((match) => (
-                              <Match loadMatches={loadMatches} key={match.id} match={match} />))
-                          }
-                        </div>
-                      ))
-                  }
-                </TabPane>
-              ))}
-              {Array.from(Array(tournament.playoffTours).keys()).reverse().map((key) => (
-                <TabPane tab={normalizeTabName(key)} key={key + 10}>
-                  {
-                    matches.filter((group) => group.tour === normalizeTabName(key))
-                      .map((group) => (
-                        <div key={group.id}>
-                          <Divider style={{ fontWeight: 'bold' }}>{moment(group.date).format('LL')}</Divider>
-                          {
-                            group.games.map((match) => (
-                              <Match loadMatches={loadMatches} key={match.id} match={match} />))
-                          }
-                        </div>
-                      ))
-                  }
-                </TabPane>
-              ))}
-            </Tabs>
-          </Card>
-        </Col>
-        <Col className="gutter-row" sm={{ span: 24 }} lg={{ span: 12 }}>
-          <Card
-            title="Таблиця"
-            extra={(
-              <Space>
-                <Dropdown overlay={menu} trigger={['click']}>
-                  <a style={{ color: '#001628' }} className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-                    {`${Number(selectedTour) === 0 ? 'Обрати' : selectedTour} тур`}
-                    {' '}
-                    <DownOutlined />
-                  </a>
-                </Dropdown>
-                <Button type="link" onClick={toggleFullTableModal}>Повна таблиця</Button>
-              </Space>
-            )}
-          >
-            <Table
-              size="small"
-              pagination={pagination}
-              bordered
-              columns={columns(onlineUsers)}
-              dataSource={results}
-              rowKey="id"
-              scroll={{ x: 400 }}
-              onRow={(record) => ({
-                onClick: () => toggleShowUserInfo(record.userId),
-              })}
+      {isMobile ? (
+        <Tabs defaultActiveKey={1} centered size="large">
+          <TabPane tab="Матчі" key={1}>
+            <MatchesCard
+              isBets={false}
+              matches={matches}
+              tournament={tournament}
+              loadMatches={loadMatches}
+              activeTab={activeTab}
+              changeTabs={changeTabs}
             />
-          </Card>
-        </Col>
-      </Row>
+          </TabPane>
+          <TabPane tab="Результати" key={2}>
+            <ResultsCard
+              handleMenuClick={handleMenuClick}
+              toggleFullTableModal={toggleFullTableModal}
+              toggleShowUserInfo={toggleShowUserInfo}
+              selectedTour={selectedTour}
+              onlineUsers={onlineUsers}
+              results={results}
+            />
+          </TabPane>
+        </Tabs>
+      ) : (
+        <>
+          <h1 className="site-title">{tournament.name}</h1>
+          <Row gutter={16}>
+            <Col className="gutter-row" sm={{ span: 24 }} lg={{ span: 12 }} style={{ marginBottom: '30px' }}>
+              <MatchesCard
+                matches={matches}
+                tournament={tournament}
+                loadMatches={loadMatches}
+                activeTab={activeTab}
+                changeTabs={changeTabs}
+              />
+            </Col>
+            <Col className="gutter-row" sm={{ span: 24 }} lg={{ span: 12 }}>
+              <ResultsCard
+                handleMenuClick={handleMenuClick}
+                toggleFullTableModal={toggleFullTableModal}
+                toggleShowUserInfo={toggleShowUserInfo}
+                selectedTour={selectedTour}
+                onlineUsers={onlineUsers}
+                results={results}
+              />
+            </Col>
+          </Row>
+        </>
+      )}
       {showFullTableModal && (
         <FullTable
           showFullTableModal={showFullTableModal}

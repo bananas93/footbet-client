@@ -5,6 +5,7 @@ import moment from 'moment';
 import style from './index.module.scss';
 
 export default function MatchMobile({
+  isBets,
   match,
   checkMinute,
   myBet,
@@ -41,24 +42,39 @@ export default function MatchMobile({
           </>
         )}
       </div>
-      <div className={style.matchActions}>
-        {match.status === 'Заплановано' ? (
-          <Button type="text" title="Змінити прогноз" onClick={toggleShowAddPredictModal}>
-            {myBet ? (
-              <EditOutlined />
-            ) : (
-              <PlusOutlined />
-            )}
-          </Button>
-        ) : (
-          <Button type="text" title="Подивитися прогнози" onClick={toggleShowPredictsModal}><PlusOutlined /></Button>
-        )}
-      </div>
+      {!isBets ? (
+        <div className={style.matchActions}>
+          {match.status === 'Заплановано' ? (
+            <Button type="text" title="Змінити прогноз" onClick={toggleShowAddPredictModal}>
+              {myBet ? (
+                <EditOutlined />
+              ) : (
+                <PlusOutlined />
+              )}
+            </Button>
+          ) : (
+            <Button type="text" title="Подивитися прогнози" onClick={toggleShowPredictsModal}><PlusOutlined /></Button>
+          )}
+        </div>
+      ) : (
+        <div className={style.matchPredicts}>
+          <div className={style.matchUserBets}>
+            <div className={style.matchScoresRegular}>{match.bets[0].homeBet}</div>
+            <div className={style.matchScoresRegular}>{match.bets[0].awayBet}</div>
+          </div>
+          <div className={style.matchPoints}>
+            (
+            {match.bets[0].points}
+            )
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 MatchMobile.propTypes = {
+  isBets: PropTypes.bool,
   match: PropTypes.object,
   checkMinute: PropTypes.func,
   toggleShowPredictsModal: PropTypes.func,

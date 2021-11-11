@@ -9,10 +9,10 @@ import ViewPredicts from '../ViewPredicts';
 import { addBet } from '../../api/bets';
 import { logout } from '../../helpers/authHelper';
 import useMobile from '../../helpers/useMobile';
-import MatchMobile from './subcomponents/MatchMobile/MatchMobile';
+import MatchMobile from './subcomponents/MatchMobile';
 import MatchDesktop from './subcomponents/MatchDesktop';
 
-export default function Match({ match, loadMatches }) {
+export default function Match({ isBets, match, loadMatches }) {
   const [showAddPredictModal, setShowAddPredictModal] = useState(false);
   const [showPredictsModal, setShowPredictsModal] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -93,6 +93,7 @@ export default function Match({ match, loadMatches }) {
       <div className="single-match" id={`match-${match.id}`}>
         {!isMobile ? (
           <MatchDesktop
+            isBets={isBets}
             match={match}
             checkMinute={checkMinute}
             myBet={myBet}
@@ -101,6 +102,7 @@ export default function Match({ match, loadMatches }) {
           />
         ) : (
           <MatchMobile
+            isBets={isBets}
             match={match}
             checkMinute={checkMinute}
             myBet={myBet}
@@ -130,6 +132,7 @@ export default function Match({ match, loadMatches }) {
 }
 
 Match.propTypes = {
+  isBets: PropTypes.bool,
   match: PropTypes.object,
   loadMatches: PropTypes.func,
 };

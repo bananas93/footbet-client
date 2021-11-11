@@ -32,4 +32,10 @@
     width: 15%;
     text-align: right;
   }
+  &Predicts {
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 }

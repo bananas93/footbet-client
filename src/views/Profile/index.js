@@ -3,8 +3,10 @@ import {
 } from 'antd';
 import { useEffect } from 'react';
 import { getUserDetails, updateUserDetails } from '../../api/auth';
+import useMobile from '../../helpers/useMobile';
 
 export default function Profile() {
+  const isMobile = useMobile();
   const notificationError = (error) => {
     notification.error({
       message: 'Помилка',
@@ -42,7 +44,9 @@ export default function Profile() {
   };
   return (
     <div className="site-form">
-      <h1 className="site-title">Мій профіль</h1>
+      {!isMobile && (
+        <h1 className="site-title">Мій профіль</h1>
+      )}
       <Card>
         <Form
           form={form}
