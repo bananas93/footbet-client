@@ -1,0 +1,23 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    @media screen and (min-width: 767px) {
+        gap: 1rem;
+    }
+}
+.col {
+    flex: 1 1 100%;
+    margin-bottom: 30px;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    @media screen and (min-width: 767px) {
+        flex: 1 1 calc((100% / 2) - 2rem);
+    }
+}
+.card {
+    box-shadow: 1px 1px 20px #d9d9d9;
+    border-radius: 15px;
+    padding: 20px;
+    overflow: hidden;
+}

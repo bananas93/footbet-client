@@ -1,0 +1,55 @@
+.match {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+  font-size: 14px;
+  line-height: 22px;
+  background-color: transparent;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #efefef;
+  border-radius: 0;
+  cursor: pointer;
+  padding: 8px 0;
+  &Info {
+    width: 15%;
+    font-size: 12px;
+    line-height: 20px;
+    &Status {
+      text-align: center;
+    }
+  }
+  &Teams {
+    padding-left: 20px;
+    width: 65%;
+  }
+  &Scores {
+    width: 5%;
+    text-align: center;
+    font-weight: 500;
+    &Life {
+      color: #ed1c24;
+    }
+    &Regular{
+      color: #2c2c2c;
+    }
+  }
+  &Actions {
+    width: 15%;
+    text-align: right;
+  }
+  &Predicts {
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  &Team {
+    text-align: left;
+    font-weight: 400;
+    &Winner {
+      font-weight: bold;
+    }
+  }
+}

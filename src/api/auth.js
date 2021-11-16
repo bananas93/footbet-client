@@ -1,58 +1,36 @@
 import axios from 'axios';
-import { setCookie, getCookie, logout } from '../helpers/authHelper';
+import { getJWToken } from '../helpers/authHelper';
 
-export function login({ email, password }) {
-  return axios({
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    url: `${process.env.REACT_APP_LOCAL_API}/users/login`,
-    data: { email, password },
-  })
-    .then((res) => {
-      if (res.status && res.status === 200) {
-        setCookie('JWToken', res.data.token);
-      }
-      return res;
-    }).catch((e) => e.response);
-}
+export const login = async ({ email, password }) => await axios({
+  method: 'post',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  url: `${process.env.REACT_APP_LOCAL_API}/users/login`,
+  data: { email, password },
+});
 
-export function register({ email, name, password }) {
-  return axios({
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    url: `${process.env.REACT_APP_LOCAL_API}/users/register`,
-    data: { email, name, password },
-  })
-    .then((res) => {
-      if (res.status && res.status === 201) {
-        setCookie('JWToken', res.data.token);
-      }
-      return res;
-    }).catch((e) => e.response);
-}
+export const register = async ({ email, name, password }) => axios({
+  method: 'post',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  url: `${process.env.REACT_APP_LOCAL_API}/users/register`,
+  data: { email, name, password },
+});
 
-export function getUserDetails() {
-  const token = getCookie('JWToken');
-  return axios.get(`${process.env.REACT_APP_LOCAL_API}/users/me`, {
+export const getUserDetails = async () => {
+  const token = getJWToken();
+  return await axios.get(`${process.env.REACT_APP_LOCAL_API}/users/me`, {
     headers: {
       Authorization: token,
     },
-  })
-    .then((res) => {
-      if (res.status && res.status !== 200) {
-        logout();
-      }
-      return res.data;
-    }).catch((e) => e.response);
-}
+  });
+};
 
-export function updateUserDetails({ email, name, password }) {
-  const token = getCookie('JWToken');
-  return axios({
+export const updateUserDetails = async ({ email, name, password }) => {
+  const token = getJWToken();
+  return await axios({
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
@@ -60,10 +38,5 @@ export function updateUserDetails({ email, name, password }) {
     },
     url: `${process.env.REACT_APP_LOCAL_API}/users/me`,
     data: { email, name, password },
-  }).then((res) => {
-    if (res.status && res.status !== 201) {
-      logout();
-    }
-    return res;
-  }).catch((e) => e.response);
-}
+  });
+};

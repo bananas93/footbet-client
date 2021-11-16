@@ -1,0 +1,65 @@
+.card {
+    @media screen and (min-width: 768px) {
+        border-radius: 15px;
+        box-shadow: 2px 2px 20px #e3e3e3;
+    }
+    &Title {
+        padding: 10px 0;
+        border-bottom: 1px solid #e3e3e3;
+        font-size: 18px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @media screen and (min-width: 768px) {
+            padding: 20px 15px;
+            margin-bottom: 15px;
+        }
+    }
+    &Body {
+        @media screen and (min-width: 768px) {
+            &WithoutTitle {
+                padding: 15px;
+            }
+            padding: 0 15px 15px 15px;
+        }
+    }
+    &MatchDate {
+        text-align: center;
+        font-weight: 500;
+        position: relative;
+        margin: 20px 0;
+        span {
+            background-color: #fff;
+            position: relative;
+            z-index: 1;
+            padding: 0 20px;
+            color: #3f4d67;
+            font-size: 18px;
+        }
+        &::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 0.5px;
+            top: 50%;
+            right: 0;
+            left: 0;
+            transform: translateY(-50%);
+            background-color: #e3e3e3;
+        }
+    }
+}
+:global(.app .ant-dropdown-link),
+:global(.app .ant-dropdown-button) {
+    font-size: 14px;
+    background-color: transparent;
+    color: #262626;
+    border: none;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all .3s ease 0s;
+    &:hover {
+        color: #28374d;
+    }
+}

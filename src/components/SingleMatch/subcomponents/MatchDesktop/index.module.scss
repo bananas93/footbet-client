@@ -1,0 +1,63 @@
+.wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-bottom: 1px solid #efefef;
+    border-radius: 0;
+    background-color: transparent;
+    transition: all .3s ease 0s;
+    cursor: pointer;
+    &:hover {
+        background-color: #efefef;
+    }
+    &:last-child {
+        border-bottom: none !important;
+    }
+}
+.match {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #3f4d67;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-transform: none;
+    font-family: 'Rubik', sans-serif;
+    &Time {
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 400;
+    }
+    &Team {
+        width: 35%;
+        text-align: right;
+        font-weight: 400;
+        &Winner {
+            font-weight: bold;
+        }
+        &Last {
+            text-align: left;
+        }
+    }
+    &Score {
+        background-color: #3c5d95;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 3px 15px;
+        gap: 3px;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+    }
+    &Predict {
+        font-weight: 400;
+        font-size: 12px;
+        width: 8%;
+    }
+}

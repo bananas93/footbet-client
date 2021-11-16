@@ -4,6 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { getInfo } from '../../api/users';
+import { notificationWrapper } from '../../helpers/notification';
 
 export default function UserInfo({
   id, tournament, tour, showUserInfo, toggleShowUserInfo,
@@ -14,17 +15,17 @@ export default function UserInfo({
   const [loading, setLoading] = useState(true);
 
   const getUserInfo = async () => {
-    await getInfo(id, tournament, tour)
-      .then((res) => {
-        if (res.status === 200) {
-          setUserInfo(res.data);
-          setUserName(res.data.result[0].user.name);
-        }
-      })
-      .catch((e) => {
-        console.error(e.message);
-      });
-    setLoading(false);
+    try {
+      const res = await getInfo(id, tournament, tour);
+      if (res.status === 200) {
+        setUserInfo(res.data);
+        setUserName(res.data.result[0].user.name);
+      }
+    } catch (error) {
+      notificationWrapper(true, `Помилка ${error}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

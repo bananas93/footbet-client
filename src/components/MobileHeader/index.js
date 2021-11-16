@@ -1,8 +1,7 @@
 import { MenuOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { Drawer, PageHeader, Button } from 'antd';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useContext } from 'react/cjs/react.development';
 import { logout } from '../../helpers/authHelper';
 import { AuthContext } from '../../utils/contexts';
 import style from './index.module.scss';

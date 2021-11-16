@@ -1,0 +1,17 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    @media screen and (min-width: 767px) {
+        gap: 1rem;
+    }
+}
+.col {
+    flex: 0 1 100%;
+    margin: 0 auto 30px;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    @media screen and (min-width: 767px) {
+        flex: 0 1 calc((100% / 2) - 2rem);
+    }
+}

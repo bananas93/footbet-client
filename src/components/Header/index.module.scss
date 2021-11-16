@@ -1,0 +1,41 @@
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #28374d;
+    padding: 0 5px;
+    z-index: 999;
+    @media screen and (min-width: 767px) {
+        padding: 0 30px;
+    }
+    &Nav {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+.headerList,
+.headerAdditionalList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    &Item {
+        font-size: 14px;
+        @media screen and (min-width: 767px) {
+            font-size: 18px;
+        }
+        a {
+            color: #e0e0e2;
+            text-decoration: none;
+            display: block;
+            padding: 20px 10px;
+            transition: all .3s ease 0s;
+            @media screen and (min-width: 767px) {
+                padding: 24px 20px;
+            }
+            &:hover {
+                background-color: #3f4d67;
+            }
+        }
+    }
+}
