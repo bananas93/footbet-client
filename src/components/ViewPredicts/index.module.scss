@@ -1,0 +1,49 @@
+.row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.team {
+    font-size: 14px;
+    font-weight: 500;
+    @media screen and (min-width: 768px) {  
+        font-size: 18px;
+    }
+}
+.logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+.goals {
+    font-size: 14px;
+    background-color: #3c5d95;
+    color: #fff;
+    border-radius: 10px;
+    padding: 3px 15px;
+    gap: 3px;
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+    flex: auto;
+    justify-content: center;
+    @media screen and (min-width: 768px) {  
+        font-size: 18px;
+        margin: 0 20px;
+    }
+}
+.team {
+    margin-right: 5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 30%;
+    text-align: right;
+    &Last {
+        margin-right: 0;
+        margin-left: 5px;
+        text-align: left;
+    }
+}

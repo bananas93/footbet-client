@@ -35,13 +35,25 @@
     }
     &Team {
         width: 35%;
-        text-align: right;
+        justify-content: right;
         font-weight: 400;
+        display: inline-flex;
+        align-items: center;
         &Winner {
             font-weight: bold;
         }
         &Last {
-            text-align: left;
+            justify-content: left;
+        }
+        &Logo {
+            margin-left: 10px;
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            &Last {
+                margin-left: 0;
+                margin-right: 10px;
+            }
         }
     }
     &Score {

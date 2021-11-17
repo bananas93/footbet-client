@@ -28,8 +28,14 @@ export default function MatchMobile({
         </div>
       </div>
       <div className={style.matchTeams}>
-        <div className={`${style.matchTeam} ${winner(match) === match.homeTeam.name ? style.matchTeamWinner : ''}`}>{match.homeTeam.name}</div>
-        <div className={`${style.matchTeam} ${winner(match) === match.awayTeam.name ? style.matchTeamWinner : ''}`}>{match.awayTeam.name}</div>
+        <div className={`${style.matchTeam} ${winner(match) === match.homeTeam.name ? style.matchTeamWinner : ''}`}>
+          <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
+          <span>{match.homeTeam.name}</span>
+        </div>
+        <div className={`${style.matchTeam} ${winner(match) === match.awayTeam.name ? style.matchTeamWinner : ''}`}>
+          <img className={style.matchTeamLogo} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
+          <span>{match.awayTeam.name}</span>
+        </div>
       </div>
       <div className={style.matchScores}>
         {match.status !== 'Заплановано' && (

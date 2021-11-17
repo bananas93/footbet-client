@@ -27,7 +27,10 @@ export default function MatchDesktop({
             <MatchMinute />
           )}
         </div>
-        <div className={`${style.matchTeam} ${winner(match) === match.homeTeam.name ? style.matchTeamWinner : ''}`}>{match.homeTeam.name}</div>
+        <div className={`${style.matchTeam} ${winner(match) === match.homeTeam.name ? style.matchTeamWinner : ''}`}>
+          <span>{match.homeTeam.name}</span>
+          <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
+        </div>
         <div className={`${style.matchScore} ${match.status === 'Live' ? style.matchScoreLive : ''}`}>
           {match.status === 'Заплановано' ? (
             '-:-'
@@ -39,7 +42,10 @@ export default function MatchDesktop({
             </>
           )}
         </div>
-        <div className={`${style.matchTeam} ${style.matchTeamLast} ${winner(match) === match.awayTeam.name ? style.matchTeamWinner : ''}`}>{match.awayTeam.name}</div>
+        <div className={`${style.matchTeam} ${style.matchTeamLast} ${winner(match) === match.awayTeam.name ? style.matchTeamWinner : ''}`}>
+          <img className={`${style.matchTeamLogo} ${style.matchTeamLogoLast}`} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
+          <span>{match.awayTeam.name}</span>
+        </div>
         {
           myBet ? (
             <div className={style.matchPredict}>
