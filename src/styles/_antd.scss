@@ -25,3 +25,64 @@
     border-bottom: 1px solid #f0f0f0;
     padding: 9.5px 24px;
 }
+.ant-menu-item {
+    &:hover {
+      .ant-btn {
+        &.ant-btn-text {
+          color: #1890ff;
+        }
+      }
+    }
+  
+    .ant-btn {
+      &.ant-btn-text {
+        padding: 0;
+  
+        &:hover {
+          background: transparent;
+        }
+      }
+    }
+  }
+  
+  .ant-menu-submenu {
+    .ant-btn-text {
+      padding: 0;
+    }
+  }
+  
+  .ant-card-extra {
+    .ant-btn-link {
+      padding: 0;
+      color: #001628;
+    }
+  }
+  
+  .ant-card-head-wrapper {
+    .ant-card-head-title {
+      font-weight: 900;
+    }
+  }
+  
+  .ant-table-row {
+    cursor: pointer;
+  
+    &:hover {
+      .ant-table-cell {
+        transition: all .3s ease 0s;
+        color: #828282;
+      }
+    }
+  }
+  
+  .react-emoji {
+    .react-input-emoji--container {
+        margin: 0;
+    }
+    .react-input-emoji--button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  }
+  

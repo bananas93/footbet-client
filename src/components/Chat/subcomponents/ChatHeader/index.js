@@ -9,7 +9,7 @@ export default function ChatHeader({ name, toggleShowChat }) {
       <button type="button" className={style.closeButton} onClick={toggleShowChat}>
         <CloseOutlined />
       </button>
-      <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+      <Avatar style={{ backgroundColor: '#28374d' }} icon={<UserOutlined />} />
       <span className={style.chatUserName}>{name}</span>
     </div>
   );

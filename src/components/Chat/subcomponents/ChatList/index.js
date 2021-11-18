@@ -1,30 +1,36 @@
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { useState, useContext, useEffect } from 'react';
 import moment from 'moment';
 import { Divider } from 'antd';
+import Loading from '../../../Loading';
 import ChatHeader from '../ChatHeader';
 import ChatMessage from '../ChatMessage';
-import { AuthContext, SocketContext } from '../../../../utils/contexts';
+import { SocketContext, UserContext } from '../../../../utils/contexts';
 import { getMessages } from '../../../../api/chat';
-import style from './index.module.scss';
+import { notificationWrapper } from '../../../../helpers/notification';
+import styles from './index.module.scss';
 
 export default function ChatList({ isPage, setUnreadedMessages, toggleShowChat }) {
-  const socket = useContext(SocketContext);
+  const user = useContext(UserContext);
   const [messages, setMessages] = useState([]);
-  const { authorized } = useContext(AuthContext);
-  useEffect(async () => {
-    await getMessages()
-      .then((res) => {
-        if (res.status === 200) {
+  const socket = useContext(SocketContext);
+
+  useEffect(() => {
+    const loadMessages = async () => {
+      try {
+        const res = await getMessages();
+        if (res.status && res.status === 200) {
           setMessages(res.data);
-          window.localStorage.setItem('messages', JSON.stringify(res.data));
           const chat = document.getElementById('chat-list');
           chat.scrollTo(0, chat.scrollHeight);
         }
-      })
-      .catch((e) => {
-        console.error(e.message);
-      });
+      } catch (error) {
+        notificationWrapper(true, error.message);
+      }
+    };
+
+    loadMessages();
   }, []);
 
   const handleSendMessage = (message) => {
@@ -33,8 +39,8 @@ export default function ChatList({ isPage, setUnreadedMessages, toggleShowChat }
       id: new Date().getTime(),
       message,
       user: {
-        id: authorized.id,
-        name: authorized.name,
+        id: user.id,
+        name: user.name,
       },
     };
     const oldMsg = [...messages];
@@ -71,34 +77,43 @@ export default function ChatList({ isPage, setUnreadedMessages, toggleShowChat }
   }, []);
 
   return (
-    <div className={style.chat}>
+    <div className={styles.chat}>
       {!isPage && (
-        <ChatHeader name={authorized.name} toggleShowChat={toggleShowChat} />
+        <ChatHeader name={user.name} toggleShowChat={toggleShowChat} />
       )}
-      <ul id="chat-list" className={`${style.chatList} ${isPage ? style.chatListPage : ''}`}>
-        {messages.map((day) => (
-          <div key={day.id}>
-            <Divider style={{ fontWeight: 'bold' }}>{moment(day.date).format('LL')}</Divider>
-            {
-              day.days.map((item) => (
-                <li className={`${style.chatListMessage} ${item.user.id === authorized.id ? style.chatListMessageMy : ''}`} key={item.id}>
-                  <div className={style.chatListWrapper}>
-                    <div className={style.chatListWrap}>
-                      {item.user.id !== authorized.id && (
-                        <div className={style.chatListName}>{item.user.name}</div>
+      {!messages.length ? (
+        <Loading />
+      ) : (
+        <ul id="chat-list" className={cn(styles.chatList, { [styles.chatListPage]: isPage })}>
+          {messages.map((day) => (
+            <div key={day.id}>
+              <Divider styles={{ fontWeight: 'bold' }}>{moment(day.date).format('LL')}</Divider>
+              {day.days.map((item) => (
+                <li
+                  className={
+                    cn(styles.chatListMessage, {
+                      [styles.chatListMessageMy]: item.user.id === user.id,
+                    })
+                  }
+                  key={item.id}
+                >
+                  <div className={styles.chatListWrapper}>
+                    <div className={styles.chatListWrap}>
+                      {item.user.id !== user.id && (
+                        <div className={styles.chatListName}>{item.user.name}</div>
                       )}
-                      <div className={style.chatListText}>
+                      <div className={styles.chatListText}>
                         {item.message}
-                        <span className={style.chatListTime}>{moment(item.createdAt).format('HH:mm')}</span>
+                        <span className={styles.chatListTime}>{moment(item.createdAt).format('HH:mm')}</span>
                       </div>
                     </div>
                   </div>
                 </li>
-              ))
-            }
-          </div>
-        ))}
-      </ul>
+              ))}
+            </div>
+          ))}
+        </ul>
+      )}
       <ChatMessage isPage handleSendMessage={handleSendMessage} />
     </div>
   );

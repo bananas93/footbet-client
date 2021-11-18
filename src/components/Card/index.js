@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import styles from './index.module.scss';
 
 const Card = ({ title, action, children }) => (
@@ -11,7 +12,7 @@ const Card = ({ title, action, children }) => (
         )}
       </div>
     )}
-    <div className={`${styles.cardBody} ${!title ? styles.cardBodyWithoutTitle : ''}`}>
+    <div className={cn(styles.cardBody, { [styles.cardBodyWithoutTitle]: !title })}>
       {children}
     </div>
   </div>

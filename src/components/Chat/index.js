@@ -12,6 +12,7 @@ export default function Chat({ isPage }) {
   const toggleShowChat = () => {
     setShowChat(!showChat);
   };
+
   return (
     <>
       {!showChat ? (

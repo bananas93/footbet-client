@@ -3,20 +3,21 @@
     right: 30px;
     bottom: 30px;
     width: 600px;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 130px);
     background-color: #fff;
     box-shadow: 3px 5px 11px rgba(0, 0, 0, .3);
     border-radius: 15px;
     overflow: hidden;
-    z-index: 11;
+    z-index: 999;
 }
 
 .chatList {
-    padding: 10px 15px;
+    padding: 10px 15px 30px 15px;
     margin: 0;
     list-style: none;
-    height: calc(100% - 57px - 100px);
+    height: calc(100% - 117px);
     overflow-y: scroll;
+    position: relative;
 
     &Message {
         margin-bottom: 5px;

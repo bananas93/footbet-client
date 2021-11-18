@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Modal, Table } from 'antd';
+import cn from 'classnames';
 import PropTypes from 'prop-types';
 import styles from './index.module.scss';
 
@@ -43,7 +44,7 @@ export default function ViewPredicts({ showPredictsModal, toggleShowPredictsModa
           <span className={styles.goal}>{match.awayGoals}</span>
         </div>
         <img className={styles.logo} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
-        <span className={`${styles.team} ${styles.teamLast}`}>{match.awayTeam.name}</span>
+        <span className={cn(styles.team, styles.teamLast)}>{match.awayTeam.name}</span>
       </div>
       <Table
         size="small"

@@ -11,6 +11,9 @@
         align-items: center;
         padding: 8px 5px;
     }
+    &Page {
+        bottom: 60px;
+    }
 
     &Input {
         background-color: #f0f0f0;
@@ -53,8 +56,4 @@
             color: #ccc;
         }
     }
-}
-
-.chatMessagePage {
-    bottom: 60px;
 }

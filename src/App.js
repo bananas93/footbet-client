@@ -2,20 +2,24 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 import { io } from 'socket.io-client';
 import Layout from './components/Layout';
-import { checkAuthorization, getJWToken } from './helpers/authHelper';
+import { checkAuthorization, getCookie } from './helpers/authHelper';
 import { ProtectedRoutes } from './routes/ProtectedRoutes';
 import { AuthRoutes } from './routes/AuthRoutes';
 import Loading from './components/Loading';
 
 function App() {
   const [socket, setSocket] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = getJWToken();
-    const newSocket = io(process.env.REACT_APP_BASE_URL, {
+    const token = getCookie('JWToken');
+    const newSocket = io('http://localhost:3000', {
       query: { token },
     });
     setSocket(newSocket);
+    newSocket.on('user', (data) => {
+      setUser(JSON.parse(data));
+    });
     return () => {
       newSocket.close();
     };
@@ -25,7 +29,7 @@ function App() {
 
   return (
     <Router>
-      <Layout socket={socket} auth={auth}>
+      <Layout socket={socket} user={user} auth={auth}>
         <Suspense fallback={<Loading />}>
           {auth ? (
             <ProtectedRoutes />

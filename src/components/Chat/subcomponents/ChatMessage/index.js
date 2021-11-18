@@ -3,16 +3,16 @@ import { SendOutlined } from '@ant-design/icons';
 import { useContext, useEffect, useState } from 'react';
 import InputEmoji from 'react-input-emoji';
 import style from './index.module.scss';
-import { AuthContext, SocketContext } from '../../../../utils/contexts';
+import { UserContext, SocketContext } from '../../../../utils/contexts';
 
-export default function ChatMessage({ isPage, handleSendMessage }) {
+export default function ChatMessage({ handleSendMessage }) {
+  const user = useContext(UserContext);
   const [message, setMessage] = useState('');
-  const { authorized } = useContext(AuthContext);
   const [typingUsers, setTypingUsers] = useState([]);
   const socket = useContext(SocketContext);
   const handleMessageInput = (e) => {
     setMessage(e);
-    const { name } = authorized;
+    const { name } = user;
     if (e) {
       socket.emit('messageTyping', { name, typing: true });
     } else {
@@ -25,24 +25,19 @@ export default function ChatMessage({ isPage, handleSendMessage }) {
   };
 
   useEffect(() => {
-    const cleanup = () => {
-      const { name } = authorized;
-      socket.emit('messageTyping', { name, typing: false });
-    };
-    window.addEventListener('beforeunload', cleanup);
-
+    const { name } = user;
     socket.on('typingUsers', (data) => {
       setTypingUsers(data);
     });
     return () => {
-      window.removeEventListener('beforeunload', cleanup);
+      socket.emit('messageTyping', { name, typing: false });
     };
   }, []);
 
   return (
-    <div className={`${style.chatMessage} ${isPage ? style.chatMessagePage : ''}`}>
+    <div className={style.chatMessage}>
       <span className={style.chatMessageTyping}>
-        {typingUsers.map((user, index) => `${index ? ', ' : ''} ${user}`)}
+        {typingUsers.map((userName, index) => `${index ? ', ' : ''} ${userName}`)}
         {' '}
         {typingUsers.length ? ' набирає повідомлення...' : ''}
       </span>
@@ -51,7 +46,7 @@ export default function ChatMessage({ isPage, handleSendMessage }) {
           onEnter={sendMessage}
           onChange={handleMessageInput}
           value={message}
-          fontFamily="Nunito"
+          fontFamily="Rubik"
           height={40}
           placeholder="Напишіть повідомлення"
         />
@@ -65,5 +60,4 @@ export default function ChatMessage({ isPage, handleSendMessage }) {
 
 ChatMessage.propTypes = {
   handleSendMessage: PropTypes.func,
-  isPage: PropTypes.bool,
 };

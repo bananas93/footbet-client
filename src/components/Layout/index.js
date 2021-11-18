@@ -1,27 +1,38 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { AuthContext, SocketContext, TitleContext } from '../../utils/contexts';
+import cn from 'classnames';
+import {
+  AuthContext, SocketContext, TitleContext, UserContext,
+} from '../../utils/contexts';
 import Header from '../Header';
 import Footer from '../Footer';
 import styles from './index.module.scss';
+import Chat from '../Chat';
 
-const Layout = ({ auth, socket, children }) => {
+const Layout = ({
+  auth, socket, user, children,
+}) => {
   const [title, setTitle] = useState('Footbet');
   return (
     <AuthContext.Provider value={auth}>
       <SocketContext.Provider value={socket}>
-        <TitleContext.Provider value={{ title, setTitle }}>
-          <div className={`${styles.app} app`}>
-            {auth && (
+        <UserContext.Provider value={user}>
+          <TitleContext.Provider value={{ title, setTitle }}>
+            <div className={cn(styles.app, 'app')}>
+              {auth && (
               <Header />
-            )}
-            <main className={styles.main}>
-              <h1 className={styles.title}>{title}</h1>
-              {children}
-            </main>
-            <Footer />
-          </div>
-        </TitleContext.Provider>
+              )}
+              <main className={styles.main}>
+                <h1 className={styles.title}>{title}</h1>
+                {children}
+              </main>
+              <Footer />
+              {auth && (
+                <Chat isPage={false} />
+              )}
+            </div>
+          </TitleContext.Provider>
+        </UserContext.Provider>
       </SocketContext.Provider>
     </AuthContext.Provider>
   );
@@ -36,6 +47,7 @@ Layout.propTypes = {
   ]),
   socket: PropTypes.object,
   auth: PropTypes.bool,
+  user: PropTypes.object,
 };
 
 export default Layout;

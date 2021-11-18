@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import cn from 'classnames';
 import style from './index.module.scss';
 
 export default function MatchDesktop({
@@ -27,11 +28,14 @@ export default function MatchDesktop({
             <MatchMinute />
           )}
         </div>
-        <div className={`${style.matchTeam} ${winner(match) === match.homeTeam.name ? style.matchTeamWinner : ''}`}>
+        <div className={cn(style.matchTeam, {
+          [style.matchTeamWinner]: winner(match) === match.homeTeam.name,
+        })}
+        >
           <span>{match.homeTeam.name}</span>
           <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
         </div>
-        <div className={`${style.matchScore} ${match.status === 'Live' ? style.matchScoreLive : ''}`}>
+        <div className={cn(style.matchScore, { [style.matchScoreLive]: match.status === 'Live' })}>
           {match.status === 'Заплановано' ? (
             '-:-'
           ) : (
@@ -42,8 +46,11 @@ export default function MatchDesktop({
             </>
           )}
         </div>
-        <div className={`${style.matchTeam} ${style.matchTeamLast} ${winner(match) === match.awayTeam.name ? style.matchTeamWinner : ''}`}>
-          <img className={`${style.matchTeamLogo} ${style.matchTeamLogoLast}`} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
+        <div className={cn(style.matchTeam, style.matchTeamLast, {
+          [style.matchTeamWinner]: winner(match) === match.awayTeam.name,
+        })}
+        >
+          <img className={cn(style.matchTeamLogo, style.matchTeamLogoLast)} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
           <span>{match.awayTeam.name}</span>
         </div>
         {

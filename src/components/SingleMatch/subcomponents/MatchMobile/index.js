@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import cn from 'classnames';
 import style from './index.module.scss';
 
 export default function MatchMobile({
@@ -28,11 +29,17 @@ export default function MatchMobile({
         </div>
       </div>
       <div className={style.matchTeams}>
-        <div className={`${style.matchTeam} ${winner(match) === match.homeTeam.name ? style.matchTeamWinner : ''}`}>
+        <div className={cn(style.matchTeam, {
+          [style.matchTeamWinner]: winner(match) === match.homeTeam.name,
+        })}
+        >
           <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
           <span>{match.homeTeam.name}</span>
         </div>
-        <div className={`${style.matchTeam} ${winner(match) === match.awayTeam.name ? style.matchTeamWinner : ''}`}>
+        <div className={cn(style.matchTeam, {
+          [style.matchTeamWinner]: winner(match) === match.awayTeam.name,
+        })}
+        >
           <img className={style.matchTeamLogo} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
           <span>{match.awayTeam.name}</span>
         </div>

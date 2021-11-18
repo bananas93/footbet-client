@@ -1,8 +1,9 @@
 .chat {
     &Title {
-        background-color: #1890ff;
+        background-color: #fff;
+        box-shadow: 0 2px 20px #e1e1e1;
         padding: 13px 15px;
-        color: #fff;
+        color: #262626;
         position: relative;
     }
 
@@ -22,5 +23,5 @@
     padding: 0;
     background-color: transparent;
     cursor: pointer;
-    color: #fff;
+    color: #262626;
 }
