@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import moment from 'moment';
 import { Divider, Empty } from 'antd';
-import { useState } from 'react/cjs/react.development';
 import Loading from '../../../Loading';
 import ChatHeader from '../ChatHeader';
 import ChatMessage from '../ChatMessage';
