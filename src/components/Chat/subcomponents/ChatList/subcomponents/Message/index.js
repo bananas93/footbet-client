@@ -13,11 +13,11 @@ const Message = ({ item, id, removeMessage }) => (
       })
     }
   >
-    <Dropdown overlay={<MessageMenu removeMessage={removeMessage} message={item} />} trigger={['contextMenu']}>
+    <Dropdown disabled={item.user.id !== id} overlay={<MessageMenu removeMessage={removeMessage} message={item} />} trigger={['contextMenu']}>
       <div className={styles.chatListWrapper}>
         <div className={styles.chatListWrap}>
           {item.user.id !== id && (
-          <div className={styles.chatListName}>{item.user.name}</div>
+            <div className={styles.chatListName}>{item.user.name}</div>
           )}
           <div className={styles.chatListText}>
             {item.message}
