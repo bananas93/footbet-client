@@ -7,6 +7,7 @@ import { TitleContext } from '../../utils/contexts';
 import styles from './index.module.scss';
 import Card from '../../components/Card';
 import { notificationWrapper } from '../../helpers/notification';
+import { logout } from '../../helpers/authHelper';
 
 function ProfilePage() {
   const { setTitle } = useContext(TitleContext);
@@ -47,7 +48,12 @@ function ProfilePage() {
   return (
     <div className={styles.row}>
       <div className={styles.col}>
-        <Card title="Оновити профіль">
+        <Card
+          title="Оновити профіль"
+          action={
+            <button className={styles.exit} type="button" onClick={logout}>Вийти</button>
+          }
+        >
           <Form
             form={form}
             className="sign-in-form"

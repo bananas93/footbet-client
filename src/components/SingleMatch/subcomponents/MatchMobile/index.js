@@ -55,8 +55,8 @@ export default function MatchMobile({
       {myBet ? (
         <div className={style.matchPredicts}>
           <div className={style.matchUserBets}>
-            <div className={style.matchScoresRegular}>{match.bets[0].homeBet}</div>
-            <div className={style.matchScoresRegular}>{match.bets[0].awayBet}</div>
+            <div className={style.matchScoresRegular}>{myBet.homeBet}</div>
+            <div className={style.matchScoresRegular}>{myBet.awayBet}</div>
           </div>
           <div className={style.matchPoints}>
             (
