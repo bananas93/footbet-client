@@ -10,6 +10,7 @@ export default function ChatMessage({ handleSendMessage }) {
   const [message, setMessage] = useState('');
   const [typingUsers, setTypingUsers] = useState([]);
   const socket = useContext(SocketContext);
+
   const handleMessageInput = (e) => {
     setMessage(e);
     const { name } = user;
@@ -22,6 +23,10 @@ export default function ChatMessage({ handleSendMessage }) {
   const sendMessage = () => {
     setMessage('');
     handleSendMessage(message);
+    setTimeout(() => {
+      const chat = document.getElementById('chat-list');
+      chat.scrollTo(0, chat.scrollHeight);
+    }, 0);
   };
 
   useEffect(() => {
@@ -31,6 +36,7 @@ export default function ChatMessage({ handleSendMessage }) {
     });
     return () => {
       socket.emit('messageTyping', { name, typing: false });
+      socket.off('typingUsers');
     };
   }, []);
 
@@ -50,7 +56,7 @@ export default function ChatMessage({ handleSendMessage }) {
           height={40}
           placeholder="Напишіть повідомлення"
         />
-        <button onClick={sendMessage} disabled={!message.length} className={style.chatMessageButton} type="submit">
+        <button onClick={sendMessage} disabled={!message.length || !message.replace(/\s/g, '').length} className={style.chatMessageButton} type="submit">
           <SendOutlined />
         </button>
       </div>

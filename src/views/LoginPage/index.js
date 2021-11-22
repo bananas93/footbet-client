@@ -1,17 +1,20 @@
 import { Tabs } from 'antd';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import SignIn from '../../components/SignIn';
 import SignUp from '../../components/SignUp';
 import { TitleContext } from '../../utils/contexts';
+import styles from './index.module.scss';
 
 const { TabPane } = Tabs;
 
 export default function LoginPage() {
   const { setTitle } = useContext(TitleContext);
-  setTitle('Вхід/Реєстрація');
+  useEffect(() => {
+    setTitle('Вхід/Реєстрація');
+  }, [setTitle]);
 
   return (
-    <div className="site-form">
+    <div className={styles.login}>
       <Tabs centered size="large" defaultActiveKey="1">
         <TabPane tab="Вхід" key="1">
           <SignIn />

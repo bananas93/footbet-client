@@ -10,7 +10,7 @@ export default function ResultsTable({
   handleMenuClick, toggleFullTableModal, selectedTour, toggleShowUserInfo, results,
 }) {
   const menu = (
-    <Menu onClick={handleMenuClick}>
+    <Menu selectable onClick={handleMenuClick}>
       <Menu.Item key="0">Загальний результат</Menu.Item>
       <Menu.Divider />
       <Menu.Item key="1">1 Тур</Menu.Item>
@@ -62,6 +62,6 @@ ResultsTable.propTypes = {
   handleMenuClick: PropTypes.func,
   toggleShowUserInfo: PropTypes.func,
   toggleFullTableModal: PropTypes.func,
-  selectedTour: PropTypes.number,
+  selectedTour: PropTypes.string,
   results: PropTypes.array,
 };

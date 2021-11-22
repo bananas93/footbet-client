@@ -9,13 +9,6 @@
     border-radius: 15px;
     overflow: hidden;
     z-index: 999;
-
-    &Empty {
-        height: calc(100% - 117px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 }
 
 .chatList {

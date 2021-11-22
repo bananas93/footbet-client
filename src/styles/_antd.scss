@@ -16,6 +16,58 @@
     padding: 0;
 }
 
+.ant-form-inline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .form-item-separator {
+    flex: 0 0 10%;
+    max-width: 10%;
+    text-align: center;
+  }
+
+  .ant-form-item {
+    &.form-item {
+      display: flex;
+      flex: 0 0 45%;
+      max-width: 45%;
+      margin: 0;
+
+      .ant-form-item-label {
+        flex: 0 0 60%;
+        max-width: 60%;
+        text-align: left;
+
+        > label {
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+
+      .ant-form-item-control {
+        flex: 0 0 40%;
+        max-width: 40%;
+
+        input {
+          text-align: center;
+        }
+      }
+
+      &:last-child {
+        .ant-form-item-label {
+          order: 2;
+          text-align: right;
+        }
+
+        .ant-form-item-control {
+          order: 1;
+        }
+      }
+    }
+  }
+}
+
 .ant-page-header {
     position: fixed;
     right: 0;

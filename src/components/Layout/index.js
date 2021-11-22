@@ -27,8 +27,8 @@ const Layout = ({
                 {children}
               </main>
               <Footer />
-              {auth && (
-                <Chat isPage={false} />
+              {(user && socket) && (
+                <Chat />
               )}
             </div>
           </TitleContext.Provider>

@@ -9,3 +9,12 @@ export const getMessages = async () => {
     },
   });
 };
+
+export const deleteMessage = async (id) => {
+  const token = getCookie('JWToken');
+  return await axios.delete(`${process.env.REACT_APP_LOCAL_API}/chat/${id}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};

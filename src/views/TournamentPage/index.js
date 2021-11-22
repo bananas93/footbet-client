@@ -28,7 +28,7 @@ const TournamentPage = () => {
 
   const socket = useContext(SocketContext);
 
-  const [selectedTour, setSelectedTour] = useState(0);
+  const [selectedTour, setSelectedTour] = useState('0');
   const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournamentId}`) || '1');
   const [matches, setMatches] = useState([]);
   const [results, setResults] = useState([]);
@@ -134,7 +134,7 @@ const TournamentPage = () => {
   }, []);
 
   const changeTabs = (key) => {
-    localStorage.setItem(`tab - ${tournamentId}`, key);
+    localStorage.setItem(`tab-${tournamentId}`, key);
     setActiveTab(key);
   };
 
