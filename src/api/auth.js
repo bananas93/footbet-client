@@ -1,14 +1,7 @@
 import axios from 'axios';
 import { getJWToken } from '../helpers/authHelper';
 
-export const login = async ({ email, password }) => await axios({
-  method: 'post',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  url: `${process.env.REACT_APP_LOCAL_API}/users/login`,
-  data: { email, password },
-});
+export const login = async ({ email, password }) => await axios.post(`${process.env.REACT_APP_LOCAL_API}/users/login`, { email, password });
 
 export const register = async ({ email, name, password }) => axios({
   method: 'post',

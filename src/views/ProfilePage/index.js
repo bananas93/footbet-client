@@ -21,7 +21,10 @@ function ProfilePage() {
       try {
         const res = await getUserDetails();
         if (res.status && res.status === 200) {
-          form.setFieldsValue(res.data);
+          form.setFieldsValue({
+            name: res.data.name,
+            email: res.data.email,
+          });
         }
       } catch (error) {
         notificationWrapper(true, error.message);
@@ -29,14 +32,21 @@ function ProfilePage() {
     };
     loadUserData();
   }, []);
+
   const changeProfile = async (values) => {
+    if (values.password !== values.password2) {
+      notificationWrapper(true, 'Пароль не співпадають');
+      return;
+    }
     try {
       const res = await updateUserDetails(values);
       if (res.status && res.status === 201) {
-        form.setFieldsValue(res.data);
+        form.setFieldsValue({
+          name: res.data.name,
+          email: res.data.email,
+        });
         notificationWrapper(false, 'Профіль успішно оновлено');
       }
-      form.setFieldsValue(res);
     } catch (error) {
       notificationWrapper(true, error.message);
     }
@@ -62,6 +72,7 @@ function ProfilePage() {
             name="signin-form"
             requiredMark={false}
             colon={false}
+            autoComplete="chrome-off"
           >
             <Form.Item
               label="Email"
@@ -80,15 +91,28 @@ function ProfilePage() {
             <Divider />
             <Form.Item
               label="Новий пароль"
-              name="password1"
-              rules={[{ message: 'Введіть ваш пароль' }]}
+              name="password"
+              hasFeedback
+              rules={[{ message: 'Введіть ваш новий пароль' }]}
             >
               <Input.Password />
             </Form.Item>
             <Form.Item
-              label="Повторіть новий пароль"
+              label="Підтвердіть новий пароль"
               name="password2"
-              rules={[{ message: 'Введіть ваш пароль' }]}
+              dependencies={['password']}
+              hasFeedback
+              rules={[
+                { message: 'Підтвердіть ваш новий пароль' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                  },
+                }),
+              ]}
             >
               <Input.Password />
             </Form.Item>

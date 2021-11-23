@@ -1,37 +1,34 @@
 import {
-  Input, Form, Checkbox, notification, Modal, Button, Divider,
+  Input, Form, Checkbox, Button, Divider,
 } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import Card from '../Card';
 import { login } from '../../api/auth';
+import { notificationWrapper } from '../../helpers/notification';
+import { setCookie } from '../../helpers/authHelper';
 
 export default function SignIn() {
-  const notificationError = (error) => {
-    notification.error({
-      message: 'Помилка',
-      description: error,
-    });
-  };
-  const signIn = (values) => {
-    login(values).then((res) => {
-      if (res) {
-        if (res.status === 200) {
-          window.location.reload();
-        } else {
-          Modal.error({
-            title: 'Помилка',
-            content: res.data.error,
-            onOk() {},
-          });
-        }
-      } else {
-        notificationError('Помилка серверу...');
+  const signIn = async (values) => {
+    try {
+      const res = await login(values);
+      if (res.status && res.status === 200) {
+        const { token } = res.data;
+        setCookie('JWToken', token, {
+          expires: new Date(Date.now() + 10 * 604800000),
+          path: '/',
+        });
+        window.location.href = 'https://footbet.site/profile';
       }
-    });
+    } catch (error) {
+      const err = error.message || error.response.data;
+      notificationWrapper(true, err);
+    }
   };
+
   const onFinish = (values) => {
     signIn(values);
   };
+
   return (
     <div style={{ margin: '10px' }}>
       <Card title="Вхід">

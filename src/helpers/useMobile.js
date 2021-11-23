@@ -13,6 +13,6 @@ export default function useMobile() {
     };
   }, []);
 
-  const isMobile = (width <= 768);
+  const isMobile = (width <= 640);
   return isMobile;
 }

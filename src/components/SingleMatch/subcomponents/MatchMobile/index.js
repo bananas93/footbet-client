@@ -59,9 +59,7 @@ export default function MatchMobile({
             <div className={style.matchScoresRegular}>{myBet.awayBet}</div>
           </div>
           <div className={style.matchPoints}>
-            (
-            {match.status === 'Заплановано' ? 0 : myBet.points}
-            )
+            {match.status === 'Заплановано' ? '(0)' : `(${myBet.points})`}
           </div>
         </div>
       ) : (
