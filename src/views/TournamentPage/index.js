@@ -15,6 +15,7 @@ import { getTournament } from '../../api/tournaments';
 import MatchesTabs from '../../components/MatchesTabs';
 import 'moment/locale/uk';
 import { notificationWrapper } from '../../helpers/notification';
+import { updateMatch } from '../../helpers/updateMatch';
 
 moment.locale('uk');
 const { TabPane } = Tabs;
@@ -80,22 +81,10 @@ const TournamentPage = () => {
     }
   };
 
-  const updateMatch = (match) => {
-    const date = match.datetime.split('T')[0];
-    const newMatches = [...matches];
-    const matchesTour = newMatches.findIndex((item) => item.date === date);
-    // eslint-disable-next-line max-len
-    const matchIndex = newMatches[matchesTour].games.findIndex((item) => Number(item.id) === Number(match.id));
-    const updatedMatch = newMatches[matchesTour].games[matchIndex];
-    updatedMatch.homeGoals = match.homeGoals;
-    updatedMatch.awayGoals = match.awayGoals;
-    updatedMatch.status = match.status;
-    setMatches(newMatches);
-    document.getElementById(`match - ${match.id}`).classList.add('updated');
-    setTimeout(() => {
-      document.getElementById(`match - ${match.id}`).classList.remove('updated');
-    }, 5000);
-  };
+  useEffect(() => {
+    loadMatches();
+    loadResults();
+  }, []);
 
   const playNotification = () => {
     const audio = new Audio('notification.mp3');
@@ -103,15 +92,19 @@ const TournamentPage = () => {
   };
 
   useEffect(() => {
-    if (!socket) return;
     socket.on('matchUpdate', (data) => {
       if (!(Object.keys(data).length === 0 && data.constructor === Object)) {
-        updateMatch(data);
+        updateMatch(matches, data);
+        document.getElementById(`match-${data.id}`).classList.add('updated');
+        setTimeout(() => {
+          document.getElementById(`match-${data.id}`).classList.remove('updated');
+        }, 5000);
         loadResults();
         playNotification();
       }
     });
-  }, [socket]);
+    return () => socket.off('matchUpdate');
+  }, [matches]);
 
   useEffect(() => {
     const loadTournament = async () => {
@@ -126,11 +119,6 @@ const TournamentPage = () => {
       }
     };
     loadTournament();
-  }, []);
-
-  useEffect(() => {
-    loadMatches();
-    loadResults();
   }, []);
 
   const changeTabs = (key) => {
