@@ -11,7 +11,7 @@ import styles from './index.module.scss';
 import Message from './subcomponents/Message';
 
 export default function ChatList({
-  messages, handleSendMessage, toggleShowChat, removeMessage,
+  messages, handleSendMessage, toggleShowChat, removeMessage, editMessage,
 }) {
   const { id, name } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -19,10 +19,11 @@ export default function ChatList({
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
     window.localStorage.setItem('unreaded-messages', 0);
-    const chat = document?.getElementById('chat-list');
-    chat?.scrollTo(0, chat.scrollHeight);
+
     setTimeout(() => {
       setLoading(false);
+      const chat = document?.getElementById('chat-list');
+      chat?.scrollTo(0, chat.scrollHeight);
     }, 100);
   }, []);
 
@@ -49,7 +50,12 @@ export default function ChatList({
                         classNames="item"
                         timeout={200}
                       >
-                        <Message id={id} item={item} removeMessage={removeMessage} />
+                        <Message
+                          id={id}
+                          item={item}
+                          removeMessage={removeMessage}
+                          editMessage={editMessage}
+                        />
                       </CSSTransition>
                     ))}
                   </TransitionGroup>
@@ -68,4 +74,5 @@ ChatList.propTypes = {
   messages: PropTypes.array,
   handleSendMessage: PropTypes.func,
   removeMessage: PropTypes.func,
+  editMessage: PropTypes.func,
 };

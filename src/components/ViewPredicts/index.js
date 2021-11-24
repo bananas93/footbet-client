@@ -38,7 +38,7 @@ export default function ViewPredicts({ showPredictsModal, toggleShowPredictsModa
       <div className={styles.row}>
         <span className={styles.team}>{match.homeTeam.name}</span>
         <img className={styles.logo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
-        <div className={styles.goals}>
+        <div className={cn(styles.goals, { [styles.goalsLive]: match.status === 'Live' })}>
           <span className={styles.goal}>{match.homeGoals}</span>
           <span className={styles.separator}>-</span>
           <span className={styles.goal}>{match.awayGoals}</span>

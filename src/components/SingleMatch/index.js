@@ -2,7 +2,6 @@
 import PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
 import { notificationWrapper } from '../../helpers/notification';
-import { useMinute } from '../../helpers/useMinute';
 import PredictModal from '../PredictModal';
 import ViewPredicts from '../ViewPredicts';
 import { addBet } from '../../api/bets';
@@ -64,7 +63,6 @@ export default function MatchesCard({ match, loadMatches }) {
     return toggleShowPredictsModal();
   };
   const myBet = match.bets.find((bet) => bet.myBet);
-  const MatchMinute = useMinute(match.datetime);
 
   return (
     <>
@@ -73,7 +71,6 @@ export default function MatchesCard({ match, loadMatches }) {
           winner={winner}
           handleMatchClick={handleMatchClick}
           match={match}
-          MatchMinute={MatchMinute}
           myBet={myBet}
         />
       ) : (
@@ -81,7 +78,6 @@ export default function MatchesCard({ match, loadMatches }) {
           winner={winner}
           handleMatchClick={handleMatchClick}
           match={match}
-          MatchMinute={MatchMinute}
           myBet={myBet}
         />
       )}

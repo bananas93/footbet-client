@@ -4,30 +4,34 @@ import { Dropdown } from 'antd';
 import moment from 'moment';
 import MessageMenu from '../MessageMenu';
 import styles from './index.module.scss';
+import useMobile from '../../../../../../helpers/useMobile';
 
-const Message = ({ item, id, removeMessage }) => (
-  <li
-    className={
+const Message = ({ item, id, removeMessage }) => {
+  const isMobile = useMobile();
+  return (
+    <li
+      className={
       cn(styles.chatListMessage, {
         [styles.chatListMessageMy]: item.user.id === id,
       })
     }
-  >
-    <Dropdown disabled={item.user.id !== id} overlay={<MessageMenu removeMessage={removeMessage} message={item} />} trigger={['contextMenu']}>
-      <div className={styles.chatListWrapper}>
-        <div className={styles.chatListWrap}>
-          {item.user.id !== id && (
+    >
+      <Dropdown disabled={item.user.id !== id} overlay={<MessageMenu removeMessage={removeMessage} message={item} />} trigger={[isMobile ? 'click' : 'contextMenu']}>
+        <div className={styles.chatListWrapper}>
+          <div className={styles.chatListWrap}>
+            {item.user.id !== id && (
             <div className={styles.chatListName}>{item.user.name}</div>
-          )}
-          <div className={styles.chatListText}>
-            {item.message}
-            <span className={styles.chatListTime}>{moment(item.createdAt).format('HH:mm')}</span>
+            )}
+            <div className={styles.chatListText}>
+              {item.message}
+              <span className={styles.chatListTime}>{moment(item.createdAt).format('HH:mm')}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </Dropdown>
-  </li>
-);
+      </Dropdown>
+    </li>
+  );
+};
 
 Message.propTypes = {
   item: PropTypes.object,

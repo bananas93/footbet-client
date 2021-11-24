@@ -9,7 +9,7 @@ const matchMinute = (date) => {
   return nowDate.diff(matchDate, 'minutes');
 };
 
-export const useMinute = ({ date }) => {
+const MatchMinute = ({ date }) => {
   const [minute, setMinute] = useState(matchMinute(date));
 
   useInterval(() => {
@@ -31,11 +31,17 @@ export const useMinute = ({ date }) => {
     }
     return minute;
   };
+  const min = checkMinute();
   return (
-    <div className="match-minute">{checkMinute()}</div>
+    <div className="match-minute" style={{ color: '#ed1c24' }}>
+      <span>{min}</span>
+      <img src="/blinker.gif" alt="blinker" style={{ verticalAlign: 'top' }} />
+    </div>
   );
 };
 
-useMinute.propTypes = {
+MatchMinute.propTypes = {
   date: PropTypes.string,
 };
+
+export default MatchMinute;

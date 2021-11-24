@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const token = getCookie('JWToken');
-    const newSocket = io('https://footbet.site', {
+    const newSocket = io('http://localhost:3000', {
       query: { token },
     });
     setSocket(newSocket);

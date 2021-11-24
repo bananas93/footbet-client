@@ -26,7 +26,7 @@ export default function ChatMessage({ handleSendMessage }) {
     setTimeout(() => {
       const chat = document.getElementById('chat-list');
       chat.scrollTo(0, chat.scrollHeight);
-    }, 0);
+    }, 100);
   };
 
   useEffect(() => {
