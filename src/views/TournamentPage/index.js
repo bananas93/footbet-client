@@ -55,7 +55,7 @@ const TournamentPage = () => {
         setResults(res.data);
       }
     } catch (error) {
-      notificationWrapper(true, error.message);
+      notificationWrapper(true, error.response.data.error);
     }
   };
 
@@ -66,7 +66,7 @@ const TournamentPage = () => {
         setMatches(res.data);
       }
     } catch (error) {
-      notificationWrapper(true, error.message);
+      notificationWrapper(true, error.response.data.error);
     }
   };
 
@@ -77,7 +77,7 @@ const TournamentPage = () => {
         setResults(res.data);
       }
     } catch (error) {
-      notificationWrapper(true, error.message);
+      notificationWrapper(true, error.response.data.error);
     }
   };
 
@@ -87,7 +87,7 @@ const TournamentPage = () => {
   }, []);
 
   const playNotification = () => {
-    const audio = new Audio('notification.mp3');
+    const audio = new Audio('/notification.mp3');
     audio.play();
   };
 
@@ -115,7 +115,7 @@ const TournamentPage = () => {
           setTitle(res.data.name);
         }
       } catch (error) {
-        notificationWrapper(true, error.message);
+        notificationWrapper(true, error.response.data.error);
       }
     };
     loadTournament();
@@ -135,7 +135,6 @@ const TournamentPage = () => {
         <Tabs defaultActiveKey={1} centered size="large">
           <TabPane tab="Матчі" key={1}>
             <MatchesTabs
-              isBets={false}
               matches={matches}
               tournament={tournament}
               loadMatches={loadMatches}

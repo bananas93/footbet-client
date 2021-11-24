@@ -5,6 +5,7 @@ export const updateMatch = (matches, match) => {
   // eslint-disable-next-line max-len
   const matchIndex = newMatches[matchesTour].games.findIndex((item) => Number(item.id) === Number(match.id));
   const updatedMatch = newMatches[matchesTour].games[matchIndex];
+  updatedMatch.bets = match.bets;
   updatedMatch.homeGoals = match.homeGoals;
   updatedMatch.awayGoals = match.awayGoals;
   updatedMatch.status = match.status;

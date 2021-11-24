@@ -34,7 +34,7 @@ const MatchDesktop = ({
         <span>{match.homeTeam.name}</span>
         <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
       </div>
-      <div className={cn(style.matchScore, { [style.matchScoreLive]: match.status === 'Live' })}>
+      <div className={cn(style.matchScore, { [style.matchScoreLive]: match.status === 'Live' }, { [style.matchScoreScheduled]: match.status === 'Заплановано' })}>
         {match.status === 'Заплановано' ? (
           '-:-'
         ) : (
