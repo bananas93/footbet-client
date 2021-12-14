@@ -8,7 +8,7 @@ import { TitleContext } from '../../utils/contexts';
 
 const HomePage = () => {
   const [tournaments, setTournaments] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { setTitle } = useContext(TitleContext);
   useEffect(() => {
     setTitle('Головна');
@@ -16,7 +16,6 @@ const HomePage = () => {
 
   useEffect(() => {
     const loadTournaments = async () => {
-      setLoading(true);
       try {
         const res = await getTournaments();
         if (res.status && res.status === 200) {

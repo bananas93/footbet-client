@@ -13,7 +13,7 @@ const MatchDesktop = ({
   <button className={style.wrap} id={`match-${match.id}`} type="button" onClick={handleMatchClick}>
     <div className={style.match}>
       <div className={style.matchTime}>
-        {match.group ? `Група ${match.group}` : match.tour}
+        {match.group ? `Група ${match.group}` : match.stage}
         <br />
         {match.status !== 'Live' ? (
           <div>

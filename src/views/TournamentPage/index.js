@@ -82,8 +82,14 @@ const TournamentPage = () => {
   };
 
   useEffect(() => {
-    loadMatches();
-    loadResults();
+    Promise.all([getMatches(tournamentId), getResults(tournamentId)])
+      .then((res) => {
+        setMatches(res[0].data);
+        setResults(res[1].data);
+      })
+      .catch((error) => {
+        notificationWrapper(true, error.message);
+      });
   }, []);
 
   const playNotification = () => {
@@ -129,6 +135,7 @@ const TournamentPage = () => {
   if (!tournament) {
     return <Loading />;
   }
+
   return (
     <>
       {isMobile ? (

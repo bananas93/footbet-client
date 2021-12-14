@@ -9,7 +9,7 @@ import useMobile from '../../helpers/useMobile';
 import MatchMobile from './subcomponents/MatchMobile';
 import MatchDesktop from './subcomponents/MatchDesktop';
 
-export default function MatchesCard({ match, loadMatches }) {
+function MatchesCard({ match, loadMatches }) {
   const [showAddPredictModal, setShowAddPredictModal] = useState(false);
   const [showPredictsModal, setShowPredictsModal] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -105,3 +105,5 @@ MatchesCard.propTypes = {
   loadMatches: PropTypes.func,
   match: PropTypes.object,
 };
+
+export default MatchesCard;

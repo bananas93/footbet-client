@@ -20,7 +20,7 @@ const Layout = ({
           <TitleContext.Provider value={{ title, setTitle }}>
             <div className={cn(styles.app, 'app')}>
               {auth && (
-              <Header />
+                <Header />
               )}
               <main className={styles.main}>
                 <h1 className={styles.title}>{title}</h1>
