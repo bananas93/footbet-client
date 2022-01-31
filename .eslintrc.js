@@ -43,6 +43,7 @@ module.exports = {
     },
   },
   rules: {
+    'import/no-cycle': 0,
     'linebreak-style': 0,
     'react/react-in-jsx-scope': 0,
     'react/jsx-filename-extension': 0,

@@ -14,7 +14,6 @@
     "dotenv": "^8.2.0",
     "emoji-picker-react": "^3.4.8",
     "moment": "^2.29.1",
-    "node-sass": "^5.0.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -35,7 +34,8 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "sass": "^1.49.0"
   },
   "scripts": {
     "start": "cross-env PORT=8080 react-scripts start",
