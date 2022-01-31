@@ -1,15 +1,62 @@
 import PropTypes from 'prop-types';
 import { SendOutlined } from '@ant-design/icons';
+import { useContext, useEffect, useState } from 'react';
+import InputEmoji from 'react-input-emoji';
 import style from './index.module.scss';
+import { UserContext, SocketContext } from '../../../../utils/contexts';
 
-export default function ChatMessage({
-  message, handleMessageInput, handleSendMessage, handleSendMessageEnter,
-}) {
+export default function ChatMessage({ handleSendMessage }) {
+  const user = useContext(UserContext);
+  const [message, setMessage] = useState('');
+  const [typingUsers, setTypingUsers] = useState([]);
+  const socket = useContext(SocketContext);
+
+  const handleMessageInput = (e) => {
+    setMessage(e);
+    const { name } = user;
+    if (e) {
+      socket.emit('messageTyping', { name, typing: true });
+    } else {
+      socket.emit('messageTyping', { name, typing: false });
+    }
+  };
+  const sendMessage = () => {
+    setMessage('');
+    handleSendMessage(message);
+    setTimeout(() => {
+      const chat = document.getElementById('chat-list');
+      chat.scrollTo(0, chat.scrollHeight);
+    }, 100);
+  };
+
+  useEffect(() => {
+    const { name } = user;
+    socket.on('typingUsers', (data) => {
+      setTypingUsers(data);
+    });
+    return () => {
+      socket.emit('messageTyping', { name, typing: false });
+      socket.off('typingUsers');
+    };
+  }, []);
+
   return (
     <div className={style.chatMessage}>
-      <div className={style.chatMessageRow}>
-        <input onKeyDown={handleMessageInput} onKeyPress={handleSendMessageEnter} onChange={handleMessageInput} value={message} className={style.chatMessageInput} type="text" placeholder="Напишіть повідомлення" />
-        <button onClick={handleSendMessage} disabled={!message.length} className={style.chatMessageButton} type="submit">
+      <span className={style.chatMessageTyping}>
+        {typingUsers.map((userName, index) => `${index ? ', ' : ''} ${userName}`)}
+        {' '}
+        {typingUsers.length ? ' набирає повідомлення...' : ''}
+      </span>
+      <div className={style.chatMessageRow} id="message">
+        <InputEmoji
+          onEnter={sendMessage}
+          onChange={handleMessageInput}
+          value={message}
+          fontFamily="Rubik"
+          height={40}
+          placeholder="Напишіть повідомлення"
+        />
+        <button onClick={sendMessage} disabled={!message.length || !message.replace(/\s/g, '').length} className={style.chatMessageButton} type="submit">
           <SendOutlined />
         </button>
       </div>
@@ -18,8 +65,5 @@ export default function ChatMessage({
 }
 
 ChatMessage.propTypes = {
-  handleMessageInput: PropTypes.func,
   handleSendMessage: PropTypes.func,
-  handleSendMessageEnter: PropTypes.func,
-  message: PropTypes.string,
 };

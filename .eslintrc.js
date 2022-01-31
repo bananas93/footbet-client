@@ -43,6 +43,7 @@ module.exports = {
     },
   },
   rules: {
+    'linebreak-style': 0,
     'react/react-in-jsx-scope': 0,
     'react/jsx-filename-extension': 0,
     'react/require-default-props': 0,
@@ -58,7 +59,7 @@ module.exports = {
     'no-unused-expressions': 0,
     'no-param-reassign': 0,
     camelcase: 0,
-    "no-unused-vars": "warn",
+    'no-unused-vars': 'warn',
     'prefer-promise-reject-errors': 0,
   },
 };

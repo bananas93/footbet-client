@@ -5,26 +5,44 @@
     left: 0;
     border-top: 1px solid #ccc;
     background-color: #fff;
-
     &Row {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 8px 5px;
     }
+    &Page {
+        bottom: 60px;
+    }
 
     &Input {
         background-color: #f0f0f0;
         width: calc(100% - 40px);
         border: none;
-        padding: 8px 15px;
+        padding: 8px 30px;
         border-radius: 50px;
         font-size: 14px;
         transition: all .3s ease 0s;
+        resize: none;
 
         &:focus {
             outline: none;
         }
+    }
+
+    &Emoji {
+        position: absolute;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        right: 60px;
+    }
+
+    &Typing {
+        display: block;
+        font-size: 14px;
+        padding: 5px 0 0 10px;
+        margin-bottom: -5px;
     }
 
     &Button {

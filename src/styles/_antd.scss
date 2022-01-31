@@ -1,0 +1,140 @@
+.ant-layout {
+    background-color: #fff;
+}
+
+.ant-card {
+    border-radius: 15px;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.ant-layout-header {
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.1);
+}
+
+.ant-card-extra {
+    padding: 0;
+}
+
+.ant-form-inline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .form-item-separator {
+    flex: 0 0 10%;
+    max-width: 10%;
+    text-align: center;
+  }
+
+  .ant-form-item {
+    &.form-item {
+      display: flex;
+      flex: 0 0 45%;
+      max-width: 45%;
+      margin: 0;
+
+      .ant-form-item-label {
+        flex: 0 0 60%;
+        max-width: 60%;
+        text-align: left;
+
+        > label {
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+
+      .ant-form-item-control {
+        flex: 0 0 40%;
+        max-width: 40%;
+
+        input {
+          text-align: center;
+        }
+      }
+
+      &:last-child {
+        .ant-form-item-label {
+          order: 2;
+          text-align: right;
+        }
+
+        .ant-form-item-control {
+          order: 1;
+        }
+      }
+    }
+  }
+}
+
+.ant-page-header {
+    position: fixed;
+    right: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 999;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 9.5px 24px;
+}
+.ant-menu-item {
+    &:hover {
+      .ant-btn {
+        &.ant-btn-text {
+          color: #1890ff;
+        }
+      }
+    }
+  
+    .ant-btn {
+      &.ant-btn-text {
+        padding: 0;
+  
+        &:hover {
+          background: transparent;
+        }
+      }
+    }
+  }
+  
+  .ant-menu-submenu {
+    .ant-btn-text {
+      padding: 0;
+    }
+  }
+  
+  .ant-card-extra {
+    .ant-btn-link {
+      padding: 0;
+      color: #001628;
+    }
+  }
+  
+  .ant-card-head-wrapper {
+    .ant-card-head-title {
+      font-weight: 900;
+    }
+  }
+  
+  .ant-table-row {
+    cursor: pointer;
+  
+    &:hover {
+      .ant-table-cell {
+        transition: all .3s ease 0s;
+        color: #828282;
+      }
+    }
+  }
+  
+  .react-emoji {
+    .react-input-emoji--container {
+        margin: 0;
+    }
+    .react-input-emoji--button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  }
+  

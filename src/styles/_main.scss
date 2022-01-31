@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800&display=swap');
 *,
 ::after,
 ::before {
@@ -7,12 +6,11 @@
 }
 
 body {
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
-  line-height: 24px;
-  font-family: 'Nunito', sans-serif;
-  background-color: #f0f3f5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.2;
+  background-color: #fff;
+  color: #201d1d;
 }
 
 a {
@@ -48,79 +46,5 @@ strong {
 
   .site-layout-background {
     background: #fff;
-  }
-}
-
-.ant-menu-item {
-  &:hover {
-    .ant-btn {
-      &.ant-btn-text {
-        color: #1890ff;
-      }
-    }
-  }
-
-  .ant-btn {
-    &.ant-btn-text {
-      padding: 0;
-
-      &:hover {
-        background: transparent;
-      }
-    }
-  }
-}
-
-.ant-menu-submenu {
-  .ant-btn-text {
-    padding: 0;
-  }
-}
-
-.ant-card-extra {
-  .ant-btn-link {
-    padding: 0;
-    color: #001628;
-  }
-}
-
-.ant-card-head-wrapper {
-  .ant-card-head-title {
-    font-weight: 900;
-  }
-}
-
-.ant-table-row {
-  cursor: pointer;
-
-  &:hover {
-    .ant-table-cell {
-      transition: all .3s ease 0s;
-      color: #828282;
-    }
-  }
-}
-
-@media screen and (max-width: 768px) {
-
-  .site-layout,
-  .ant-layout-header {
-    padding: 0 16px;
-  }
-
-  .site-title {
-    font-size: 22px;
-    line-height: 40px;
-    margin-bottom: 5px;
-  }
-
-  .ant-menu.ant-menu-light>.ant-menu-item,
-  .ant-menu.ant-menu-light>.ant-menu-submenu {
-    padding: 0;
-    margin: 0 10px;
-  }
-
-  .ant-col {
-    width: 100%;
   }
 }

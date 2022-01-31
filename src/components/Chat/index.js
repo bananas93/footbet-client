@@ -1,101 +1,104 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Badge } from 'antd';
 import { MessageOutlined } from '@ant-design/icons';
 import ChatList from './subcomponents/ChatList';
 import style from './index.module.scss';
-
-const messagesList = [
-  {
-    id: 1,
-    name: 'Саша',
-    message: 'Але найкращий пенальті поки у Погба',
-    my: false,
-  },
-  {
-    id: 2,
-    name: 'Влад',
-    message: 'Зараз все рішитьмя',
-    my: false,
-  },
-  {
-    id: 3,
-    name: 'Влад',
-    message: 'Буде перший гол на євро',
-    my: false,
-  },
-  {
-    id: 4,
-    name: 'Томаш',
-    message: 'Капець',
-    my: false,
-  },
-  {
-    id: 5,
-    name: 'Натан',
-    message: 'Мбаппе буває)',
-    my: false,
-  },
-  {
-    id: 6,
-    name: 'Давид',
-    message: 'Да, Мбаппе має не забити',
-    my: true,
-  },
-  {
-    id: 7,
-    name: 'Саша',
-    message: 'Шкода Мбаппе',
-    my: false,
-  },
-  {
-    id: 8,
-    name: 'Давид',
-    message: 'Думаю Зідан новий тренер Франції',
-    my: true,
-  },
-  {
-    id: 9,
-    name: 'Влад',
-    message: 'Буде перший гол на євро',
-    my: false,
-  },
-];
+import { SocketContext, UserContext } from '../../utils/contexts';
+import { notificationWrapper } from '../../helpers/notification';
+import { getMessages, deleteMessage } from '../../api/chat';
 
 export default function Chat() {
-  const [messages, setMessages] = useState(messagesList);
+  const { id, name } = useContext(UserContext);
   const [showChat, setShowChat] = useState(false);
-  const [message, setMessage] = useState('');
+  const [unreadedMessages, setUnreadedMessages] = useState(0);
+  const [messages, setMessages] = useState([]);
+  const socket = useContext(SocketContext);
+
   const toggleShowChat = () => {
     setShowChat(!showChat);
   };
-  const handleMessageInput = (e) => {
-    setMessage(e.target.value);
-  };
-  const handleSendMessage = () => {
+
+  const handleSendMessage = (message) => {
+    socket.emit('chatMessage', message);
+    // eslint-disable-next-line max-len
+    const messageId = messages[messages.length - 1].days[messages[messages.length - 1].days.length - 1].id;
+    const date = new Date();
+    const createdAt = date.toISOString();
     const newMessage = {
-      id: new Date().getTime(),
-      name: 'Давид',
+      id: messageId + 10,
       message,
-      my: true,
+      createdAt,
+      user: { id, name },
     };
-    setMessages([...messages, newMessage]);
-    setMessage('');
-    setTimeout(() => {
-      const chat = document.getElementById('chat-list');
-      chat.scrollTo(0, chat.scrollHeight);
-    }, 100);
+    const oldMsg = [...messages];
+    oldMsg[messages.length - 1].days.push(newMessage);
+    setMessages(oldMsg);
   };
-  const handleSendMessageEnter = (e) => {
-    if (e.charCode === 13) {
-      handleSendMessage();
+
+  useEffect(() => {
+    const loadMessages = async () => {
+      try {
+        const res = await getMessages();
+        if (res.status && res.status === 200) {
+          setMessages(res.data);
+        }
+      } catch (error) {
+        const { status } = error.response;
+        if (status !== 404) {
+          notificationWrapper(true, error.message);
+        }
+      }
+    };
+
+    loadMessages();
+  }, [showChat]);
+
+  useEffect(() => {
+    setUnreadedMessages(Number(window.localStorage.getItem('unreaded-messages')) || 0);
+
+    socket.on('message', (msg) => {
+      setUnreadedMessages((prevState) => {
+        window.localStorage.setItem('unreaded-messages', prevState + 1);
+        return prevState + 1;
+      });
+      setMessages((prevState) => {
+        const oldMsg = [...prevState];
+        oldMsg[prevState.length - 1].days.push(msg);
+        return oldMsg;
+      });
+    });
+
+    return () => {
+      socket.off('message');
+      document.documentElement.style.overflow = 'unset';
+    };
+  }, [showChat]);
+
+  const removeMessageFromArray = (message) => {
+    const date = message.createdAt.split('T')[0];
+    const newMessages = [...messages];
+    const messagesDate = newMessages.findIndex((item) => item.date === date);
+    // eslint-disable-next-line max-len
+    const messageIndex = newMessages[messagesDate].days.findIndex((item) => Number(item.id) === Number(message.id));
+    newMessages[messagesDate].days.splice(messageIndex, 1);
+    setMessages(newMessages);
+  };
+
+  const removeMessage = async (item) => {
+    removeMessageFromArray(item);
+    try {
+      await deleteMessage(item.id);
+    } catch (error) {
+      notificationWrapper(true, error.message);
     }
   };
+
   return (
     <>
       {!showChat ? (
         <div className={style.button}>
           <button onClick={toggleShowChat} type="button">
-            <Badge size="default" dot>
+            <Badge size="default" count={unreadedMessages}>
               <MessageOutlined style={{ color: '#fff', fontSize: '25px' }} />
             </Badge>
           </button>
@@ -103,11 +106,9 @@ export default function Chat() {
       ) : (
         <ChatList
           messages={messages}
-          handleMessageInput={handleMessageInput}
-          toggleShowChat={toggleShowChat}
-          handleSendMessageEnter={handleSendMessageEnter}
           handleSendMessage={handleSendMessage}
-          message={message}
+          toggleShowChat={toggleShowChat}
+          removeMessage={removeMessage}
         />
       )}
     </>

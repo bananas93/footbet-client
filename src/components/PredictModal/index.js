@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 export default function PredictModal({
   visible, onCreate, toggleShowAddPredictModal, confirmLoading, match,
 }) {
-  const myBet = match.bets.filter((bet) => bet.myBet);
+  const myBet = match.bets.find((bet) => bet.myBet);
   const [form] = Form.useForm();
   return (
     <Modal
@@ -29,7 +29,7 @@ export default function PredictModal({
         layout="inline"
         name="form_in_modal"
         initialValues={
-          myBet.length > 0 ? { home: myBet[0].homeBet, away: myBet[0].awayBet } : {}
+          myBet ? { home: myBet.homeBet, away: myBet.awayBet } : {}
         }
         requiredMark={false}
         colon={false}

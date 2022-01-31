@@ -4,9 +4,10 @@ import {
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { getInfo } from '../../api/users';
+import { notificationWrapper } from '../../helpers/notification';
 
 export default function UserInfo({
-  id, tournament, tour, showUserInfo, toggleShowUserInfo, onlineUsers,
+  id, tournament, tour, showUserInfo, toggleShowUserInfo,
 }) {
   const { TabPane } = Tabs;
   const [userInfo, setUserInfo] = useState([]);
@@ -14,29 +15,27 @@ export default function UserInfo({
   const [loading, setLoading] = useState(true);
 
   const getUserInfo = async () => {
-    await getInfo(id, tournament, tour)
-      .then((res) => {
-        if (res.status === 200) {
-          setUserInfo(res.data);
-          setUserName(res.data.result[0].user.name);
-        }
-      })
-      .catch((e) => {
-        console.error(e.message);
-      });
-    setLoading(false);
+    try {
+      const res = await getInfo(id, tournament, tour);
+      if (res.status === 200) {
+        setUserInfo(res.data);
+        setUserName(res.data.result[0].user.name);
+      }
+    } catch (error) {
+      notificationWrapper(true, `Помилка ${error}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     getUserInfo();
   }, []);
 
-  const online = onlineUsers.includes(id) ? 'online' : '';
-
   return (
     <Modal
       width={650}
-      title={`Інформація про ${userName} (${online})`}
+      title={`Інформація про ${userName}`}
       visible={showUserInfo}
       onCancel={toggleShowUserInfo}
       footer={null}
@@ -155,5 +154,4 @@ UserInfo.propTypes = {
   tour: PropTypes.number,
   showUserInfo: PropTypes.bool,
   toggleShowUserInfo: PropTypes.func,
-  onlineUsers: PropTypes.array,
 };

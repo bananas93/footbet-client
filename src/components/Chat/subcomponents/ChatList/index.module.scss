@@ -2,22 +2,29 @@
     position: fixed;
     right: 30px;
     bottom: 30px;
-    height: 30px;
-    width: 450px;
-    height: 500px;
+    width: 600px;
+    height: calc(100vh - 130px);
     background-color: #fff;
     box-shadow: 3px 5px 11px rgba(0, 0, 0, .3);
     border-radius: 15px;
     overflow: hidden;
-    z-index: 11;
+    z-index: 999;
+
+    &Empty {
+        height: calc(100% - 117px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .chatList {
-    padding: 10px 15px;
+    padding: 10px 15px 30px 15px;
     margin: 0;
     list-style: none;
-    height: calc(100% - 57px - 58px);
+    height: calc(100% - 117px);
     overflow-y: scroll;
+    position: relative;
 
     &Message {
         margin-bottom: 5px;
@@ -38,22 +45,35 @@
         }
     }
 
+    &Time {
+        font-size: 10px;
+        margin-left: 5px;
+        opacity: 0.6;
+        float: right;
+    }
+
     &Wrapper {
         display: inline-flex;
         align-items: center;
         background-color: #e7e7e7;
-        padding: 5px 15px 5px 5px;
-        border-radius: 35px;
+        padding: 6px 15px;
+        border-radius: 10px;
+        max-width: 90%;
     }
 
+
     &Wrap {
-        margin-left: 10px;
+        text-align: left;
     }
 
     &Name {
         color: rgb(100, 8, 8);
         font-weight: 600;
     }
+}
+
+.chatListPage {
+    height: calc(100% - 120px);
 }
 
 @media screen and (max-width: 767px) {

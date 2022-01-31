@@ -1,11 +1,20 @@
 import axios from 'axios';
-import { getCookie } from '../helpers/authHelper';
+import { getJWToken } from '../helpers/authHelper';
 
-export const getTournaments = () => {
-  const token = getCookie('JWToken');
-  return axios.get(`${process.env.REACT_APP_LOCAL_API}/tournaments`, {
+export const getTournaments = async () => {
+  const token = getJWToken();
+  return await axios.get(`${process.env.REACT_APP_LOCAL_API}/tournaments`, {
     headers: {
       Authorization: token,
     },
-  }).then((res) => res).catch((e) => e.response);
+  });
+};
+
+export const getTournament = async (id) => {
+  const token = getJWToken();
+  return await axios.get(`${process.env.REACT_APP_LOCAL_API}/tournaments/${id}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
 };

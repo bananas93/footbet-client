@@ -1,6 +1,9 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-useless-escape */
+import { getMyInfo } from '../api/users';
+import { notificationWrapper } from './notification';
+
 export const getCookie = (name) => {
   const matches = document.cookie.match(new RegExp(
     `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`,
@@ -37,15 +40,24 @@ export const deleteCookie = (name) => {
   });
 };
 
-export const checkAuthorization = () => {
-  const token = getCookie('JWToken');
-  if (token) {
-    return true;
-  }
-  return false;
-};
-
 export const getJWToken = () => `Bearer ${getCookie('JWToken')}`;
+
+export function checkAuthorization() {
+  return Boolean(getCookie('JWToken'));
+}
+
+export const getUserInfo = async () => {
+  await getMyInfo()
+    .then((res) => {
+      if (res.status === 200) {
+        return res.data;
+      }
+      return false;
+    })
+    .catch((e) => {
+      notificationWrapper(true, `Помилка ${e.message}`);
+    });
+};
 
 export const logout = () => {
   deleteCookie('JWToken');

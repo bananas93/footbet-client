@@ -1,106 +1,58 @@
+import { BrowserRouter as Router } from 'react-router-dom';
 import {
-  BrowserRouter, Switch, Route,
-} from 'react-router-dom';
-import { Layout } from 'antd';
-import { useState, useEffect } from 'react';
+  useState, useEffect, Suspense, useRef,
+} from 'react';
 import { io } from 'socket.io-client';
-import { AuthContext } from './utils/contexts';
-import ProtectedRoute from './helpers/ProtectedRoute';
+import Layout from './components/Layout';
 import { checkAuthorization, getCookie } from './helpers/authHelper';
-import SiteMenu from './components/SiteMenu';
-import { getTournaments } from './api/tournaments';
-import Home from './views/Home';
-import Rules from './views/Rules';
-import Matches from './views/Matches';
-import UserBets from './views/UserBets';
-import Profile from './views/Profile';
-import Login from './views/Login';
-import Chat from './components/Chat';
+import { ProtectedRoutes } from './routes/ProtectedRoutes';
+import { AuthRoutes } from './routes/AuthRoutes';
+import Loading from './components/Loading';
+import { notificationWrapper } from './helpers/notification';
 
 function App() {
-  const { Header, Footer, Content } = Layout;
-  const [authorized, setAuthorized] = useState(checkAuthorization());
-  const [tournaments, setTournaments] = useState([]);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+  const socketRef = useRef(null);
+  const [socketIo, setSocketIo] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = getCookie('JWToken');
-    const socket = io(process.env.REACT_APP_BASE_URL, {
-      query: { token },
-    });
-    socket.on('online', (online) => {
-      online = JSON.parse(online);
-      setOnlineUsers(online);
-    });
-    return () => socket.close();
-  }, []);
-
-  const loadTournaments = async () => {
-    await getTournaments()
-      .then((res) => {
-        if (res.status === 200) {
-          setTournaments(res.data);
-        }
-      })
-      .catch((e) => {
-        console.error(e.message);
+    if (socketRef.current === null) {
+      const token = getCookie('JWToken');
+      socketRef.current = io('https://footbet.pp.ua', {
+        query: { token },
       });
-  };
+    }
 
-  useEffect(() => {
-    loadTournaments();
+    const { current: socket } = socketRef;
+
+    try {
+      setSocketIo(socket);
+      socket.open();
+      socket.on('user', (data) => {
+        setUser(JSON.parse(data));
+      });
+    } catch (error) {
+      notificationWrapper(true, error.message);
+    }
+    return () => {
+      socket.close();
+    };
   }, []);
+
+  const auth = checkAuthorization();
 
   return (
-    <AuthContext.Provider value={{ authorized, setAuthorized }}>
-      <BrowserRouter>
-        <Layout>
-          <Header style={{
-            background: '#fff', position: 'fixed', zIndex: 1, width: '100%',
-          }}
-          >
-            <SiteMenu tournaments={tournaments} />
-          </Header>
-          <Content className="site-layout">
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={(props) => (
-                  <Home {...props} tournaments={tournaments} />
-                )}
-              />
-              <Route exact path="/rules" component={Rules} />
-              {tournaments.length && (
-                tournaments.map((tournament) => (
-                  <Route
-                    path={`/${tournament.slug}`}
-                    exact
-                    key={tournament.id}
-                    render={(props) => (
-                      <Matches {...props} onlineUsers={onlineUsers} tournament={tournament} />
-                    )}
-                  />
-                )))}
-              <Route
-                exact
-                path="/my-bets"
-                render={(props) => (
-                  <UserBets {...props} tournaments={tournaments} />
-                )}
-              />
-              <ProtectedRoute exact path="/profile" component={Profile} />
-              <Route exact path="/login" component={Login} />
-              <Route path="*">
-                <div>Error 404</div>
-              </Route>
-            </Switch>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>Footbet.site © 2021 Created by David Amerov</Footer>
-          <Chat />
-        </Layout>
-      </BrowserRouter>
-    </AuthContext.Provider>
+    <Router>
+      <Layout socket={socketIo} user={user} auth={auth}>
+        <Suspense fallback={<Loading />}>
+          {auth ? (
+            <ProtectedRoutes />
+          ) : (
+            <AuthRoutes />
+          )}
+        </Suspense>
+      </Layout>
+    </Router>
   );
 }
 

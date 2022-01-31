@@ -1,55 +1,78 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import moment from 'moment';
+import { Divider, Empty } from 'antd';
+import Loading from '../../../Loading';
 import ChatHeader from '../ChatHeader';
 import ChatMessage from '../ChatMessage';
-import style from './index.module.scss';
+import { UserContext } from '../../../../utils/contexts';
+import styles from './index.module.scss';
+import Message from './subcomponents/Message';
 
 export default function ChatList({
-  handleMessageInput, toggleShowChat, messages, handleSendMessage, handleSendMessageEnter, message,
+  messages, handleSendMessage, toggleShowChat, removeMessage, editMessage,
 }) {
-  useEffect(() => {
-    const chat = document.getElementById('chat-list');
-    chat.scrollTo(0, chat.scrollHeight);
-  }, []);
+  const { id, name } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
-    return () => {
-      document.documentElement.style.overflow = 'unset';
-    };
+    window.localStorage.setItem('unreaded-messages', 0);
+
+    setTimeout(() => {
+      setLoading(false);
+      const chat = document?.getElementById('chat-list');
+      chat?.scrollTo(0, chat.scrollHeight);
+    }, 100);
   }, []);
 
   return (
-    <div className={style.chat}>
-      <ChatHeader toggleShowChat={toggleShowChat} />
-      <ul id="chat-list" className={style.chatList}>
-        {messages.map((item) => (
-          <li className={`${style.chatListMessage} ${item.my ? style.chatListMessageMy : ''}`} key={item.id}>
-            <div className={style.chatListWrapper}>
-              <div className={style.chatListWrap}>
-                {!item.my && (
-                  <div className={style.chatListName}>{item.name}</div>
-                )}
-                <div className={style.chatListText}>{item.message}</div>
-              </div>
+    <div className={styles.chat}>
+      <ChatHeader name={name} toggleShowChat={toggleShowChat} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          {messages.length < 1 ? (
+            <div className={styles.chatEmpty}>
+              <Empty description="Повідомлень ще немає 😢" />
             </div>
-          </li>
-        ))}
-      </ul>
-      <ChatMessage
-        message={message}
-        handleMessageInput={handleMessageInput}
-        handleSendMessage={handleSendMessage}
-        handleSendMessageEnter={handleSendMessageEnter}
-      />
+          ) : (
+            <ul id="chat-list" className={styles.chatList}>
+              {messages.map((day) => (
+                <div key={day.id}>
+                  <Divider styles={{ fontWeight: 'bold' }}>{moment(day.date).format('LL')}</Divider>
+                  <TransitionGroup component="ul" className="todo-list">
+                    {day.days.map((item) => (
+                      <CSSTransition
+                        key={item.id}
+                        classNames="item"
+                        timeout={200}
+                      >
+                        <Message
+                          id={id}
+                          item={item}
+                          removeMessage={removeMessage}
+                          editMessage={editMessage}
+                        />
+                      </CSSTransition>
+                    ))}
+                  </TransitionGroup>
+                </div>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+      <ChatMessage handleSendMessage={handleSendMessage} />
     </div>
   );
 }
 ChatList.propTypes = {
   toggleShowChat: PropTypes.func,
-  handleMessageInput: PropTypes.func,
-  handleSendMessage: PropTypes.func,
-  handleSendMessageEnter: PropTypes.func,
   messages: PropTypes.array,
-  message: PropTypes.string,
+  handleSendMessage: PropTypes.func,
+  removeMessage: PropTypes.func,
+  editMessage: PropTypes.func,
 };
