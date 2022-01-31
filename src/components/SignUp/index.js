@@ -38,7 +38,7 @@ export default function SignUp() {
         <strong>Зареєструватися за допомогою</strong>
         {' '}
         <br />
-        <a className="sign-google" href="https://footbet.site/api/auth/google"><img width="30" src="/google.svg" alt="google" /></a>
+        <a className="sign-google" href="https://footbet.pp.ua/api/auth/google"><img width="30" src="/google.svg" alt="google" /></a>
         <Divider />
         <Form
           className="sign-in-form"

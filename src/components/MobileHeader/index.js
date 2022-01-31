@@ -49,7 +49,7 @@ export default function MobileHeader() {
         backIcon={pathname === '/rules' || pathname === '/world-cup-2022' || pathname === '/europa-league-2021' || pathname === '/champions-league-2021' ? <ArrowLeftOutlined /> : <MenuOutlined />}
         title={<NormalizeTitle />}
       />
-      <Drawer title="Footbet.site" placement="left" onClose={onClose} visible={visible}>
+      <Drawer title="footbet.pp.ua" placement="left" onClose={onClose} visible={visible}>
         <ul className={style.drawerList}>
           <li className={style.drawerListItem}>
             <Link onClick={onClose} className={style.drawerListLink} to="/">Головна</Link>
@@ -75,7 +75,7 @@ export default function MobileHeader() {
           )}
           {(authorized && authorized.id === 5) && (
             <li className={style.drawerListItem}>
-              <a className={style.drawerListLink} href="https://footbet.site/admin/" rel="noreferrer" target="_blank">Admin</a>
+              <a className={style.drawerListLink} href="https://footbet.pp.ua/admin/" rel="noreferrer" target="_blank">Admin</a>
             </li>
           )}
         </ul>

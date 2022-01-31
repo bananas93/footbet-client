@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     if (socketRef.current === null) {
       const token = getCookie('JWToken');
-      socketRef.current = io('https://footbet.site', {
+      socketRef.current = io('https://footbet.pp.ua', {
         query: { token },
       });
     }

@@ -17,7 +17,7 @@ export default function SignIn() {
           expires: new Date(Date.now() + 10 * 604800000),
           path: '/',
         });
-        window.location.href = 'https://footbet.site/profile';
+        window.location.href = 'https://footbet.pp.ua/profile';
       }
     } catch (error) {
       const err = error.message || error.response.data;
@@ -35,7 +35,7 @@ export default function SignIn() {
         <strong>Увійти за допомогою</strong>
         {' '}
         <br />
-        <a className="sign-google" href="https://footbet.site/api/auth/google"><img width="30" src="/google.svg" alt="google" /></a>
+        <a className="sign-google" href="https://footbet.pp.ua/api/auth/google"><img width="30" src="/google.svg" alt="google" /></a>
         <Divider />
         <Form
           className="sign-in-form"
