@@ -14,5 +14,6 @@
     }
     @media screen and (min-width: 767px) {
         flex: 1 1 calc((100% / 2) - 2rem);
+        max-width: 50%;
     }
 }

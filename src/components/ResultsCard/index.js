@@ -9,6 +9,19 @@ import { pagination, columns } from '../../helpers/tableSettings';
 export default function ResultsTable({
   handleMenuClick, toggleFullTableModal, selectedTour, toggleShowUserInfo, results,
 }) {
+  let stage = selectedTour;
+  if (Number(selectedTour) === 7) {
+    stage = '1/8 фіналу';
+  }
+  if (Number(selectedTour) === 8) {
+    stage = '1/4 фіналу';
+  }
+  if (Number(selectedTour) === 9) {
+    stage = '1/2 фіналу';
+  }
+  if (Number(selectedTour) === 10) {
+    stage = 'Фінал';
+  }
   const menu = (
     <Menu selectable onClick={handleMenuClick}>
       <Menu.Item key="0">Загальний результат</Menu.Item>
@@ -33,7 +46,8 @@ export default function ResultsTable({
         <Space>
           <Dropdown overlay={menu} trigger={['click']}>
             <a style={{ color: '#001628' }} href="#" className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-              {`${Number(selectedTour) === 0 ? 'Обрати' : selectedTour} тур`}
+              {Number(selectedTour) === 0 ? 'Обрати' : stage}
+              {Number(selectedTour) < 7 && ' тур'}
               {' '}
               <DownOutlined />
             </a>
