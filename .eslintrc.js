@@ -61,5 +61,6 @@ module.exports = {
     camelcase: 0,
     'no-unused-vars': 'warn',
     'prefer-promise-reject-errors': 0,
+    "react/function-component-definition": 0,
   },
 };

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getJWToken } from '../helpers/authHelper';
+import { notificationWrapper } from '../helpers/notification';
 
 export const getInfo = async (user, tournament, tour) => {
   const token = getJWToken('JWToken');
@@ -17,4 +18,17 @@ export const getMyInfo = async () => {
       Authorization: token,
     },
   });
+};
+
+export const getUserInfo = async () => {
+  await getMyInfo()
+    .then((res) => {
+      if (res.status === 200) {
+        return res.data;
+      }
+      return false;
+    })
+    .catch((e) => {
+      notificationWrapper(true, `Помилка ${e.message}`);
+    });
 };

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import cn from 'classnames';
 import {
   AuthContext, SocketContext, TitleContext, UserContext,
@@ -13,11 +13,15 @@ const Layout = ({
   auth, socket, user, children,
 }) => {
   const [title, setTitle] = useState('Footbet');
+  const value = useMemo(() => ({
+    title, setTitle,
+  }), [title]);
+
   return (
     <AuthContext.Provider value={auth}>
       <SocketContext.Provider value={socket}>
         <UserContext.Provider value={user}>
-          <TitleContext.Provider value={{ title, setTitle }}>
+          <TitleContext.Provider value={value}>
             <div className={cn(styles.app, 'app')}>
               {auth && (
                 <Header />

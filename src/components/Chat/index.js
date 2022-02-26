@@ -7,7 +7,7 @@ import { SocketContext, UserContext } from '../../utils/contexts';
 import { notificationWrapper } from '../../helpers/notification';
 import { getMessages, deleteMessage } from '../../api/chat';
 
-export default function Chat() {
+const Chat = () => {
   const { id, name } = useContext(UserContext);
   const [showChat, setShowChat] = useState(false);
   const [unreadedMessages, setUnreadedMessages] = useState(0);
@@ -93,24 +93,26 @@ export default function Chat() {
     }
   };
 
+  if (!showChat) {
+    return (
+      <div className={style.button}>
+        <button onClick={toggleShowChat} type="button">
+          <Badge size="default" count={unreadedMessages}>
+            <MessageOutlined style={{ color: '#fff', fontSize: '25px' }} />
+          </Badge>
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {!showChat ? (
-        <div className={style.button}>
-          <button onClick={toggleShowChat} type="button">
-            <Badge size="default" count={unreadedMessages}>
-              <MessageOutlined style={{ color: '#fff', fontSize: '25px' }} />
-            </Badge>
-          </button>
-        </div>
-      ) : (
-        <ChatList
-          messages={messages}
-          handleSendMessage={handleSendMessage}
-          toggleShowChat={toggleShowChat}
-          removeMessage={removeMessage}
-        />
-      )}
-    </>
+    <ChatList
+      messages={messages}
+      handleSendMessage={handleSendMessage}
+      toggleShowChat={toggleShowChat}
+      removeMessage={removeMessage}
+    />
   );
-}
+};
+
+export default Chat;

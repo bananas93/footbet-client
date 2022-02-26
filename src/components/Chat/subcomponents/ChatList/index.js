@@ -10,9 +10,9 @@ import { UserContext } from '../../../../utils/contexts';
 import styles from './index.module.scss';
 import Message from './subcomponents/Message';
 
-export default function ChatList({
+const ChatList = ({
   messages, handleSendMessage, toggleShowChat, removeMessage, editMessage,
-}) {
+}) => {
   const { id, name } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
@@ -27,48 +27,53 @@ export default function ChatList({
     }, 100);
   }, []);
 
+  const ifMessagesEmpty = () => {
+    if (messages.length < 1) {
+      return (
+        <div className={styles.chatEmpty}>
+          <Empty description="Повідомлень ще немає 😢" />
+        </div>
+      );
+    }
+    return (
+      <ul id="chat-list" className={styles.chatList}>
+        {messages.map((day) => (
+          <div key={day.id}>
+            <Divider styles={{ fontWeight: 'bold' }}>{moment(day.date).format('LL')}</Divider>
+            <TransitionGroup component="ul" className="todo-list">
+              {day.days.map((item) => (
+                <CSSTransition
+                  key={item.id}
+                  classNames="item"
+                  timeout={200}
+                >
+                  <Message
+                    id={id}
+                    item={item}
+                    removeMessage={removeMessage}
+                    editMessage={editMessage}
+                  />
+                </CSSTransition>
+              ))}
+            </TransitionGroup>
+          </div>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <div className={styles.chat}>
       <ChatHeader name={name} toggleShowChat={toggleShowChat} />
       {loading ? (
         <Loading />
       ) : (
-        <>
-          {messages.length < 1 ? (
-            <div className={styles.chatEmpty}>
-              <Empty description="Повідомлень ще немає 😢" />
-            </div>
-          ) : (
-            <ul id="chat-list" className={styles.chatList}>
-              {messages.map((day) => (
-                <div key={day.id}>
-                  <Divider styles={{ fontWeight: 'bold' }}>{moment(day.date).format('LL')}</Divider>
-                  <TransitionGroup component="ul" className="todo-list">
-                    {day.days.map((item) => (
-                      <CSSTransition
-                        key={item.id}
-                        classNames="item"
-                        timeout={200}
-                      >
-                        <Message
-                          id={id}
-                          item={item}
-                          removeMessage={removeMessage}
-                          editMessage={editMessage}
-                        />
-                      </CSSTransition>
-                    ))}
-                  </TransitionGroup>
-                </div>
-              ))}
-            </ul>
-          )}
-        </>
+        ifMessagesEmpty()
       )}
       <ChatMessage handleSendMessage={handleSendMessage} />
     </div>
   );
-}
+};
 ChatList.propTypes = {
   toggleShowChat: PropTypes.func,
   messages: PropTypes.array,
@@ -76,3 +81,5 @@ ChatList.propTypes = {
   removeMessage: PropTypes.func,
   editMessage: PropTypes.func,
 };
+
+export default ChatList;

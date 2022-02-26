@@ -2,7 +2,7 @@ import { Result, Button } from 'antd';
 
 export default function Error() {
   const goToHome = () => {
-    window.location.href = 'https://footbet.pp.ua';
+    window.location.href = process.env.REACT_APP_LOCAL_API;
   };
   return (
     <Result
