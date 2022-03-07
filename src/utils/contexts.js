@@ -1,6 +1,6 @@
-import React from 'react';
+import { createContext } from 'react';
 
-export const AuthContext = React.createContext(false);
-export const SocketContext = React.createContext({});
-export const TitleContext = React.createContext({});
-export const UserContext = React.createContext({});
+export const AuthContext = createContext(false);
+export const SocketContext = createContext({});
+export const TitleContext = createContext({});
+export const UserContext = createContext({});

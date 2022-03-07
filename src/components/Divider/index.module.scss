@@ -1,0 +1,36 @@
+.divider {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 16px 0;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,.06);
+    height: 1px;
+    width: 100%;
+  }
+  > span {
+    color: rgba(0,0,0,.85);
+    background-color: #fff;
+    padding: 0 15px;
+    position: relative;
+    z-index: 1;
+  }
+}
+[data-theme=dark] {
+  .divider {
+    &::after {
+      background-color: #2d2f39;
+    }
+    > span {
+      color: #e1e1e6;
+      background-color: #18191e;
+    }
+  }
+}

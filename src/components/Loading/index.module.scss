@@ -1,10 +1,31 @@
 .loading {
+  &Wrapper {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    width: 8em;
     position: absolute;
-    right: 0;
-    left: 0;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
+  &Icon {
+    width: 8em;
+    height: 8em;
+    background: url('../../assets/img/loader.svg') no-repeat center center;
+    background-size: contain;
+  }
+
+  &Text {
+    font-size: 1.25em;
+    color: #28374d;
+  }
+}
+
+[data-theme=dark] {
+  .loading {
+    &Text {
+      color: #e0e0e2;
+    }
+  }
+}

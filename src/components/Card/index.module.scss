@@ -26,6 +26,16 @@
             padding: 0 15px 15px 15px;
         }
     }
+    &Action {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        > button {
+            font-weight: 400;
+            font-size: 14px;
+            color: #262626;
+        }
+    }
     &MatchDate {
         text-align: center;
         font-weight: 500;
@@ -52,16 +62,24 @@
         }
     }
 }
-:global(.app .ant-dropdown-link),
-:global(.app .ant-dropdown-button) {
-    font-size: 14px;
-    background-color: transparent;
-    color: #262626;
-    border: none;
-    font-weight: 400;
-    cursor: pointer;
-    transition: all .3s ease 0s;
-    &:hover {
-        color: #28374d;
+
+[data-theme=dark] {
+    .card {
+        background-color: #18191e;
+        @media screen and (min-width: 768px) {
+            box-shadow: 1px 1px 20px #00000045;
+        }
+        &Title {
+            color: #e1e1e6;
+            border-bottom-color: #2d2f39;
+        }
+        &Body {
+            color: #e1e1e6;
+        }
+        &Action {
+            > button {
+                color: #e1e1e6;
+            }
+        }
     }
 }

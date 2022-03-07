@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { getTournaments } from '../../api/tournaments';
 import Loading from '../../components/Loading';
 import styles from './index.module.scss';
-import { notificationWrapper } from '../../helpers/notification';
 import { TitleContext } from '../../utils/contexts';
 import Card from '../../components/Card';
 
@@ -24,7 +24,7 @@ const TournamentsPage = () => {
           setTournaments(res.data);
         }
       } catch (error) {
-        notificationWrapper(true, `Помилка ${error}`);
+        toast.error(error.response.data.error || error.message, 3000);
       } finally {
         setLoading(false);
       }

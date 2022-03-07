@@ -1,0 +1,60 @@
+.modal {
+  &Header {
+    padding: 1em 1.3333em;
+    width: 100%;
+    position: relative;
+    font-weight: 600;
+    font-size: 1.5em;
+    color: #27313d;
+    &Close {
+      width: 1em;
+      height: 1em;
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      cursor: pointer;
+    }
+  }
+  &Content {
+    color: #27313d;
+    margin: 0.5em 2em 0;
+    border-bottom: 2px solid rgba(82,90,100,.1);
+  }
+  &Footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: end;
+    padding: 1.5em 1.85em;
+    gap: 10px;
+  }
+}
+
+[data-theme=dark] {
+  .modal {
+    background-color: #18191e;
+    &Header {
+      color: #e1e1e6;
+      &Close {
+        path {
+          fill: #e1e1e6;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .modal {
+    &Header {
+      font-size: 20px;
+      padding: 1em 15px;
+    }
+    &Content {
+      margin: 0 15px 0;
+    }
+    &Footer {
+      padding: 1em 15px;
+    }
+  }
+}

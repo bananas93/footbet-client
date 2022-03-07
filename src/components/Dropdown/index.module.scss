@@ -1,0 +1,74 @@
+.dropdown {
+  position: relative;
+  font-size: 0;
+}
+
+.list {
+  position: absolute;
+  left: 0;
+  top: 25px;
+  width: 160px;
+  min-width: 100px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+  z-index: 100;
+  list-style-type: none;
+  &Item {
+    font-size: 14px;
+    display: block;
+    > button {
+      text-align: left;
+      width: 100%;
+      color: rgba(0, 0, 0, 0.85);
+      transition: all .3s ease 0s;
+      padding: 5px 12px;
+      &:hover {
+        background-color: #ededed;
+      }
+    }
+  }
+}
+
+.btn {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px; 
+  color: #262626;
+  display: flex;
+  align-items: center;
+  svg {
+    width: 17px;
+    height: 17px;
+  }
+  &Open {
+    > svg {
+      transform: scale(-1);
+    }
+  }
+}
+
+[data-theme=dark] {
+  .btn {
+    color: #e1e1e6;
+    svg {
+      path {
+        fill: #e1e1e6;
+      }
+    }
+  }
+  .list {
+    background-color: #18191e;
+    &Item {
+      > button {
+        color: rgba(209, 209, 209, 0.85);
+        &:hover {
+          background-color: #0e0f15;
+        }
+      }
+    }
+  }
+}

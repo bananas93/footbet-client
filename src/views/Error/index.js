@@ -1,15 +1,12 @@
-import { Result, Button } from 'antd';
+import { Link } from 'react-router-dom';
+import Card from '../../components/Card';
 
-export default function Error() {
-  const goToHome = () => {
-    window.location.href = process.env.REACT_APP_LOCAL_API;
-  };
-  return (
-    <Result
-      status="404"
-      title="404"
-      subTitle="Помилка, такої сторінки не знайдено"
-      extra={<Button onClick={goToHome} type="primary">На головну</Button>}
-    />
-  );
-}
+const Error = () => (
+  <Card style={{ textAlign: 'center' }}>
+    <div>Error 404</div>
+    <div>Помилка, такої сторінки не знайдено</div>
+    <Link to="/">Перейти на головну</Link>
+  </Card>
+);
+
+export default Error;

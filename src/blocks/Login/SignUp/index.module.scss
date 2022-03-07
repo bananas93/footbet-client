@@ -1,0 +1,34 @@
+.google {
+  display: inline-flex;
+  align-items: center;
+  background-color: #4169b8;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: all .3s ease 0s;
+  padding: 3px;
+  margin-bottom: 30px;
+  &:hover {
+    background-color: #5175BD;
+  }
+  &:active  {
+    background-color: #38558B;
+  }
+  &Img {
+    background-color: #fff;
+    display: inline-block;
+    padding: 3px;
+    border-radius: 5px;
+  }
+  &Text {
+    padding: 10px;
+  }
+  > a {
+    color: #fff;
+  }
+}
+.input {
+  &Wrap {
+    margin-bottom: 30px;
+    position: relative;
+  }
+}

@@ -1,8 +1,10 @@
-import { Spin } from 'antd';
 import styles from './index.module.scss';
 
 const Loading = () => (
-  <div className={styles.loading}><Spin /></div>
+  <div className={styles.loadingWrapper}>
+    <div className={styles.loadingIcon} />
+    <div className={styles.loadingText}>Завантаження...</div>
+  </div>
 );
 
 export default Loading;

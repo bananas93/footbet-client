@@ -1,26 +1,29 @@
 import { useState, useEffect, useContext } from 'react';
-import { Tabs } from 'antd';
+import {
+  Tab, Tabs, TabList, TabPanel,
+} from 'react-tabs';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import styles from './index.module.scss';
-import FullTable from '../../components/FullTable';
-import UserInfo from '../../components/UserInfo';
+import FullTable from '../../blocks/Tournament/FullTable';
+import UserInfo from '../../blocks/Tournament/UserInfo';
 import { getMatches } from '../../api/matches';
 import { getResults, getResultsByTour } from '../../api/results';
 import Loading from '../../components/Loading';
 import { SocketContext, TitleContext } from '../../utils/contexts';
 import useMobile from '../../helpers/useMobile';
 import { getTournament } from '../../api/tournaments';
-import MatchesTabs from '../../components/MatchesTabs';
-import ResultsTable from '../../components/ResultsCard';
-import 'moment/locale/uk';
-import { notificationWrapper } from '../../helpers/notification';
+import MatchesTabs from '../../blocks/Tournament/MatchesTabs';
+import ResultsTable from '../../blocks/Tournament/ResultsCard';
 import { updateMatch } from '../../helpers/updateMatch';
 
+import 'moment/locale/uk';
+
 moment.locale('uk');
-const { TabPane } = Tabs;
 
 const TournamentPage = () => {
+  const [loading, setLoading] = useState(true);
   const { setTitle } = useContext(TitleContext);
   const { slug } = useParams();
   const tournamentId = slug.split('-')[0];
@@ -29,8 +32,8 @@ const TournamentPage = () => {
 
   const socket = useContext(SocketContext);
 
-  const [selectedTour, setSelectedTour] = useState('0');
-  const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournamentId}`) || '1');
+  const [selectedTour, setSelectedTour] = useState(0);
+  const [activeTab, setActiveTab] = useState(localStorage.getItem(`tab-${tournamentId}`) || 1);
   const [matches, setMatches] = useState([]);
   const [results, setResults] = useState([]);
   const [showFullTableModal, setShowFullTableModal] = useState(false);
@@ -46,8 +49,7 @@ const TournamentPage = () => {
     setShowUserInfo(!showUserInfo);
   };
 
-  const handleMenuClick = async (event) => {
-    const { key } = event;
+  const handleMenuClick = async (key) => {
     setSelectedTour(key);
     try {
       const res = await getResultsByTour(tournamentId, key);
@@ -55,7 +57,7 @@ const TournamentPage = () => {
         setResults(res.data);
       }
     } catch (error) {
-      notificationWrapper(true, error.response.data.error);
+      toast.error(error.response.data.error, 3000);
     }
   };
 
@@ -66,7 +68,7 @@ const TournamentPage = () => {
         setMatches(res.data);
       }
     } catch (error) {
-      notificationWrapper(true, error.response.data.error);
+      toast.error(error.response.data.error || error.message, 3000);
     }
   };
 
@@ -77,7 +79,7 @@ const TournamentPage = () => {
         setResults(res.data);
       }
     } catch (error) {
-      notificationWrapper(true, error.response.data.error);
+      toast.error(error.response.data.error || error.message, 3000);
     }
   };
 
@@ -88,8 +90,9 @@ const TournamentPage = () => {
         setResults(res[1].data);
       })
       .catch((error) => {
-        notificationWrapper(true, error.message);
-      });
+        toast.error(error.response.data.error || error.message, 3000);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const playNotification = () => {
@@ -121,35 +124,39 @@ const TournamentPage = () => {
           setTitle(res.data.name);
         }
       } catch (error) {
-        notificationWrapper(true, error.response.data.error);
+        toast.error(error.response.data.error || error.message, 3000);
       }
     };
     loadTournament();
   }, []);
 
   const changeTabs = (key) => {
-    localStorage.setItem(`tab-${tournamentId}`, key);
-    setActiveTab(key);
+    localStorage.setItem(`tab-${tournamentId}`, Number(key));
+    setActiveTab(Number(key));
   };
 
-  if (!tournament) {
+  if (!tournament || loading) {
     return <Loading />;
   }
 
   return (
     <>
       {isMobile ? (
-        <Tabs defaultActiveKey={1} centered size="large">
-          <TabPane tab="Матчі" key={1}>
+        <Tabs style={{ textAlign: 'center' }}>
+          <TabList>
+            <Tab>Матчі</Tab>
+            <Tab>Результати</Tab>
+          </TabList>
+          <TabPanel>
             <MatchesTabs
               matches={matches}
               tournament={tournament}
               loadMatches={loadMatches}
-              activeTab={activeTab}
+              activeTab={Number(activeTab)}
               changeTabs={changeTabs}
             />
-          </TabPane>
-          <TabPane tab="Результати" key={2}>
+          </TabPanel>
+          <TabPanel>
             <ResultsTable
               handleMenuClick={handleMenuClick}
               toggleFullTableModal={toggleFullTableModal}
@@ -157,7 +164,7 @@ const TournamentPage = () => {
               selectedTour={selectedTour}
               results={results}
             />
-          </TabPane>
+          </TabPanel>
         </Tabs>
       ) : (
         <div className={styles.row}>
@@ -166,7 +173,7 @@ const TournamentPage = () => {
               matches={matches}
               tournament={tournament}
               loadMatches={loadMatches}
-              activeTab={activeTab}
+              activeTab={Number(activeTab)}
               changeTabs={changeTabs}
             />
           </div>

@@ -1,0 +1,71 @@
+.input {
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  transition: all .3s ease 0s;
+  &:focus {
+    outline: none;
+  }
+  &Error {
+    border-color: #F3657B;
+  }
+  &ReadOnly {
+    color: #bbb;
+    cursor: not-allowed;
+    border-color: #f3f3f3;
+  }
+}
+.label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  display: inline-block;
+  position: absolute;
+  background-color: #fff;
+  left: 11px;
+  top: -8px;
+  padding: 0 5px;
+  color: #939393;
+  border-radius: 5px;
+  &ReadOnly {
+    color: #bbb;
+  }
+}
+.error {
+  position: absolute;
+  bottom: -16px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #F3657B;
+  width: max-content;
+  left: 16px;
+}
+
+[data-theme=dark] {
+  .input {
+    background-color: #18191e;
+    border-color: #212227;
+    color: #e1e1e6;
+    &Error {
+      border-color: #F3657B;
+    }
+  }
+  .label {
+    background-color: #18191e;
+    color: #e1e1e6;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .input {
+    font-size: 14px;
+    padding: 12px 15px;
+  }
+  .label {
+    font-size: 12px;
+  }
+}

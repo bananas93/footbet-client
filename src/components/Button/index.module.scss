@@ -1,0 +1,94 @@
+.btn {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  border: 1px solid #fff;
+  transition: all .3s ease 0s;
+  border-radius: 5px;
+  padding: 7px 20px;
+
+  &Primary {
+    background-color: #4169b8;
+    border-color: #4169b8;
+    color: #fff;
+
+    &:hover {
+      background-color: #5175BD;
+      border-color: #5175BD;
+    }
+
+    &:active  {
+      background-color: #38558B;
+      border-color: #38558B;
+    }
+  }
+
+  &Secondary {
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    color: #18191e;
+
+    &:hover {
+      background-color: #000;
+      color: #e1e1e6;
+    }
+
+    &:active  {
+      border-color: #3A4653;
+      background-color: #3A4653;
+      color: #fff;
+    }
+  }
+
+  &Link {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  &Disabled,
+  &Loading {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+[data-theme=dark] {
+  .btn {  
+    &Primary {
+      background-color: #4c83ff;
+      border-color: #4c83ff;
+      color: #e1e1e6;
+      &:hover {
+        background-color: #2c60d5;
+        border-color: #2c60d5;
+      }
+      &:active {
+        background-color: #1643a7;
+        border-color: #1643a7;
+      }
+    }
+    &Secondary {
+      border: 1px solid #e1e1e6;
+      background-color: #e1e1e6;
+      color: #18191e;
+  
+      &:hover {
+        background-color: transparent;
+        color: #e1e1e6;
+      }
+  
+      &:active  {
+        border-color: #3A4653;
+        background-color: #3A4653;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .btn {
+    font-size: 14px;
+  }
+}

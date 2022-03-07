@@ -39,3 +39,18 @@
         }
     }
 }
+[data-theme=dark] {
+    .header {
+        background: #18191e;
+    }
+    .headerList,
+    .headerAdditionalList {
+        &Item {
+            a {
+                &:hover {
+                    background-color: #0e0f16;
+                }
+            }
+        }
+    }
+}

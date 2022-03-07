@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import { TitleContext } from '../../utils/contexts';
 import Card from '../../components/Card';
 
-export default function RulesPage() {
+const RulesPage = () => {
   const { setTitle } = useContext(TitleContext);
   useEffect(() => {
     setTitle('Правила');
@@ -50,4 +50,6 @@ export default function RulesPage() {
       </div>
     </div>
   );
-}
+};
+
+export default RulesPage;

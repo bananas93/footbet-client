@@ -10,6 +10,11 @@
     }
     flex: 1;
 }
+[data-theme=dark] {
+    .main {
+        background-color: #0e0f15;
+    }
+}
 .title {
     text-align: center;
     font-size: 24px;
@@ -18,5 +23,18 @@
     @media screen and (min-width: 768px) {
         font-size: 35px;
         margin-bottom: 40px;
+    }
+}
+[data-theme=dark] {
+    .title {
+        color: #e1e1e6;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    [data-theme=dark] {
+        .main {
+            background-color: #18191e;
+        }
     }
 }

@@ -48,3 +48,5 @@ export const logout = () => {
   deleteCookie('JWToken');
   window.location.href = '/';
 };
+
+export const checkIsEmailValid = (email) => /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+[.]){1,2}[a-zA-Z]{2,10}$/.test(email);

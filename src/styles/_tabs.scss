@@ -1,0 +1,32 @@
+.react-tabs__tab-list {
+  border: none;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  overflow-x: auto;
+}
+.react-tabs__tab {
+  bottom: 0;
+  color: #000;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  transition: all .3s ease 0s;
+  font-size: 14px;
+  white-space: nowrap;
+  padding: 12px;
+  &--selected {
+    border-bottom-color: #4169b8;
+  }
+  &:focus {
+    box-shadow: none;
+    border: none;
+  }
+}
+
+[data-theme=dark] {
+  .react-tabs__tab {
+    color: #e1e1e6;
+  }
+}

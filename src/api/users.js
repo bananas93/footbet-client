@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { getJWToken } from '../helpers/authHelper';
-import { notificationWrapper } from '../helpers/notification';
 
 export const getInfo = async (user, tournament, tour) => {
   const token = getJWToken('JWToken');
@@ -29,6 +29,6 @@ export const getUserInfo = async () => {
       return false;
     })
     .catch((e) => {
-      notificationWrapper(true, `Помилка ${e.message}`);
+      toast.error(`Помилка ${e.message}`, 3000);
     });
 };

@@ -1,13 +1,13 @@
-import { Tabs } from 'antd';
+import {
+  Tab, Tabs, TabList, TabPanel,
+} from 'react-tabs';
 import { useContext, useEffect } from 'react';
-import SignIn from '../../components/SignIn';
-import SignUp from '../../components/SignUp';
+import SignIn from '../../blocks/Login/SignIn';
+import SignUp from '../../blocks/Login/SignUp';
 import { TitleContext } from '../../utils/contexts';
 import styles from './index.module.scss';
 
-const { TabPane } = Tabs;
-
-export default function LoginPage() {
+const LoginPage = () => {
   const { setTitle } = useContext(TitleContext);
   useEffect(() => {
     setTitle('Вхід/Реєстрація');
@@ -15,14 +15,20 @@ export default function LoginPage() {
 
   return (
     <div className={styles.login}>
-      <Tabs centered size="large" defaultActiveKey="1">
-        <TabPane tab="Вхід" key="1">
+      <Tabs>
+        <TabList>
+          <Tab>Вхід</Tab>
+          <Tab>Реєстрація</Tab>
+        </TabList>
+        <TabPanel>
           <SignIn />
-        </TabPane>
-        <TabPane tab="Реєстрація" key="2">
+        </TabPanel>
+        <TabPanel>
           <SignUp />
-        </TabPane>
+        </TabPanel>
       </Tabs>
     </div>
   );
-}
+};
+
+export default LoginPage;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function useMobile() {
+const useMobile = () => {
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleWindowSizeChange = () => {
@@ -15,4 +15,6 @@ export default function useMobile() {
 
   const isMobile = (width <= 640);
   return isMobile;
-}
+};
+
+export default useMobile;

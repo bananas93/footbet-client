@@ -1,0 +1,65 @@
+.form {
+  button {
+    width: 100%;
+    padding: 15px 0;
+    font-size: 18px;
+  }
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.col {
+  width: 47%;
+}
+.input {
+  width: 100%;
+  font-size: 20px;
+  padding: 15px 0;
+  text-align: center;
+  font-weight: 500;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid #646464;
+  color: #27313d;
+  &:focus {
+    outline: none;
+  }
+}
+.name {
+  text-align: center;
+  color: #000000;
+  font-size: 18px;
+  margin-bottom: 7px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > span {
+    flex: 0 0 60%;
+    max-width: 60%;
+  }
+}
+
+[data-theme=dark] {
+  .name {
+    color: #e1e1e6;
+  }
+  .input {
+    background-color: #000;
+    color: #e1e1e6;
+    border-color: #000;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .input {
+    font-size: 16px;
+    padding: 10px 0;
+  }
+  .name {
+    font-size: 16px;
+  }
+}

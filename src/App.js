@@ -2,18 +2,31 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import {
   useState, useEffect, Suspense, useRef,
 } from 'react';
+import useLocalStorage from 'use-local-storage';
 import { io } from 'socket.io-client';
+import { toast } from 'react-toastify';
 import Layout from './components/Layout';
 import { checkAuthorization, getCookie } from './helpers/authHelper';
 import { ProtectedRoutes } from './routes/ProtectedRoutes';
 import { AuthRoutes } from './routes/AuthRoutes';
 import Loading from './components/Loading';
-import { notificationWrapper } from './helpers/notification';
 
-function App() {
+const App = () => {
   const socketRef = useRef(null);
   const [socketIo, setSocketIo] = useState(null);
   const [user, setUser] = useState(null);
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [darkTheme, setDarkTheme] = useLocalStorage('theme', systemPrefersDark || false);
+
+  useEffect(() => {
+    document.body.setAttribute('data-theme', darkTheme ? 'dark' : 'light');
+  }, []);
+
+  const themeToggler = () => {
+    const theme = !darkTheme;
+    setDarkTheme(theme);
+    document.body.setAttribute('data-theme', theme ? 'dark' : 'light');
+  };
 
   useEffect(() => {
     if (socketRef.current === null) {
@@ -32,7 +45,7 @@ function App() {
         setUser(JSON.parse(data));
       });
     } catch (error) {
-      notificationWrapper(true, error.message);
+      toast.error(error.message, 3000);
     }
     return () => {
       socket.close();
@@ -43,7 +56,13 @@ function App() {
 
   return (
     <Router>
-      <Layout socket={socketIo} user={user} auth={auth}>
+      <Layout
+        darkTheme={darkTheme}
+        themeToggler={themeToggler}
+        socket={socketIo}
+        user={user}
+        auth={auth}
+      >
         <Suspense fallback={<Loading />}>
           {auth ? (
             <ProtectedRoutes />
@@ -54,6 +73,6 @@ function App() {
       </Layout>
     </Router>
   );
-}
+};
 
 export default App;

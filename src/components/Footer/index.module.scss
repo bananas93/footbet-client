@@ -11,3 +11,11 @@
         }
     }
 }
+[data-theme=dark] {
+    .footer {
+        background-color: #18191e;
+        &Copyright {
+            color: #e1e1e6;
+        }
+    }
+}
