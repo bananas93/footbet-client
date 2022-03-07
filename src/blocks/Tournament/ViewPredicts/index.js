@@ -2,11 +2,13 @@
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
+import { toast } from 'react-toastify';
 import Table from '../../../components/Table';
 import Modal from '../../../components/Modal';
 import styles from './index.module.scss';
 import Button from '../../../components/Button';
 import { UserContext } from '../../../utils/contexts';
+import { updateMatch } from '../../../api/matches';
 
 const columns = [
   {
@@ -28,6 +30,20 @@ const columns = [
 
 const ViewPredicts = ({ showPredictsModal, toggleShowPredictsModal, match }) => {
   const { id } = useContext(UserContext);
+
+  const changeMatch = async (status, home, away) => {
+    try {
+      const homeGoals = home ? Number(match.homeGoals) + 1 : match.homeGoals;
+      const awayGoals = away ? Number(match.awayGoals) + 1 : match.awayGoals;
+      const res = await updateMatch(match.id, status, homeGoals, awayGoals);
+      if (res && res.status === 201) {
+        toggleShowPredictsModal();
+        toast.success(res.data, 3000);
+      }
+    } catch (err) {
+      toast.error(err.response.data || err.message, 3000);
+    }
+  };
 
   return (
     <Modal
@@ -54,22 +70,25 @@ const ViewPredicts = ({ showPredictsModal, toggleShowPredictsModal, match }) => 
           rowKey="id"
         />
         {(match.status === 'Live' && id === 5) && (
-        <div style={{ marginTop: '30px', justifyContent: 'space-between' }} className={styles.row}>
-          <div className={styles.col}>
-            <Button variant="primary">
-              {match.homeTeam.name}
-              {' '}
-              забив
-            </Button>
-          </div>
-          <div className={styles.col}>
-            <Button variant="primary">
-              {match.awayTeam.name}
-              {' '}
-              забив
-            </Button>
-          </div>
-        </div>
+          <>
+            <div style={{ marginTop: '30px', justifyContent: 'space-between' }} className={styles.row}>
+              <div className={styles.col}>
+                <Button variant="primary" onClick={() => changeMatch(true, true, false)}>
+                  {match.homeTeam.name}
+                  {' '}
+                  забив
+                </Button>
+              </div>
+              <div className={styles.col}>
+                <Button variant="primary" onClick={() => changeMatch(true, false, true)}>
+                  {match.awayTeam.name}
+                  {' '}
+                  забив
+                </Button>
+              </div>
+            </div>
+            <Button variant="primary" onClick={() => changeMatch(false, false, false)}>Закінчився</Button>
+          </>
         )}
       </>
     </Modal>

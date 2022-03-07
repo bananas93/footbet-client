@@ -71,7 +71,11 @@
     opacity: 0;
     transition: opacity 500ms ease-in;
 }
-
 .updated {
-    background-color: #c6d9eb !important;
+  background-color: #c6d9eb !important;
+}
+[data-theme=dark] {
+  .updated {
+    background-color: #414558 !important;
+  }
 }

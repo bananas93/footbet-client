@@ -108,7 +108,9 @@ const TournamentPage = () => {
         setTimeout(() => {
           document.getElementById(`match-${data.id}`).classList.remove('updated');
         }, 5000);
-        loadResults();
+        setTimeout(() => {
+          loadResults();
+        }, 1000);
         playNotification();
       }
     });

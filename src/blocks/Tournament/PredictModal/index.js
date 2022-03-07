@@ -6,6 +6,7 @@ import { addBet } from '../../../api/bets';
 import Modal from '../../../components/Modal';
 import Button from '../../../components/Button';
 import styles from './index.module.scss';
+import { updateMatch } from '../../../api/matches';
 
 const PredictModal = ({
   showAddPredictModal, toggleShowAddPredictModal, match, title, myBet, setPredict,
@@ -69,6 +70,19 @@ const PredictModal = ({
     }
   };
 
+  const changeMatch = async () => {
+    try {
+      const { id } = match;
+      const res = await updateMatch(id, true, 0, 0);
+      if (res && res.status === 201) {
+        toggleShowAddPredictModal();
+        toast.success(res.data, 3000);
+      }
+    } catch (err) {
+      toast.error(err.response.data || err.message, 3000);
+    }
+  };
+
   const { id } = useContext(UserContext);
 
   return (
@@ -79,7 +93,7 @@ const PredictModal = ({
       footer={(
         <>
           {(match.status === 'Заплановано' && id === 5) && (
-            <Button variant="primary">Розпочався</Button>
+            <Button variant="primary" onClick={changeMatch}>Розпочався</Button>
           )}
           <Button type="button" variant="secondary" onClick={toggleShowAddPredictModal}>Закрити</Button>
           <Button form="save-predict" type="submit" variant="primary" isLoading={loading}>
