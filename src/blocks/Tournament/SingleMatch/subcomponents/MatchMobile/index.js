@@ -9,65 +9,78 @@ const MatchMobile = ({
   myBet,
   handleMatchClick,
   winner,
-}) => (
-  <button type="button" id={`match-${match.id}`} onClick={handleMatchClick} className={style.match}>
-    <div className={style.matchInfo}>
-      <div>{match.group ? `Група ${match.group}` : match.tour}</div>
-      <div className={style.matchInfoStatus}>
-        {match.status !== 'Live' ? (
-          <span>
-            {match.status === 'Заплановано' ? (
-              moment(match.datetime).format('HH:mm')
-            ) : (
-              'FT'
-            )}
-          </span>
-        ) : (
-          <span className="match-minute"><MatchMinute /></span>
+}) => {
+  const scoresClassesHome = cn({
+    [style.matchScoresLife]: match.status === 'Live',
+    [style.matchScoresRegular]: match.status !== 'Live',
+    [style.matchScoresWinner]: winner(match) === match.homeTeam.name,
+  });
+  const scoresClassesAway = cn({
+    [style.matchScoresLife]: match.status === 'Live',
+    [style.matchScoresRegular]: match.status !== 'Live',
+    [style.matchScoresWinner]: winner(match) === match.awayTeam.name,
+  });
+  return (
+    <button type="button" id={`match-${match.id}`} onClick={handleMatchClick} className={style.match}>
+      <div className={style.matchInfo}>
+        <div>{match.group ? `Група ${match.group}` : match.tour}</div>
+        <div className={style.matchInfoStatus}>
+          {match.status !== 'Live' ? (
+            <span>
+              {match.status === 'Заплановано' ? (
+                moment(match.datetime).format('HH:mm')
+              ) : (
+                'FT'
+              )}
+            </span>
+          ) : (
+            <span className="match-minute"><MatchMinute /></span>
+          )}
+        </div>
+      </div>
+      <div className={style.matchTeams}>
+        <div className={cn(style.matchTeam, {
+          [style.matchTeamWinner]: winner(match) === match.homeTeam.name,
+        })}
+        >
+          <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
+          <span>{match.homeTeam.name}</span>
+        </div>
+        <div className={cn(style.matchTeam, {
+          [style.matchTeamWinner]: winner(match) === match.awayTeam.name,
+        })}
+        >
+          <img className={style.matchTeamLogo} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
+          <span>{match.awayTeam.name}</span>
+        </div>
+      </div>
+      <div className={style.matchScores}>
+        {match.status !== 'Заплановано' && (
+        <>
+          <div className={scoresClassesHome}>{match.homeGoals}</div>
+          <div className={scoresClassesAway}>{match.awayGoals}</div>
+        </>
         )}
       </div>
-    </div>
-    <div className={style.matchTeams}>
-      <div className={cn(style.matchTeam, {
-        [style.matchTeamWinner]: winner(match) === match.homeTeam.name,
-      })}
-      >
-        <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
-        <span>{match.homeTeam.name}</span>
-      </div>
-      <div className={cn(style.matchTeam, {
-        [style.matchTeamWinner]: winner(match) === match.awayTeam.name,
-      })}
-      >
-        <img className={style.matchTeamLogo} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
-        <span>{match.awayTeam.name}</span>
-      </div>
-    </div>
-    <div className={style.matchScores}>
-      {match.status !== 'Заплановано' && (
-      <>
-        <div className={match.status === 'Live' ? style.matchScoresLife : style.matchScoresRegular}>{match.homeGoals}</div>
-        <div className={match.status === 'Live' ? style.matchScoresLife : style.matchScoresRegular}>{match.awayGoals}</div>
-      </>
+      {myBet ? (
+        <div className={style.matchPredicts}>
+          <div className={style.matchUserBets}>
+            <div className={style.matchScoresRegular}>{myBet.homeBet}</div>
+            <div className={style.matchScoresRegular}>{myBet.awayBet}</div>
+          </div>
+          <div className={style.matchPoints}>
+            {match.status === 'Заплановано' ? '(0)' : `(${myBet.points})`}
+          </div>
+        </div>
+      ) : (
+        <div className={style.matchPredict}>
+          -:-
+        </div>
       )}
-    </div>
-    {myBet ? (
-      <div className={style.matchPredicts}>
-        <div className={style.matchUserBets}>
-          <div className={style.matchScoresRegular}>{myBet.homeBet}</div>
-          <div className={style.matchScoresRegular}>{myBet.awayBet}</div>
-        </div>
-        <div className={style.matchPoints}>
-          {match.status === 'Заплановано' ? '(0)' : `(${myBet.points})`}
-        </div>
-      </div>
-    ) : (
-      <div className={style.matchPredict}>
-        -:-
-      </div>
-    )}
-  </button>
-);
+    </button>
+
+  );
+};
 
 MatchMobile.propTypes = {
   match: PropTypes.object,

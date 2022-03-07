@@ -34,6 +34,9 @@
     &Regular{
       color: #2c2c2c;
     }
+    &Winner {
+      font-weight: bold;
+    }
   }
   &Actions {
     width: 15%;
@@ -44,6 +47,10 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    color: #929292;
+    .matchScoresRegular {
+      color: #929292;
+    }
   }
   &Team {
     text-align: left;
@@ -62,9 +69,23 @@
 [data-theme=dark] {
   .match {
     border-bottom-color: #22242c;
+    &Team {
+      color: #e1e1e6;
+    }
+    &Info {
+      &Status {
+        color: #e1e1e6;
+      }
+    }
     &Scores {
       &Regular {
         color: #e1e1e6;
+      }
+    }
+    &Predicts {
+      color: #aaaaac;
+      .matchScoresRegular {
+        color: #aaaaac;
       }
     }
   }
