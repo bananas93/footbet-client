@@ -37,17 +37,33 @@ const TournamentsPage = () => {
   }
 
   return (
-    <div className={styles.row}>
-      {tournaments.map((tournament) => (
-        <div key={tournament.id} className={styles.col}>
-          <Card>
-            <Link to={`/tournament/${tournament.id}-${tournament.slug}`}>
-              <img style={{ objectFit: 'contain', width: '100%', height: '150px' }} alt={tournament.name} src={tournament.logo} />
-            </Link>
-          </Card>
-        </div>
-      ))}
-    </div>
+    <>
+      <div className={styles.row}>
+        {tournaments.filter(({ archive }) => !archive).map((tournament) => (
+          <div key={tournament.id} className={styles.col}>
+            <Card>
+              <Link to={`/tournament/${tournament.id}-${tournament.slug}`}>
+                <div className={styles.colLink}>{tournament.name}</div>
+                <img style={{ objectFit: 'contain', width: '100%', height: '150px' }} alt={tournament.name} src={tournament.logo} />
+              </Link>
+            </Card>
+          </div>
+        ))}
+      </div>
+      <div className={styles.rowTitle}>Архівні турніри</div>
+      <div className={styles.row}>
+        {tournaments.filter(({ archive }) => archive).map((tournament) => (
+          <div key={tournament.id} className={styles.col}>
+            <Card>
+              <Link to={`/tournament/${tournament.id}-${tournament.slug}`}>
+                <div className={styles.colLink}>{tournament.name}</div>
+                <img style={{ objectFit: 'contain', width: '100%', height: '150px' }} alt={tournament.name} src={tournament.logo} />
+              </Link>
+            </Card>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

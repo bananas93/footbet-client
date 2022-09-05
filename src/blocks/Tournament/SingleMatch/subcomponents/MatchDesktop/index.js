@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import cn from 'classnames';
@@ -32,7 +33,7 @@ const MatchDesktop = ({
       })}
       >
         <span>{match.homeTeam.name}</span>
-        <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
+        <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.webp`} alt="" />
       </div>
       <div className={cn(style.matchScore, { [style.matchScoreLive]: match.status === 'Live' }, { [style.matchScoreScheduled]: match.status === 'Заплановано' })}>
         {match.status === 'Заплановано' ? (
@@ -49,28 +50,16 @@ const MatchDesktop = ({
         [style.matchTeamWinner]: winner(match) === match.awayTeam.name,
       })}
       >
-        <img className={cn(style.matchTeamLogo, style.matchTeamLogoLast)} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
+        <img className={cn(style.matchTeamLogo, style.matchTeamLogoLast)} src={`/logos/${match.awayTeam.id}.webp`} alt="" />
         <span>{match.awayTeam.name}</span>
       </div>
-      {
-          myBet ? (
-            <div className={style.matchPredict}>
-              {myBet.homeBet}
-              {' '}
-              -
-              {' '}
-              {myBet.awayBet}
-              {' '}
-              (
-              {match.status === 'Заплановано' ? 0 : myBet.points}
-              )
-            </div>
-          ) : (
-            <div className={style.matchPredict}>
-              -:-
-            </div>
-          )
-        }
+      {myBet ? (
+        <div className={style.matchPredict}>
+          {myBet.homeBet} - {myBet.awayBet} ({match.status === 'Заплановано' ? 0 : myBet.points})
+        </div>
+      ) : (
+        <div className={style.matchPredict}>-:-</div>
+      )}
     </div>
   </button>
 );
