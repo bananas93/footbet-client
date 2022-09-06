@@ -54,13 +54,13 @@ const ViewPredicts = ({ showPredictsModal, toggleShowPredictsModal, match }) => 
       <>
         <div className={styles.row}>
           <span className={styles.team}>{match.homeTeam.name}</span>
-          <img className={styles.logo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
+          <img className={styles.logo} src={`/logos/${match.homeTeam.id}.webp`} alt={match.homeTeam.name} />
           <div className={cn(styles.goals, { [styles.goalsLive]: match.status === 'Live' })}>
             <span className={styles.goal}>{match.homeGoals}</span>
             <span className={styles.separator}>-</span>
             <span className={styles.goal}>{match.awayGoals}</span>
           </div>
-          <img className={styles.logo} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
+          <img className={styles.logo} src={`/logos/${match.awayTeam.id}.webp`} alt={match.awayTeam.name} />
           <span className={cn(styles.team, styles.teamLast)}>{match.awayTeam.name}</span>
         </div>
         <Table

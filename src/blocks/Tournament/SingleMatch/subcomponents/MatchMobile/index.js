@@ -43,14 +43,14 @@ const MatchMobile = ({
           [style.matchTeamWinner]: winner(match) === match.homeTeam.name,
         })}
         >
-          <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.png`} alt={match.homeTeam.name} />
+          <img className={style.matchTeamLogo} src={`/logos/${match.homeTeam.id}.webp`} alt={match.homeTeam.name} />
           <span>{match.homeTeam.name}</span>
         </div>
         <div className={cn(style.matchTeam, {
           [style.matchTeamWinner]: winner(match) === match.awayTeam.name,
         })}
         >
-          <img className={style.matchTeamLogo} src={`/logos/${match.awayTeam.id}.png`} alt={match.awayTeam.name} />
+          <img className={style.matchTeamLogo} src={`/logos/${match.awayTeam.id}.webp`} alt={match.awayTeam.name} />
           <span>{match.awayTeam.name}</span>
         </div>
       </div>
