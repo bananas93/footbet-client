@@ -1,0 +1,13 @@
+.group {
+  width: 100%;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+  border: 1px solid #f0f0f0;
+  tr {
+    td {
+      padding: 10px;
+    }
+  }
+}
