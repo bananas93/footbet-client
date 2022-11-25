@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800&display=swap");
 *,
 ::after,
 ::before {
@@ -6,13 +6,14 @@
 }
 
 body {
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   font-size: 16px;
   line-height: 1.2;
   color: #201d1d;
+  background-color: #f7f7f7;
 }
 
-body[data-theme=dark] {
+body[data-theme="dark"] {
   background-color: #18191e;
 }
 
@@ -52,7 +53,7 @@ strong {
   }
 }
 
-[data-theme=dark] {
+[data-theme="dark"] {
   .site-layout {
     .site-layout-background {
       background: #162c35;
@@ -60,23 +61,22 @@ strong {
   }
 }
 
-
 .ReactModal__Overlay {
   opacity: 0;
   transition: opacity 360ms ease-in-out;
 }
 
-.ReactModal__Overlay--after-open{
+.ReactModal__Overlay--after-open {
   opacity: 1;
   z-index: 999;
 }
 
-.ReactModal__Overlay--before-close{
+.ReactModal__Overlay--before-close {
   opacity: 0;
 }
 
 .ReactModal__Overlay--after-open {
-  background-color: rgba(0,0,0, 0.75) !important;
+  background-color: rgba(0, 0, 0, 0.75) !important;
 }
 
 .ReactModal__Content--after-open {
@@ -93,7 +93,6 @@ strong {
   padding: 0 !important;
   overflow: unset !important;
 }
-
 
 @media screen and (max-width: 767px) {
   .ReactModal__Content--after-open {
