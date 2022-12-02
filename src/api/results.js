@@ -18,3 +18,12 @@ export const getResultsByTour = async (tournament, tour) => {
     },
   });
 };
+
+export const getResultsChart = async (tournament) => {
+  const token = getCookie('JWToken');
+  return await axios.get(`${process.env.REACT_APP_LOCAL_API}/results/${tournament}/matches`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};

@@ -1,81 +1,84 @@
-@import 'reset-css/sass/reset';
-@import 'react-toastify/dist/ReactToastify.css';
-@import 'react-tabs/style/react-tabs.css';
-@import './styles/tabs.scss';
-@import './styles/main.scss';
+@import "reset-css/sass/reset";
+@import "react-toastify/dist/ReactToastify.css";
+@import "react-tabs/style/react-tabs.css";
+@import "./styles/tabs.scss";
+@import "./styles/main.scss";
 
 .ReactModal__Content--after-open {
-    background: #fff !important;
+  background: #fff !important;
 }
-[data-theme=dark] {
-    .ReactModal__Content--after-open {
-        background: #18191e !important;
-    } 
+[data-theme="dark"] {
+  .ReactModal__Content--after-open {
+    background: #18191e !important;
+  }
 }
 .Toastify__toast-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 0.875em;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    border-radius: 0.5em;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  
-    .Toastify__toast {
-      min-height: unset;
-      font-family: "IBM Plex Sans", sans-serif;
-      margin: 0;
-      cursor: default;
-      position: absolute;
-      top: 4px;
-      padding-right: 24px;
-      padding-left: 24px;
-      color: #fff;
-    }
-  
-    .Toastify__toast-body {
-      padding: 6px 0;
-    }
-  
-    .Toastify__toast--success {
-      background: #74B37A;
-    }
-    .Toastify__toast--error {
-      background: #F3657B;
-    }
-    .Toastify__toast--warning {
-      background: #EBA54E;
-    }
-  
-    .Toastify__close-button {
-      margin-top: 4px;
-      align-self: unset;
-      margin-left: 20px;
-      opacity: 1;
-    }
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 0.875em;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border-radius: 0.5em;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .Toastify__toast {
+    min-height: unset;
+    font-family: "IBM Plex Sans", sans-serif;
+    margin: 0;
+    cursor: default;
+    position: absolute;
+    top: 4px;
+    padding-right: 24px;
+    padding-left: 24px;
+    color: #fff;
   }
+
+  .Toastify__toast-body {
+    padding: 6px 0;
+  }
+
+  .Toastify__toast--success {
+    background: #74b37a;
+  }
+  .Toastify__toast--error {
+    background: #f3657b;
+  }
+  .Toastify__toast--warning {
+    background: #eba54e;
+  }
+
+  .Toastify__close-button {
+    margin-top: 4px;
+    align-self: unset;
+    margin-left: 20px;
+    opacity: 1;
+  }
+}
 .item-enter {
-    opacity: 0;
+  opacity: 0;
 }
 .item-enter-active {
-    opacity: 1;
-    transition: opacity 500ms ease-in;
+  opacity: 1;
+  transition: opacity 500ms ease-in;
 }
 .item-exit {
-    opacity: 1;
+  opacity: 1;
 }
 .item-exit-active {
-    opacity: 0;
-    transition: opacity 500ms ease-in;
+  opacity: 0;
+  transition: opacity 500ms ease-in;
 }
 .updated {
   background-color: #c6d9eb !important;
 }
-[data-theme=dark] {
+[data-theme="dark"] {
   .updated {
     background-color: #414558 !important;
   }
+}
+#graphic {
+  height: 600px !important;
 }
