@@ -12,7 +12,7 @@ export const getResults = async (tournament) => {
 
 export const getResultsByTour = async (tournament, tour) => {
   const token = getCookie('JWToken');
-  return await axios.get(`${process.env.REACT_APP_LOCAL_API}/results/${tournament}/${tour}`, {
+  return await axios.get(`${process.env.REACT_APP_LOCAL_API}/results/${tournament}/tour/${tour}`, {
     headers: {
       Authorization: token,
     },
