@@ -23,6 +23,7 @@ const ResultsTable = ({
   return (
     <Card
       title="Таблиця"
+      noMobileShadow
       action={(
         <>
           <Dropdown

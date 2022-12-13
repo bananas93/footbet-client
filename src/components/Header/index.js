@@ -12,9 +12,6 @@ const Header = memo(({ darkTheme, themeToggler }) => (
           <Link to="/">Головна</Link>
         </li>
         <li className={styles.headerListItem}>
-          <Link to="/tournaments">Турніри</Link>
-        </li>
-        <li className={styles.headerListItem}>
           <Link to="/rules">Правила</Link>
         </li>
       </ul>

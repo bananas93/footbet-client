@@ -10,7 +10,7 @@ const DataGrid = ({ chart }) => {
     height: 600,
   };
 
-  const labels = [...chart.matches].map((match) => `${match['homeTeam.name']} ${match.homeGoals} - ${match.awayGoals} ${match['awayTeam.name']}`);
+  const labels = [...chart.matches].map((match, index) => `Матч ${index}`);
 
   const datasets = chart.users.map(({ user_name, datagrid }) => {
     const dataset = {
@@ -35,7 +35,7 @@ const DataGrid = ({ chart }) => {
 };
 
 DataGrid.propTypes = {
-  chart: PropTypes.array,
+  chart: PropTypes.object,
 };
 
 export default DataGrid;

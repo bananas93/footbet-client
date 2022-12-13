@@ -51,7 +51,7 @@ const Group = ({ groups }) => {
   ];
 
   return (
-    <Card>
+    <Card noMobileShadow>
       <Tabs style={{ textAlign: 'center' }}>
         <TabList>
           {Object.entries(groups).sort((a, b) => a[0].localeCompare(b[0])).map((item) => (

@@ -12,14 +12,14 @@ import Card from '../../../components/Card';
 const MatchesTabs = ({
   matches, tournament, loadMatches, activeTab, changeTabs,
 }) => (
-  <Card title="Матчі">
+  <Card title="Матчі" noMobileShadow>
     <Tabs defaultIndex={Number(activeTab)} onSelect={changeTabs}>
       <TabList>
         {Array.from(Array(tournament.groupTours).keys()).map((key) => (
           <Tab key={key}>{`${key + 1} тур`}</Tab>
         ))}
         {Array.from(Array(tournament.playoffTours).keys()).reverse().map((key) => (
-          <Tab key={key}>{normalizeTabName(key)}</Tab>
+          <Tab key={key}>{normalizeTabName(key, tournament)}</Tab>
         ))}
       </TabList>
       {Array.from(Array(tournament.groupTours).keys()).map((key) => (
@@ -36,7 +36,7 @@ const MatchesTabs = ({
       ))}
       {Array.from(Array(tournament.playoffTours).keys()).reverse().map((key) => (
         <TabPanel key={key}>
-          {matches.filter((group) => group.tour === normalizeTabName(key)).map((group) => (
+          {matches.filter((group) => group.tour === normalizeTabName(key, tournament)).map((group) => (
             <div key={group.id}>
               <Divider>{moment(group.date).format('LL')}</Divider>
               {group.games.map((match) => (

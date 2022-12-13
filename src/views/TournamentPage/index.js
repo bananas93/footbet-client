@@ -162,7 +162,6 @@ const TournamentPage = () => {
             <Tab>Матчі</Tab>
             <Tab>Результати</Tab>
             <Tab>Групи</Tab>
-            <Tab>Графік</Tab>
           </TabList>
           <TabPanel>
             <MatchesTabs
@@ -188,13 +187,10 @@ const TournamentPage = () => {
               tournament={tournamentId}
             />
           </TabPanel>
-          <TabPanel>
-            <DataGrid chart={chart} />
-          </TabPanel>
         </Tabs>
       ) : (
         <>
-          <div className={styles.row}>
+          <div className={styles.row} style={{ marginBottom: '16px' }}>
             <div className={styles.col}>
               <MatchesTabs
                 matches={matches}

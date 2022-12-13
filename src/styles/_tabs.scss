@@ -12,12 +12,13 @@
   border: none;
   border-bottom: 2px solid transparent;
   border-radius: 0;
-  transition: all .3s ease 0s;
+  transition: all 0.3s ease 0s;
   font-size: 14px;
   white-space: nowrap;
   padding: 12px;
   &--selected {
     border-bottom-color: #4169b8;
+    pointer-events: none;
   }
   &:focus {
     box-shadow: none;
@@ -25,7 +26,7 @@
   }
 }
 
-[data-theme=dark] {
+[data-theme="dark"] {
   .react-tabs__tab {
     color: #e1e1e6;
   }

@@ -12,6 +12,9 @@
   border-radius: 0;
   cursor: pointer;
   padding: 8px 0;
+  &:last-of-type {
+    border-bottom: none;
+  }
   &Info {
     width: 15%;
     font-size: 12px;

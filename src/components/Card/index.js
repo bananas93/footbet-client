@@ -3,9 +3,9 @@ import cn from 'classnames';
 import styles from './index.module.scss';
 
 const Card = ({
-  title, action, style, titleStyle, children,
+  title, action, style, titleStyle, noMobileShadow, children,
 }) => (
-  <div className={styles.card} style={style}>
+  <div className={cn(styles.card, { [styles.noMobileShadow]: noMobileShadow })} style={style}>
     {title && (
       <div className={styles.cardTitle} style={titleStyle}>
         <span>{title}</span>
@@ -25,6 +25,7 @@ Card.propTypes = {
   children: PropTypes.node,
   style: PropTypes.object,
   titleStyle: PropTypes.object,
+  noMobileShadow: PropTypes.bool,
   action: PropTypes.node,
 };
 

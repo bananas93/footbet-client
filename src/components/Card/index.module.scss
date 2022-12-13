@@ -1,85 +1,94 @@
 .card {
-    @media screen and (min-width: 768px) {
-        border-radius: 15px;
-        box-shadow: 2px 2px 20px #e3e3e3;
+  border-radius: 15px;
+  box-shadow: 2px 2px 20px #e3e3e3;
+  &Title {
+    border-bottom: 1px solid #e3e3e3;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 15px;
+    margin-bottom: 15px;
+  }
+  &Body {
+    margin-top: 15px;
+    margin-top: 0;
+    &WithoutTitle {
+      padding: 15px;
     }
-    &Title {
-        padding: 10px 0;
-        border-bottom: 1px solid #e3e3e3;
-        font-size: 18px;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        @media screen and (min-width: 768px) {
-            padding: 20px 15px;
-            margin-bottom: 15px;
-        }
+    padding: 0 15px 15px 15px;
+  }
+  &Action {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    > button {
+      font-weight: 400;
+      font-size: 14px;
+      color: #262626;
     }
-    &Body {
-        margin-top: 15px;
-        @media screen and (min-width: 768px) {
-            margin-top: 0;
-            &WithoutTitle {
-                padding: 15px;
-            }
-            padding: 0 15px 15px 15px;
-        }
+  }
+  &MatchDate {
+    text-align: center;
+    font-weight: 500;
+    position: relative;
+    margin: 20px 0;
+    span {
+      background-color: #fff;
+      position: relative;
+      z-index: 1;
+      padding: 0 20px;
+      color: #3f4d67;
+      font-size: 18px;
     }
-    &Action {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        > button {
-            font-weight: 400;
-            font-size: 14px;
-            color: #262626;
-        }
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 0.5px;
+      top: 50%;
+      right: 0;
+      left: 0;
+      transform: translateY(-50%);
+      background-color: #e3e3e3;
     }
-    &MatchDate {
-        text-align: center;
-        font-weight: 500;
-        position: relative;
-        margin: 20px 0;
-        span {
-            background-color: #fff;
-            position: relative;
-            z-index: 1;
-            padding: 0 20px;
-            color: #3f4d67;
-            font-size: 18px;
-        }
-        &::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 0.5px;
-            top: 50%;
-            right: 0;
-            left: 0;
-            transform: translateY(-50%);
-            background-color: #e3e3e3;
-        }
-    }
+  }
 }
 
-[data-theme=dark] {
-    .card {
-        background-color: #18191e;
-        @media screen and (min-width: 768px) {
-            box-shadow: 1px 1px 20px #00000045;
-        }
-        &Title {
-            color: #e1e1e6;
-            border-bottom-color: #2d2f39;
-        }
-        &Body {
-            color: #e1e1e6;
-        }
-        &Action {
-            > button {
-                color: #e1e1e6;
-            }
-        }
+[data-theme="dark"] {
+  .card {
+    background-color: #18191e;
+    box-shadow: 2px 2px 20px rgb(0 0 0 / 30%);
+    &Title {
+      color: #e1e1e6;
+      border-bottom-color: #2d2f39;
     }
+    &Body {
+      color: #e1e1e6;
+    }
+    &Action {
+      > button {
+        color: #e1e1e6;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .card {
+    &.noMobileShadow {
+      box-shadow: none;
+      .cardTitle {
+        padding: 10px 0;
+      }
+      .cardBody {
+        padding: 0 0 15px;
+      }
+    }
+    &Title {
+      padding: 10px;
+      font-size: 16px;
+    }
+  }
 }
