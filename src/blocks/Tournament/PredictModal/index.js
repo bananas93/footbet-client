@@ -92,7 +92,7 @@ const PredictModal = ({
       onRequestClose={toggleShowAddPredictModal}
       footer={(
         <>
-          {(match.status === 'Заплановано' && id === 5) && (
+          {(match.status === 'Заплановано' && (id === 1 || id === 3)) && (
             <Button variant="primary" onClick={changeMatch}>Розпочався</Button>
           )}
           <Button type="button" variant="secondary" onClick={toggleShowAddPredictModal}>Закрити</Button>

@@ -69,7 +69,7 @@ const ViewPredicts = ({ showPredictsModal, toggleShowPredictsModal, match }) => 
           bordered
           rowKey="id"
         />
-        {(match.status === 'Live' && id === 5) && (
+        {(match.status === 'Live' && (id === 1 || id === 3)) && (
           <>
             <div style={{ marginTop: '30px', justifyContent: 'space-between' }} className={styles.row}>
               <div className={styles.col}>
