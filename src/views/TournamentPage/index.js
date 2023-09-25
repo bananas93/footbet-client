@@ -5,11 +5,10 @@ import {
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import styles from './index.module.scss';
 import FullTable from '../../blocks/Tournament/FullTable';
 import UserInfo from '../../blocks/Tournament/UserInfo';
 import { getMatches } from '../../api/matches';
-import { getResults, getResultsByTour, getResultsChart } from '../../api/results';
+import { getResults, getResultsByTour } from '../../api/results';
 import Loading from '../../components/Loading';
 import { SocketContext, TitleContext } from '../../utils/contexts';
 import useMobile from '../../helpers/useMobile';
@@ -21,8 +20,7 @@ import { updateMatch } from '../../helpers/updateMatch';
 import 'moment/locale/uk';
 import Group from '../../components/Group';
 import { getTournamentGroups } from '../../api/groups';
-import DataGrid from '../../components/DataGrid';
-import Card from '../../components/Card';
+import styles from './index.module.scss';
 
 moment.locale('uk');
 
@@ -41,7 +39,6 @@ const TournamentPage = () => {
   const [matches, setMatches] = useState([]);
   const [groups, setGroups] = useState([]);
   const [results, setResults] = useState([]);
-  const [chart, setChart] = useState([]);
   const [showFullTableModal, setShowFullTableModal] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [userId, setUserId] = useState();
@@ -94,13 +91,11 @@ const TournamentPage = () => {
       getMatches(tournamentId),
       getResults(tournamentId),
       getTournamentGroups(tournamentId),
-      getResultsChart(tournamentId),
     ])
       .then((res) => {
         setMatches(res[0].data);
         setResults(res[1].data);
         setGroups(res[2].data);
-        setChart(res[3].data);
       })
       .catch((error) => {
         toast.error(error.response.data.error || error.message, 3000);
@@ -189,43 +184,34 @@ const TournamentPage = () => {
           </TabPanel>
         </Tabs>
       ) : (
-        <>
-          <div className={styles.row} style={{ marginBottom: '16px' }}>
-            <div className={styles.col}>
-              <MatchesTabs
-                matches={matches}
-                tournament={tournament}
-                loadMatches={loadMatches}
-                activeTab={Number(activeTab)}
-                changeTabs={changeTabs}
+        <div className={styles.row}>
+          <div className={styles.col}>
+            <MatchesTabs
+              matches={matches}
+              tournament={tournament}
+              loadMatches={loadMatches}
+              activeTab={Number(activeTab)}
+              changeTabs={changeTabs}
+            />
+          </div>
+          <div className={styles.col}>
+            <div style={{ marginBottom: '16px' }}>
+              <ResultsTable
+                handleMenuClick={handleMenuClick}
+                toggleFullTableModal={toggleFullTableModal}
+                toggleShowUserInfo={toggleShowUserInfo}
+                selectedTour={selectedTour}
+                results={results}
               />
             </div>
-            <div className={styles.col}>
-              <div style={{ marginBottom: '16px' }}>
-                <ResultsTable
-                  handleMenuClick={handleMenuClick}
-                  toggleFullTableModal={toggleFullTableModal}
-                  toggleShowUserInfo={toggleShowUserInfo}
-                  selectedTour={selectedTour}
-                  results={results}
-                />
-              </div>
-              <div>
-                <Group
-                  groups={groups}
-                  tournament={tournamentId}
-                />
-              </div>
+            <div>
+              <Group
+                groups={groups}
+                tournament={tournamentId}
+              />
             </div>
           </div>
-          <div className={styles.row}>
-            <div className={styles.col}>
-              <Card>
-                <DataGrid chart={chart} />
-              </Card>
-            </div>
-          </div>
-        </>
+        </div>
       )}
       {showFullTableModal && (
         <FullTable

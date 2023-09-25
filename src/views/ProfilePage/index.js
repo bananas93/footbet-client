@@ -143,7 +143,7 @@ const ProfilePage = () => {
               <div className={styles.inputWrap}>
                 <Input
                   type="password"
-                  id="password"
+                  id="new-password"
                   name="password"
                   placeholder="Підтведити пароль"
                   label="Підтведіть пароль"
