@@ -14,27 +14,34 @@ const firebaseConfig = {
   measurementId: 'G-VKR0R9Y6ZS',
 };
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+let messaging;
+try {
+  messaging = getMessaging(app);
+} catch (err) {
+  console.error('Failed to initialize Firebase Messaging', err);
+}
 
 export const requestPermission = () => {
-  console.log('Requesting User Permission......');
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log('Notification User Permission Granted.');
-      return getToken(messaging, { vapidKey: 'BDpXz66_M0T5PAnnRFlOCxDyrHQ93Mt7x3J60zlVDNSOLNYULk9X78krDuAoaMDCACBiMK8qLNivnB_sLgqqljY' })
-        .then((currentToken) => {
-          if (currentToken) {
-            console.log('Client Token: ', currentToken);
-          } else {
-            console.log('Failed to generate the app registration token.');
-          }
-        })
-        .catch((err) => {
-          console.log('An error occurred when requesting to receive the token.', err);
-        });
-    }
-    console.log('User Permission Denied.');
-  });
+  if ('Notification' in window) {
+    console.log('Requesting User Permission......');
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification User Permission Granted.');
+        return getToken(messaging, { vapidKey: 'BDpXz66_M0T5PAnnRFlOCxDyrHQ93Mt7x3J60zlVDNSOLNYULk9X78krDuAoaMDCACBiMK8qLNivnB_sLgqqljY' })
+          .then((currentToken) => {
+            if (currentToken) {
+              console.log('Client Token: ', currentToken);
+            } else {
+              console.log('Failed to generate the app registration token.');
+            }
+          })
+          .catch((err) => {
+            console.log('An error occurred when requesting to receive the token.', err);
+          });
+      }
+      console.log('User Permission Denied.');
+    });
+  }
 };
 
 export const onMessageListener = () =>
