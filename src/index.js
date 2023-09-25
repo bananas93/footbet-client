@@ -1,8 +1,15 @@
+/* eslint-disable import/no-cycle */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index.scss';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-reportWebVitals();
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root'),
+);
+
+serviceWorkerRegistration.register();

@@ -10,6 +10,7 @@ import { checkAuthorization, getCookie } from './helpers/authHelper';
 import { ProtectedRoutes } from './routes/ProtectedRoutes';
 import { AuthRoutes } from './routes/AuthRoutes';
 import Loading from './components/Loading';
+import { onMessageListener, requestPermission } from './firebase';
 
 const App = () => {
   const socketRef = useRef(null);
@@ -17,6 +18,16 @@ const App = () => {
   const [user, setUser] = useState(null);
   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const [darkTheme, setDarkTheme] = useLocalStorage('theme', systemPrefersDark || false);
+
+  useEffect(() => {
+    requestPermission();
+    const unsubscribe = onMessageListener().then((payload) => {
+      toast.success(`${payload?.notification?.title}: ${payload?.notification?.body}`);
+    });
+    return () => {
+      unsubscribe.catch((err) => console.log('failed: ', err));
+    };
+  }, []);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', darkTheme ? 'dark' : 'light');
