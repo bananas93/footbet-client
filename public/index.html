@@ -37,7 +37,7 @@
       window.addEventListener('load', function () {
         navigator.serviceWorker
         //registers the worker.js file you just made
-          .register('%PUBLIC_URL%/worker.js')
+          .register('%PUBLIC_URL%/service-worker.js')
           .then(
             function (registration) {
               console.log(
