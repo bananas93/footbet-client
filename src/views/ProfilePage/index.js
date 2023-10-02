@@ -16,6 +16,7 @@ const ProfilePage = () => {
   const [formValues, setFormValues] = useState(['', '', '', '']);
   const [formErrors, setFormErrors] = useState(['', '', '', '']);
   const { setTitle } = useContext(TitleContext);
+
   useEffect(() => {
     setTitle('Профіль');
   }, [setTitle]);

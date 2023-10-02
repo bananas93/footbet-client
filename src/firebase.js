@@ -3,6 +3,7 @@
 /* eslint-disable no-console */
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { registerToken } from './api/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCmhZ6jlItI9EiQ2uvMZFJ639iBlngN-sc',
@@ -28,8 +29,9 @@ export const requestPermission = () => {
       if (permission === 'granted') {
         console.log('Notification User Permission Granted.');
         return getToken(messaging, { vapidKey: 'BDpXz66_M0T5PAnnRFlOCxDyrHQ93Mt7x3J60zlVDNSOLNYULk9X78krDuAoaMDCACBiMK8qLNivnB_sLgqqljY' })
-          .then((currentToken) => {
+          .then(async (currentToken) => {
             if (currentToken) {
+              await registerToken(currentToken);
               console.log('Client Token: ', currentToken);
             } else {
               console.log('Failed to generate the app registration token.');

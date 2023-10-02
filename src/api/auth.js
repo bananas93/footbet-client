@@ -33,3 +33,16 @@ export const updateUserDetails = async ({ email, name, password }) => {
     data: { email, name, password },
   });
 };
+
+export const registerToken = async (registrationToken) => {
+  const token = getJWToken();
+  return await axios({
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    url: `${process.env.REACT_APP_LOCAL_API}/users/me/registerToken`,
+    data: { token: registrationToken },
+  });
+};

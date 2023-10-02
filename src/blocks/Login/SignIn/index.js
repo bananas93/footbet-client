@@ -41,7 +41,7 @@ const SignIn = () => {
             path: '/',
           });
           setLoading(false);
-          window.location.href = `https://${window.location.origin}/profile`;
+          window.location.href = `${window.location.origin}/profile`;
         }
       } catch (error) {
         setLoading(false);

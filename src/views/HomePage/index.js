@@ -46,6 +46,7 @@ const HomePage = () => {
           </Card>
         </div>
       ))}
+      {tournaments.filter(({ archive }) => archive).length >= 1 && (
       <div className={styles.col}>
         <Card title="Архівні турніри">
           <ul>
@@ -57,6 +58,7 @@ const HomePage = () => {
           </ul>
         </Card>
       </div>
+      )}
     </div>
   );
 };

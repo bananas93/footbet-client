@@ -3,7 +3,7 @@ import style from './index.module.scss';
 
 const Footer = memo(() => (
   <footer className={style.footer}>
-    <div className={style.footerCopyright}>footbet.pp.ua © 2021 Created by David Amerov</div>
+    <div className={style.footerCopyright}>footbet.pp.ua © 2023 Created by David Amerov</div>
   </footer>
 ));
 
