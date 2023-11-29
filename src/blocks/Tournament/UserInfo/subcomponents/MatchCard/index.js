@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
+import cn from 'classnames';
+import styles from './index.module.scss';
 
 const MatchCard = ({ match }) => (
-  <div className="single-match single-match--details" key={match.id}>
-    <span className="single-match__team single-match__team--left">{match.homeTeam.name}</span>
-    <span className="single-match__score">
+  <div className={styles.match} key={match.id}>
+    <span className={styles.matchTeam}>{match.homeTeam.name}</span>
+    <span className={styles.matchScore}>
       <span className="single-match__score--data">
         {match.homeGoals}
         {' '}
@@ -11,14 +13,7 @@ const MatchCard = ({ match }) => (
         {match.awayGoals}
       </span>
     </span>
-    <span className="single-match__team single-match__right">{match.awayTeam.name}</span>
-    <span className="single-match__mypredict">
-      {match.bet.homeBet}
-      {' '}
-      -
-      {' '}
-      {match.bet.awayBet}
-    </span>
+    <span className={cn(styles.matchTeam, styles.matchTeamLast)}>{match.awayTeam.name}</span>
   </div>
 );
 

@@ -1,0 +1,56 @@
+.match {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #3f4d67;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-transform: none;
+  font-family: 'Rubik', sans-serif;
+  margin-bottom: 8px;
+  &Team {
+      width: 35%;
+      @media screen and (min-width: 640px) {
+          width: 34%;
+      }
+      justify-content: right;
+      font-weight: 400;
+      display: inline-flex;
+      align-items: center;
+      &Winner {
+        font-weight: bold;
+      }
+      &Last {
+          justify-content: left;
+      }
+  }
+  &Score {
+    background-color: #3c5d95;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 5px 15px;
+    gap: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    &Live {
+      background-color: #ed1c24;
+    }
+    &Scheduled {
+      background-color: #ababab;
+    }
+  }
+  &Predict {
+      font-weight: 400;
+      font-size: 14px;
+      width: 8%;
+      @media screen and (min-width: 640px) {
+          width: 10%;
+      }
+  }
+}

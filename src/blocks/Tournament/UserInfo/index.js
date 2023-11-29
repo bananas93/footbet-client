@@ -1,28 +1,28 @@
+/* eslint-disable max-len */
 import PropTypes from 'prop-types';
-import {
-  Tab, Tabs, TabList, TabPanel,
-} from 'react-tabs';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import {
+  Tab, TabList, TabPanel, Tabs,
+} from 'react-tabs';
 import Modal from '../../../components/Modal';
 import Button from '../../../components/Button';
 import Loading from '../../../components/Loading';
 import MatchCard from './subcomponents/MatchCard';
 import { getInfo } from '../../../api/users';
+import styles from './index.module.scss';
 
 const UserInfo = ({
-  id, tournament, tour, showUserInfo, toggleShowUserInfo,
+  id, tournament, showUserInfo, toggleShowUserInfo,
 }) => {
   const [userInfo, setUserInfo] = useState([]);
-  const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(true);
 
   const getUserInfo = async () => {
     try {
-      const res = await getInfo(id, tournament, tour);
+      const res = await getInfo(id, tournament);
       if (res.status === 200) {
         setUserInfo(res.data);
-        setUserName(res.data.result[0].user.name);
       }
     } catch (error) {
       toast.error(`Помилка ${error}`, 3000);
@@ -35,45 +35,87 @@ const UserInfo = ({
     getUserInfo();
   }, []);
 
+  const {
+    matchesCount, predictMatches, exactScoreCount, correctResultCount, goalDifferenceCount, fivePlusGoalsCount, favoriteTeams, user, exactScoreMatches,
+  } = userInfo;
+
   return (
     <Modal
-      title={`Інформація про ${userName}`}
+      title={`Інформація про ${user?.name}`}
       isOpen={showUserInfo}
       onRequestClose={toggleShowUserInfo}
       size="large"
       footer={
-        <Button type="button" variant="secondary" onCLick={toggleShowUserInfo}>Закрити</Button>
+        <Button type="button" variant="secondary" onClick={toggleShowUserInfo}>Закрити</Button>
       }
     >
       {loading ? (
         <Loading />
       ) : (
-
         <Tabs>
           <TabList>
-            <Tab>Точні результати</Tab>
-            <Tab>Результати матчу</Tab>
-            <Tab>Різниця голів</Tab>
-            <Tab>Невдача</Tab>
+            <Tab>Статистика</Tab>
+            <Tab>Улюблені команди</Tab>
+            <Tab>Вгадані точно матчі</Tab>
           </TabList>
           <TabPanel>
-            {userInfo?.matches?.filter((match) => match.bet.result === true).map((match) => (
-              <MatchCard match={match} />
-            ))}
+            <ul className={styles.list}>
+              <li>
+                Прогнозів поставлено
+                <b>{predictMatches}</b>
+                {' '}
+                (
+                {((100 * predictMatches) / matchesCount).toFixed(2)}
+                %)
+              </li>
+              <li>
+                Вгадано точних рахунків
+                <b>
+                  {exactScoreCount}
+                  {' '}
+                </b>
+                (
+                {((100 * exactScoreCount) / predictMatches).toFixed(2)}
+                %)
+              </li>
+              <li>
+                Вгадані результатів
+                <b>{correctResultCount}</b>
+                (
+                {((100 * correctResultCount) / predictMatches).toFixed(2)}
+                %)
+              </li>
+              <li>
+                Вгадано різниць
+                <b>{goalDifferenceCount}</b>
+                (
+                {((100 * goalDifferenceCount) / predictMatches).toFixed(2)}
+                %)
+              </li>
+              <li>
+                Вгадано 5+ голів
+                <b>{fivePlusGoalsCount}</b>
+                (
+                {((100 * fivePlusGoalsCount) / predictMatches).toFixed(2)}
+                %)
+              </li>
+            </ul>
           </TabPanel>
           <TabPanel>
-            {userInfo?.matches?.filter((match) => match.bet.score === true).map((match) => (
-              <MatchCard match={match} />
-            ))}
+            <ul className={styles.list}>
+              {favoriteTeams?.map((team) => (
+                <li key={team.team}>
+                  {team.team}
+                  <b>{team.points}</b>
+                  {' '}
+                  очок
+                </li>
+              ))}
+            </ul>
           </TabPanel>
           <TabPanel>
-            {userInfo?.matches?.filter((match) => match.bet.difference === true).map((match) => (
-              <MatchCard match={match} />
-            ))}
-          </TabPanel>
-          <TabPanel>
-            {userInfo?.matches?.filter((match) => match.bet.empty === true).map((match) => (
-              <MatchCard match={match} />
+            {exactScoreMatches.map((match) => (
+              <MatchCard key={match.id} match={match} />
             ))}
           </TabPanel>
         </Tabs>
@@ -84,8 +126,7 @@ const UserInfo = ({
 
 UserInfo.propTypes = {
   id: PropTypes.number,
-  tournament: PropTypes.number,
-  tour: PropTypes.number,
+  tournament: PropTypes.string,
   showUserInfo: PropTypes.bool,
   toggleShowUserInfo: PropTypes.func,
 };

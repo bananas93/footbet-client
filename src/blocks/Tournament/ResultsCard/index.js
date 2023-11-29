@@ -6,7 +6,7 @@ import { columns } from '../../../helpers/tableSettings';
 import Button from '../../../components/Button';
 
 const ResultsTable = ({
-  handleMenuClick, toggleFullTableModal, selectedTour, results,
+  handleMenuClick, toggleFullTableModal, selectedTour, results, toggleShowUserInfo,
 }) => {
   const menu = [
     '1 Тур',
@@ -45,6 +45,7 @@ const ResultsTable = ({
       <Table
         columns={columns}
         data={results}
+        onRow={({ userId }) => toggleShowUserInfo(userId)}
       />
     </Card>
   );
@@ -55,6 +56,7 @@ ResultsTable.propTypes = {
   toggleFullTableModal: PropTypes.func,
   selectedTour: PropTypes.number,
   results: PropTypes.array,
+  toggleShowUserInfo: PropTypes.func,
 };
 
 export default ResultsTable;

@@ -222,11 +222,11 @@ const TournamentPage = () => {
       )}
       {showUserInfo && (
         <UserInfo
+          id={userId}
           showUserInfo={showUserInfo}
           toggleShowUserInfo={toggleShowUserInfo}
           tournament={tournamentId}
           tour={selectedTour}
-          id={userId}
         />
       )}
     </>

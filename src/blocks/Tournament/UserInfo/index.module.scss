@@ -1,0 +1,26 @@
+.row {
+  display: flex;
+}
+
+.col {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.list {
+  li {
+    display: flex;
+    gap: 4px;
+    font-size: 16px;
+    padding: 4px 0;
+    b {
+      font-weight: 500;
+    }
+  }
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}

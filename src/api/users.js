@@ -2,9 +2,9 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { getJWToken } from '../helpers/authHelper';
 
-export const getInfo = async (user, tournament, tour) => {
+export const getInfo = async (user, tournament) => {
   const token = getJWToken('JWToken');
-  return await axios.get(`${process.env.REACT_APP_LOCAL_API}/users/${user}/${tournament}/${tour}`, {
+  return await axios.get(`${process.env.REACT_APP_LOCAL_API}/users/${user}/${tournament}`, {
     headers: {
       Authorization: token,
     },
