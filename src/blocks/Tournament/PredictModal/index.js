@@ -73,7 +73,7 @@ const PredictModal = ({
   const changeMatch = async () => {
     try {
       const { id } = match;
-      const res = await updateMatch(id, true, 0, 0);
+      const res = await updateMatch(id, true, 0, 0, 'start');
       if (res && res.status === 201) {
         toggleShowAddPredictModal();
         toast.success(res.data, 3000);

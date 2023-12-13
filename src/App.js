@@ -21,12 +21,9 @@ const App = () => {
 
   useEffect(() => {
     requestPermission();
-    const unsubscribe = onMessageListener().then((payload) => {
+    onMessageListener((payload) => {
       toast.success(`${payload?.notification?.title}: ${payload?.notification?.body}`);
     });
-    return () => {
-      unsubscribe.catch((err) => console.log('failed: ', err));
-    };
   }, []);
 
   useEffect(() => {

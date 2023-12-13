@@ -46,9 +46,8 @@ export const requestPermission = () => {
   }
 };
 
-export const onMessageListener = () =>
-  new Promise((resolve) => {
-    onMessage(messaging, (payload) => {
-      resolve(payload);
-    });
+export const onMessageListener = (callback) => {
+  onMessage(messaging, (payload) => {
+    callback(payload);
   });
+};

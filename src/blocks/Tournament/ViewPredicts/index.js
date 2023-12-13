@@ -31,11 +31,11 @@ const columns = [
 const ViewPredicts = ({ showPredictsModal, toggleShowPredictsModal, match }) => {
   const { id } = useContext(UserContext);
 
-  const changeMatch = async (status, home, away) => {
+  const changeMatch = async (status, home, away, type) => {
     try {
       const homeGoals = home ? Number(match.homeGoals) + 1 : match.homeGoals;
       const awayGoals = away ? Number(match.awayGoals) + 1 : match.awayGoals;
-      const res = await updateMatch(match.id, status, homeGoals, awayGoals);
+      const res = await updateMatch(match.id, status, homeGoals, awayGoals, type);
       if (res && res.status === 201) {
         toggleShowPredictsModal();
         toast.success(res.data, 3000);
@@ -73,21 +73,21 @@ const ViewPredicts = ({ showPredictsModal, toggleShowPredictsModal, match }) => 
           <>
             <div style={{ marginTop: '30px', justifyContent: 'space-between' }} className={styles.row}>
               <div className={styles.col}>
-                <Button variant="primary" onClick={() => changeMatch(true, true, false)}>
+                <Button variant="primary" onClick={() => changeMatch(true, true, false, 'goal')}>
                   {match.homeTeam.name}
                   {' '}
                   забив
                 </Button>
               </div>
               <div className={styles.col}>
-                <Button variant="primary" onClick={() => changeMatch(true, false, true)}>
+                <Button variant="primary" onClick={() => changeMatch(true, false, true, 'goal')}>
                   {match.awayTeam.name}
                   {' '}
                   забив
                 </Button>
               </div>
             </div>
-            <Button variant="primary" onClick={() => changeMatch(false, false, false)}>Закінчився</Button>
+            <Button variant="primary" onClick={() => changeMatch(false, false, false, 'end')}>Закінчився</Button>
           </>
         )}
       </>

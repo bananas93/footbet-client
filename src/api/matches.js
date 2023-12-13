@@ -10,9 +10,11 @@ export const getMatches = async (tournament) => {
   });
 };
 
-export const updateMatch = async (id, status, homeGoals, awayGoals) => {
+export const updateMatch = async (id, status, homeGoals, awayGoals, type) => {
   const token = getCookie('JWToken');
-  return await axios.patch(`${process.env.REACT_APP_LOCAL_API}/matches/${id}`, { status, homeGoals, awayGoals }, {
+  return await axios.patch(`${process.env.REACT_APP_LOCAL_API}/matches/${id}`, {
+    status, homeGoals, awayGoals, type,
+  }, {
     headers: {
       Authorization: token,
     },
